@@ -5,7 +5,7 @@ body {
     background: url('https://goblincoach.com/wp-content/uploads/2023/08/SDGroup.jpg') no-repeat center center fixed; /* Background image from URL */
     background-attachment: fixed; /* Parallax effect */
     background-size: cover; /* Make sure the image covers the whole background */
-    color: #d4af37; /* White text for high contrast */
+    color: #ffffff; /* White text for high contrast */
 }
 
 /* Container for Main Content */
