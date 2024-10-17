@@ -1,0 +1,60 @@
+{
+  "D8": [
+    "No Encounter - The room is quiet.",
+    "Minor Hostile - A small group of low-threat entities.",
+    "Cursed or Haunted Presence - An unsettling object or entity.",
+    "Roaming Entity - A group of wandering beings.",
+    "Environmental Hazard - Dangerous terrain or effect.",
+    "Major Hostile - A challenging group or powerful entity.",
+    "Ambush - Hidden entities ready to strike.",
+    "Elite Threat - Dangerous entity, possibly guarding something."
+  ],
+  "D10": [
+    "Mysterious Figure - Entity could be friend or foe.",
+    "Guardian Presence - Items guarded by an entity or mechanism.",
+    "Enhanced Focus - Party gains temporary boost to checks.",
+    "Illusions - Misleading visuals or sounds fill the room.",
+    "Strange Markings - Walls covered in unknown symbols.",
+    "Dimensional Anomaly - Presence from another realm.",
+    "Collapsing Structure - Room starts collapsing.",
+    "Temporal Distortion - Time behaves strangely in the room.",
+    "Unexpected Aid - Something helpful appears.",
+    "Mimicry - An object or part is not what it seems."
+  ],
+  "D12": [
+    "Empty Room - No notable features.",
+    "Loot Room - Contains valuable items or resources.",
+    "Trap Room - Has one or more hazards or obstacles.",
+    "Puzzle Room - Requires solving a challenge.",
+    "Hostile Presence Room - Enemies present.",
+    "Storage Room - Weapons, armor, or supplies.",
+    "Archive Room - Books, records, or clues.",
+    "Laboratory - Potions, reagents, or devices.",
+    "Prison - Holds captured beings or objects.",
+    "Boss Room - Significant threat or challenge.",
+    "Sacred Site - Reverence or power.",
+    "Arcane Chamber - Unknown artifacts or phenomena."
+  ],
+  "D20": [
+    "Double Trouble - Double the number of hostiles present.",
+    "Echoes of the Past - Strange visions or illusions appear.",
+    "Shifting Walls - The layout of the room shifts unpredictably.",
+    "Cursed Object - Any loot found is cursed or has negative effects.",
+    "Deep Darkness - The room is unusually dark or visibility is impaired.",
+    "Empowered Ground - Entities affected positively or negatively.",
+    "False Safety - Harmless appears dangerous; roll again.",
+    "Arcane Instability - Magical or tech effects are unstable.",
+    "Mysterious Figure - Entity could be friend or foe.",
+    "Guardian Presence - Items guarded by an entity or mechanism.",
+    "Enhanced Focus - Party gains temporary boost to checks.",
+    "Illusions - Misleading visuals or sounds fill the room.",
+    "Strange Markings - Walls covered in unknown symbols.",
+    "Dimensional Anomaly - Presence from another realm.",
+    "Collapsing Structure - Room starts collapsing.",
+    "Temporal Distortion - Time behaves strangely in the room.",
+    "Unexpected Aid - Something helpful appears.",
+    "Mimicry - An object or part is not what it seems.",
+    "Blessing or Inspiration - Party gains motivation or insight.",
+    "Chaotic Event - Roll D8 and D12 again for a twist."
+  ]
+}
