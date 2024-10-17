@@ -46,6 +46,7 @@ button:hover {
     padding: 15px;
     border-radius: 5px;
     box-shadow: 0 0 15px rgba(212, 175, 55, 0.7); /* Golden glow effect */
+    text-align: left; /* Left justify the text within the centered text box */
 }
 
 /* Heading Styling */
