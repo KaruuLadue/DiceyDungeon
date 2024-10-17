@@ -19,7 +19,7 @@ body {
     border: 2px solid #ffffff; /* White border for high contrast */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Soft white glow */
-    max-width: 75%;
+    max-width: 85%;
 }
 
 /* Button Styling */
