@@ -64,8 +64,8 @@
             const resultsDiv = document.getElementById("results");
             resultsDiv.innerHTML = "";
 
-            rollHistory.forEach((result, index) => {
-                let resultText = `Roll ${index + 1}:`;
+            rollHistory.slice().reverse().forEach((result, index) => {
+                let resultText = `Roll ${rollHistory.length - index}:`;
                 for (const [die, value] of Object.entries(result)) {
                     if (die !== 'descriptions') {
                         resultText += `<div>${die}: ${value} (${result.descriptions[die] || ''})</div>`;
