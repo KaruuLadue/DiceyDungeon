@@ -43,7 +43,7 @@ button:hover {
 /* Results Display */
 #results {
     margin: 20px auto; /* Center the container horizontally */
-    font-size: 20px;
+    font-size: 22px;
     font-family: 'Inconsolata', monospace; /* Monospaced font for roll results */
     font-weight: bold;
     background: #000000; /* Solid black background */
@@ -52,7 +52,7 @@ button:hover {
     border-radius: 5px;
     text-align: left;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Very subtle white glow */
-    width: 80%; /* Dynamic width, 80% of the screen */
+    width: 70%; /* Dynamic width, 80% of the screen */
     display: block;
 }
 
