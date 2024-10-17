@@ -127,17 +127,13 @@
         }
 
         function exportRolls() {
-            let exportText = "Roll History:
-";
+            let exportText = "Roll History:\n";
             rollHistory.forEach((result, index) => {
-                exportText += `Roll ${index + 1}:
-`;
+                exportText += `Roll ${index + 1}:\n`;
                 for (const [die, value] of Object.entries(result)) {
-                    exportText += `${die}: ${value} (${result.descriptions[die] || ''})
-`;
+                    exportText += `${die}: ${value} (${result.descriptions[die] || ''})\n`;
                 }
-                exportText += "
-";
+                exportText += "\n";
             });
 
             const blob = new Blob([exportText], { type: "text/plain" });
@@ -147,10 +143,10 @@
             link.click();
         }
 
-        // Load roll tables on page load
-        window.onload = async () => {
+        // Ensure buttons are ready after DOM is loaded
+        document.addEventListener('DOMContentLoaded', async () => {
             await loadRollTables();
-            
+
             // Fetch version.json and update footer text
             try {
                 const response = await fetch('version.json');
@@ -163,7 +159,7 @@
                 console.error('Error fetching version:', error);
                 document.getElementById('version').textContent = 'Version: Failed to Load';
             }
-        };
+        });
     </script>
 </body>
 </html>
