@@ -13,8 +13,8 @@ body {
 
 /* Container for Main Content */
 .container {
-    margin: 25px auto;
-    padding: 10px;
+    margin: 5px auto;
+    padding: 5px;
     background-color: rgba(0, 0, 0, 0.7); /* Black background with 70% opacity */
     border: 2px solid #ffffff; /* White border for high contrast */
     border-radius: 10px;
