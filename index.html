@@ -43,6 +43,7 @@
         async function rollAllDice() {
             if (Object.keys(rollTables).length === 0) {
                 await loadRollTables(); // Load tables if they aren't already loaded
+                rollSound.play();
             }
 
             const results = {
