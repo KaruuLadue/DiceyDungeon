@@ -10,7 +10,7 @@
     <div class="container">
         <h1>Dicey Dungeon</h1>
         <button onclick="rollAllDice()">Roll</button>
-        <button onclick="resetRolls()">Reset</button>
+        <button onclick="confirmReset()">Reset</button>
         <button onclick="exportRolls()">Export</button>
         <div id="results"></div>
     </div>
@@ -65,16 +65,25 @@
             resultsDiv.innerHTML = "";
 
             rollHistory.forEach((result, index) => {
-                let resultText = `Roll ${index + 1}: `;
+                let resultText = `Roll ${index + 1}:\n`;
                 for (const [die, value] of Object.entries(result)) {
                     if (die !== 'descriptions') {
-                        resultText += `${die}: ${value} (${result.descriptions[die] || ''}) | `;
+                        resultText += `${die}: ${value} (${result.descriptions[die] || ''})\n`;
                     }
                 }
                 const resultElement = document.createElement("div");
                 resultElement.textContent = resultText;
                 resultsDiv.appendChild(resultElement);
+                const separator = document.createElement("hr");
+                separator.className = "roll-separator";
+                resultsDiv.appendChild(separator);
             });
+        }
+
+        function confirmReset() {
+            if (confirm("Are you sure you'd like to reset?")) {
+                resetRolls();
+            }
         }
 
         function resetRolls() {
@@ -85,9 +94,9 @@
         function exportRolls() {
             let exportText = "Roll History:\n";
             rollHistory.forEach((result, index) => {
-                exportText += `Roll ${index + 1}: `;
+                exportText += `Roll ${index + 1}:\n`;
                 for (const [die, value] of Object.entries(result)) {
-                    exportText += `${die}: ${value} (${result.descriptions[die] || ''}) | `;
+                    exportText += `${die}: ${value} (${result.descriptions[die] || ''})\n`;
                 }
                 exportText += "\n";
             });
