@@ -110,7 +110,6 @@
                 separator.className = "roll-separator";
                 resultsDiv.appendChild(separator);
             });
-            });
         }
 
         function confirmReset() {
@@ -142,7 +141,18 @@
         }
 
         // Load roll tables on page load
-        window.onload = loadRollTables;
+        window.onload = () => {
+            loadRollTables();
+            fetch('version.json')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('version').textContent = `Version: ${data.version}`;
+                })
+                .catch(error => console.error('Error fetching version:', error));
+        };
     </script>
+    <footer>
+        <p id="version" style="color: #ffffff; text-align: center; margin-top: 20px;">Version: Loading...</p>
+    </footer>
 </body>
 </html>
