@@ -19,6 +19,14 @@
         .match {
             color: #ab7c7c; /* Color for matching rolls */
         }
+        /* Animation for sliding the most recent roll in from the top */
+        @keyframes slideInFromTop {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+        .recent-roll {
+            animation: slideInFromTop 0.5s ease-in-out; /* Apply animation to recent roll */
+        }
     </style>
 </head>
 <body>
@@ -30,7 +38,9 @@
         <button onclick="rollAllDice()">Roll</button>
         <button onclick="confirmReset()">Reset</button>
         <button onclick="exportRolls()">Export</button>
-        <div id="results"></div>
+        <!-- Two containers: one for the recent roll and another for previous rolls -->
+        <div id="recent-roll"></div>
+        <div id="previous-rolls"></div>
     </div>
     <script>
         let rollHistory = [];
@@ -83,44 +93,63 @@
         }
 
         function updateResultsDisplay() {
-            const resultsDiv = document.getElementById("results");
-            resultsDiv.innerHTML = "";
+            const recentRollDiv = document.getElementById("recent-roll");
+            const previousRollsDiv = document.getElementById("previous-rolls");
 
-            // Step 1: Display the roll results, highlighting any matches within each roll
-            rollHistory.slice().reverse().forEach((result, index) => {
-                // Create the roll title
-                let resultElement = document.createElement("div");
-                resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index}:</h2>`;
-                resultsDiv.appendChild(resultElement);
+            // Clear the containers
+            recentRollDiv.innerHTML = "";
+            previousRollsDiv.innerHTML = "";
 
-                // Step 2: Count occurrences of dice values within the current roll
-                const rollValuesCount = {};
-                for (const value of Object.values(result)) {
-                    if (typeof value === 'number') { // Only count dice values, not descriptions
-                        rollValuesCount[value] = (rollValuesCount[value] || 0) + 1;
-                    }
+            // Display the most recent roll with animation
+            const latestResult = rollHistory[rollHistory.length - 1];
+            let latestResultElement = document.createElement("div");
+            latestResultElement.className = 'recent-roll'; // Apply animation
+            latestResultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length}:</h2>`;
+            recentRollDiv.appendChild(latestResultElement);
+
+            // Count occurrences of dice values within the current roll for matching
+            const rollValuesCount = {};
+            for (const value of Object.values(latestResult)) {
+                if (typeof value === 'number') { // Only count dice values, not descriptions
+                    rollValuesCount[value] = (rollValuesCount[value] || 0) + 1;
                 }
+            }
 
-                // Display each die result, applying the match class if needed
+            // Display the most recent roll with matching highlight
+            for (const [die, value] of Object.entries(latestResult)) {
+                if (die !== 'descriptions') {
+                    const lineElement = document.createElement("div");
+                    const matchClass = rollValuesCount[value] > 1 ? 'match' : ''; // Apply matching class if needed
+                    lineElement.className = `result-line ${matchClass}`; // Add animation class
+                    lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
+                                             ${die}: ${value} (${latestResult.descriptions[die] || ''})`;
+                    recentRollDiv.appendChild(lineElement);
+                }
+            }
+
+            const separator = document.createElement("hr");
+            separator.className = "roll-separator";
+            recentRollDiv.appendChild(separator);
+
+            // Display all previous rolls in the separate container without animation
+            rollHistory.slice(0, -1).reverse().forEach((result, index) => {
+                let resultElement = document.createElement("div");
+                resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index - 1}:</h2>`;
+                previousRollsDiv.appendChild(resultElement);
+
                 for (const [die, value] of Object.entries(result)) {
                     if (die !== 'descriptions') {
                         const lineElement = document.createElement("div");
-                        lineElement.className = 'result-line';
-
-                        // Check if this value is a match (appears more than once within this roll)
-                        const matchClass = rollValuesCount[value] > 1 ? 'match' : '';
-
-                        // Apply the class if it's a match
+                        lineElement.className = 'result-line'; // No animation for previous results
                         lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
-                                                 <span class="${matchClass}">${die}: ${value} (${result.descriptions[die] || ''})</span>`;
-
-                        resultsDiv.appendChild(lineElement);
+                                                 ${die}: ${value} (${result.descriptions[die] || ''})`;
+                        previousRollsDiv.appendChild(lineElement);
                     }
                 }
 
                 const separator = document.createElement("hr");
                 separator.className = "roll-separator";
-                resultsDiv.appendChild(separator);
+                previousRollsDiv.appendChild(separator);
             });
         }
 
@@ -152,7 +181,7 @@
             link.click();
         }
 
-        // Load roll tables on page load
+        // Load roll tables and cached rolls on page load
         window.onload = async () => {
             await loadRollTables();
 
