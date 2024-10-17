@@ -21,11 +21,12 @@
         }
         /* Animation for sliding the most recent roll in from the top */
         @keyframes slideInFromTop {
-            from { transform: translateY(-100%); }
+            from { transform: translateY(-50px); } /* Adjusted relative to the container */
             to { transform: translateY(0); }
         }
         /* Apply animation only to the most recent roll */
         .recent-roll {
+            position: relative; /* Position relative to container */
             animation: slideInFromTop 0.5s ease-in-out;
         }
     </style>
