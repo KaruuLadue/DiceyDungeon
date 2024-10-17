@@ -19,6 +19,15 @@
         .match {
             color: #ab7c7c; /* Color for matching rolls */
         }
+        /* Animation for sliding the most recent roll in from the top */
+        @keyframes slideInFromTop {
+            from { transform: translateY(-20px); opacity: 0; } /* Start slightly above with no opacity */
+            to { transform: translateY(0); opacity: 1; } /* End in the correct position with full opacity */
+        }
+        /* Apply animation only to the most recent roll */
+        .recent-roll {
+            animation: slideInFromTop 0.5s ease-in-out;
+        }
     </style>
 </head>
 <body>
@@ -46,6 +55,20 @@
             } catch (error) {
                 console.error("Error loading roll tables:", error);
             }
+        }
+
+        // Load cached rolls from localStorage
+        function loadCachedRolls() {
+            const cachedRolls = localStorage.getItem('diceyDungeonRolls');
+            if (cachedRolls) {
+                rollHistory = JSON.parse(cachedRolls);
+                updateResultsDisplay(); // Display cached rolls
+            }
+        }
+
+        // Save the current rollHistory to localStorage
+        function saveRollsToCache() {
+            localStorage.setItem('diceyDungeonRolls', JSON.stringify(rollHistory));
         }
 
         function rollDice(sides) {
@@ -79,6 +102,7 @@
             results.descriptions = descriptions;
 
             rollHistory.push(results);
+            saveRollsToCache(); // Save to localStorage after every roll
             updateResultsDisplay();
         }
 
@@ -90,6 +114,7 @@
             rollHistory.slice().reverse().forEach((result, index) => {
                 // Create the roll title
                 let resultElement = document.createElement("div");
+                resultElement.className = (index === 0) ? 'recent-roll' : ''; // Apply animation only to the most recent roll
                 resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index}:</h2>`;
                 resultsDiv.appendChild(resultElement);
 
@@ -114,13 +139,13 @@
                         lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
                                                  <span class="${matchClass}">${die}: ${value} (${result.descriptions[die] || ''})</span>`;
 
-                        resultsDiv.appendChild(lineElement);
+                        resultElement.appendChild(lineElement);
                     }
                 }
 
                 const separator = document.createElement("hr");
                 separator.className = "roll-separator";
-                resultsDiv.appendChild(separator);
+                resultElement.appendChild(separator);
             });
         }
 
@@ -132,6 +157,7 @@
 
         function resetRolls() {
             rollHistory = [];
+            localStorage.removeItem('diceyDungeonRolls'); // Clear the cache when resetting
             updateResultsDisplay();
         }
 
@@ -155,6 +181,7 @@
         // Load roll tables on page load
         window.onload = async () => {
             await loadRollTables();
+            loadCachedRolls(); // Load cached rolls on page load
 
             // Fetch version.json and update footer text
             try {
