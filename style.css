@@ -69,6 +69,15 @@ h1 {
     text-shadow: 0 0 5px #808080; /* Soft white glow for the heading */
 }
 
+/* Styling for Dice Icons */
+.dice-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain; /* Ensures the icon fits within the box without stretching */
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
 /* Custom Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
