@@ -12,6 +12,16 @@
             margin-bottom: 10px;
             text-decoration: underline;
         }
+        .typing-effect {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end) 1;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -72,18 +82,18 @@
             const resultsDiv = document.getElementById("results");
             resultsDiv.innerHTML = "";
 
-            rollHistory.slice().reverse().forEach((result, index) => {
+            // Display all previous rolls without animation
+            rollHistory.slice(0, -1).reverse().forEach((result, index) => {
                 let resultElement = document.createElement("div");
-                resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index}:</h2>`;
+                resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index - 1}:</h2>`;
                 resultsDiv.appendChild(resultElement);
 
                 for (const [die, value] of Object.entries(result)) {
                     if (die !== 'descriptions') {
                         const lineElement = document.createElement("div");
                         lineElement.className = 'result-line';
-                        lineElement.dataset.text = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${result.descriptions[die] || ''})`;
+                        lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${result.descriptions[die] || ''})`;
                         resultsDiv.appendChild(lineElement);
-                        typeEffect(lineElement);
                     }
                 }
 
@@ -91,24 +101,25 @@
                 separator.className = "roll-separator";
                 resultsDiv.appendChild(separator);
             });
-        }
 
-        function typeEffect(element) {
-            const text = element.dataset.text;
-            element.textContent = '';
-            let i = 0;
-            const speed = 50; // Speed in milliseconds for typing effect
+            // Display the most recent roll with typing animation
+            const latestResult = rollHistory[rollHistory.length - 1];
+            let latestResultElement = document.createElement("div");
+            latestResultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length}:</h2>`;
+            resultsDiv.appendChild(latestResultElement);
 
-            function typeWriter() {
-                if (i < text.length) {
-                    element.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, speed);
-                } else {
-                    element.innerHTML = text; // Set the final HTML once typing completes
+            for (const [die, value] of Object.entries(latestResult)) {
+                if (die !== 'descriptions') {
+                    const lineElement = document.createElement("div");
+                    lineElement.className = 'result-line typing-effect';
+                    lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${latestResult.descriptions[die] || ''})`;
+                    resultsDiv.appendChild(lineElement);
                 }
             }
-            typeWriter();
+
+            const separator = document.createElement("hr");
+            separator.className = "roll-separator";
+            resultsDiv.appendChild(separator);
         }
 
         function confirmReset() {
