@@ -1,1 +1,3 @@
-echo "{\"version\": \"$(git rev-parse --short HEAD)\"}" > version.json
+{
+  "version": "abc1234"
+}
