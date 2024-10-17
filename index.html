@@ -65,14 +65,14 @@
             resultsDiv.innerHTML = "";
 
             rollHistory.forEach((result, index) => {
-                let resultText = `Roll ${index + 1}:\n`;
+                let resultText = `Roll ${index + 1}:`;
                 for (const [die, value] of Object.entries(result)) {
                     if (die !== 'descriptions') {
-                        resultText += `${die}: ${value} (${result.descriptions[die] || ''})\n`;
+                        resultText += `<div>${die}: ${value} (${result.descriptions[die] || ''})</div>`;
                     }
                 }
                 const resultElement = document.createElement("div");
-                resultElement.textContent = resultText;
+                resultElement.innerHTML = resultText;
                 resultsDiv.appendChild(resultElement);
                 const separator = document.createElement("hr");
                 separator.className = "roll-separator";
