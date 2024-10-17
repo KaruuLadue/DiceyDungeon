@@ -2,7 +2,7 @@
 body {
     font-family: 'Cormorant Garamond', serif; /* A classic, handwritten-style font */
     text-align: center;
-    background: url('YOUR_IMAGE_URL_HERE') no-repeat center center fixed; /* Background image from URL */
+    background: url('https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4977e50d-6e9d-4722-a410-1a6b29501a15_1170x1670.jpeg') no-repeat center center fixed; /* Background image from URL */
     background-attachment: fixed; /* Parallax effect */
     background-size: cover; /* Make sure the image covers the whole background */
     color: #ffffff; /* White text for high contrast */
