@@ -5,16 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dicey Dungeon</title>
     <link rel="stylesheet" href="style.css">
-<style>
-        .roll-title {
-            font-size: 1.5em;
-            color: #ffffff;
-            margin-bottom: 10px;
-            text-decoration: bold;
-        }
-    </style>
-<link rel="stylesheet" href="style.css">
-<style>
+    <style>
         .roll-title {
             font-size: 1.5em;
             color: #ffffff;
@@ -82,19 +73,41 @@
             resultsDiv.innerHTML = "";
 
             rollHistory.slice().reverse().forEach((result, index) => {
-                let resultText = `<h2 class='roll-title'>Roll ${rollHistory.length - index}:</h2>`;
+                let resultElement = document.createElement("div");
+                resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index}:</h2>`;
+                resultsDiv.appendChild(resultElement);
+
                 for (const [die, value] of Object.entries(result)) {
                     if (die !== 'descriptions') {
-                        resultText += `<div><img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${result.descriptions[die] || ''})</div>`;
+                        const lineElement = document.createElement("div");
+                        lineElement.className = 'result-line';
+                        lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${result.descriptions[die] || ''})`;
+                        resultsDiv.appendChild(lineElement);
+                        typeEffect(lineElement);
                     }
                 }
-                const resultElement = document.createElement("div");
-                resultElement.innerHTML = resultText;
-                resultsDiv.appendChild(resultElement);
+
                 const separator = document.createElement("hr");
                 separator.className = "roll-separator";
                 resultsDiv.appendChild(separator);
             });
+        }
+
+        function typeEffect(element) {
+            const text = element.innerHTML;
+            element.innerHTML = '';
+            let i = 0;
+            const speed = 50; // Speed in milliseconds for typing effect
+
+            function typeWriter() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, speed);
+                }
+            }
+
+            typeWriter();
         }
 
         function confirmReset() {
