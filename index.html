@@ -144,6 +144,7 @@
         window.onload = async () => {
             await loadRollTables();
             
+            const rollSound = new Audio('audio/rollsound.mp3');
             // Fetch version.json and update footer text
             try {
                 const response = await fetch('version.json');
