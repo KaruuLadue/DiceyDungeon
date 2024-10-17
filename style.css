@@ -14,7 +14,7 @@ body {
     border: 3px solid #d4af37; /* Golden border for a classy, magical look */
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(212, 175, 55, 0.8); /* Golden glow effect */
-    max-width: 700px;
+    max-width: 600px;
 }
 
 /* Button Styling */
@@ -22,8 +22,8 @@ button {
     padding: 15px 30px;
     font-size: 22px;
     cursor: pointer;
-    background-color: #4b0082; /* Dark indigo for a fantasy look */
-    color: #f5f5dc; /* Light text */
+    background-color: #8b0000; /* Dark red for a fantasy look */
+    color: #ff0000; /* Red text */ /* Light text */
     border: 2px solid #d4af37; /* Golden border */
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
@@ -32,8 +32,8 @@ button {
 }
 
 button:hover {
-    background-color: #6a0dad; /* Lighter purple on hover */
-    color: #d4af37; /* Gold text color on hover */
+    background-color: #a52a2a; /* Lighter red on hover */
+    color: #ff6347; /* Tomato red text color on hover */ /* Gold text color on hover */
 }
 
 /* Results Display */
@@ -54,7 +54,7 @@ h1 {
     color: #d4af37; /* Gold color for the heading */
     font-family: 'Uncial Antiqua', serif; /* Fantasy-themed Google font */
     font-size: 3em;
-    text-shadow: 0 0 10px #d4af37; /* Golden glow for the heading */
+    text-shadow: 0 0 10px #808080; /* Grey glow for the heading */ /* Golden glow for the heading */
 }
 
 /* Custom Fonts */
