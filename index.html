@@ -86,24 +86,20 @@
             const resultsDiv = document.getElementById("results");
             resultsDiv.innerHTML = "";
 
-            // Step 1: Create an object to track how many times each dice value appears across all rolls
-            const allValuesCount = {};
-
-            // Count the occurrences of each dice value across all rolls
-            rollHistory.forEach(result => {
-                for (const value of Object.values(result)) {
-                    if (typeof value === 'number') { // Only count dice values, not descriptions
-                        allValuesCount[value] = (allValuesCount[value] || 0) + 1;
-                    }
-                }
-            });
-
-            // Step 2: Display the roll results, highlighting any matches (values that appear more than once)
+            // Step 1: Display the roll results, highlighting any matches within each roll
             rollHistory.slice().reverse().forEach((result, index) => {
                 // Create the roll title
                 let resultElement = document.createElement("div");
                 resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index}:</h2>`;
                 resultsDiv.appendChild(resultElement);
+
+                // Step 2: Count occurrences of dice values within the current roll
+                const rollValuesCount = {};
+                for (const value of Object.values(result)) {
+                    if (typeof value === 'number') { // Only count dice values, not descriptions
+                        rollValuesCount[value] = (rollValuesCount[value] || 0) + 1;
+                    }
+                }
 
                 // Display each die result, applying the match class if needed
                 for (const [die, value] of Object.entries(result)) {
@@ -111,8 +107,8 @@
                         const lineElement = document.createElement("div");
                         lineElement.className = 'result-line';
 
-                        // Check if this value is a match (appears more than once)
-                        const matchClass = allValuesCount[value] > 1 ? 'match' : '';
+                        // Check if this value is a match (appears more than once within this roll)
+                        const matchClass = rollValuesCount[value] > 1 ? 'match' : '';
 
                         // Apply the class if it's a match
                         lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
