@@ -12,16 +12,6 @@
             margin-bottom: 10px;
             text-decoration: underline;
         }
-        .typing-effect {
-            display: inline-block;
-            overflow: hidden;
-            white-space: nowrap;
-            animation: typing 3s steps(40, end) 1;
-        }
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
     </style>
 </head>
 <body>
@@ -111,7 +101,7 @@
             for (const [die, value] of Object.entries(latestResult)) {
                 if (die !== 'descriptions') {
                     const lineElement = document.createElement("div");
-                    lineElement.className = 'result-line typing-effect';
+                    lineElement.className = 'result-line';
                     lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${latestResult.descriptions[die] || ''})`;
                     resultsDiv.appendChild(lineElement);
                 }
