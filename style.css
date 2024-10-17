@@ -38,7 +38,6 @@ button:hover {
 
 /* Results Display */
 #results {
-    font-family: 'Inconsolata', monospace; /* Monospaced, modern font for results */
     margin: 20px auto; /* Center the container horizontally */
     font-size: 18px;
     font-weight: bold;
@@ -49,7 +48,7 @@ button:hover {
     text-align: left;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Very subtle white glow */
     width: 75%; /* Dynamic width, 75% of the screen */
-    display: block; /* Allow block elements for each roll */
+    display: block;
 }
 
 /* Roll Separator */
@@ -69,13 +68,21 @@ h1 {
     text-shadow: 0 0 5px #808080; /* Soft white glow for the heading */
 }
 
-/* Styling for Dice Icons */
+/* Dice Icon Styling */
 .dice-icon {
     width: 30px;
     height: 30px;
     object-fit: contain; /* Ensures the icon fits within the box without stretching */
     vertical-align: middle;
     margin-right: 8px;
+}
+
+/* Roll Title Styling */
+.roll-title {
+    font-size: 1.5em;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-decoration: underline;
 }
 
 /* Custom Fonts */
