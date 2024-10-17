@@ -27,12 +27,15 @@
 <script>
         document.addEventListener('DOMContentLoaded', () => {
             let rollHistory = [];
+            const rollSound = new Audio('audio/rollsound.mp3');
 
             function rollDice(sides) {
                 return Math.floor(Math.random() * sides) + 1;
             }
 
             function rollAllDice() {
+                rollSound.play(); // Play the roll sound
+
                 const results = {
                     D4: rollDice(4),
                     D6: rollDice(6),
@@ -110,7 +113,7 @@
         });
     </script>
 <footer>
-        <p style="color: #ffffff; text-align: center; margin-top: 20px;">Version: 1.0.0</p>
+        <p style="color: #ffffff; text-align: center; margin-top: 20px;">Version: 1.0.1</p>
     </footer>
 </body>
 </html>
