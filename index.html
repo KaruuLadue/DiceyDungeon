@@ -16,6 +16,9 @@
             margin-bottom: 10px; /* Added margin to separate each result */
             display: block; /* Ensure block-level behavior */
         }
+        .match {
+            color: red; /* Color for matching rolls */
+        }
     </style>
 </head>
 <body>
@@ -70,107 +73,4 @@
             const descriptions = {};
             for (const [die, value] of Object.entries(results)) {
                 if (rollTables[die]) {
-                    descriptions[die] = rollTables[die][value - 1];
-                }
-            }
-            results.descriptions = descriptions;
-
-            rollHistory.push(results);
-            updateResultsDisplay();
-        }
-
-        function updateResultsDisplay() {
-            const resultsDiv = document.getElementById("results");
-            resultsDiv.innerHTML = "";
-
-            // Display the most recent roll first
-            const latestResult = rollHistory[rollHistory.length - 1];
-            let latestResultElement = document.createElement("div");
-            latestResultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length}:</h2>`;
-            resultsDiv.appendChild(latestResultElement);
-
-            for (const [die, value] of Object.entries(latestResult)) {
-                if (die !== 'descriptions') {
-                    const lineElement = document.createElement("div"); // Use a block-level element like <div>
-                    lineElement.className = 'result-line';
-                    lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${latestResult.descriptions[die] || ''})`;
-                    resultsDiv.appendChild(lineElement);
-                }
-            }
-
-            const separator = document.createElement("hr");
-            separator.className = "roll-separator";
-            resultsDiv.appendChild(separator);
-
-            // Display all previous rolls without animation
-            rollHistory.slice(0, -1).reverse().forEach((result, index) => {
-                let resultElement = document.createElement("div");
-                resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index - 1}:</h2>`;
-                resultsDiv.appendChild(resultElement);
-
-                for (const [die, value] of Object.entries(result)) {
-                    if (die !== 'descriptions') {
-                        const lineElement = document.createElement("div"); // Again, use <div> for each line
-                        lineElement.className = 'result-line';
-                        lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${result.descriptions[die] || ''})`;
-                        resultsDiv.appendChild(lineElement);
-                    }
-                }
-
-                const separator = document.createElement("hr");
-                separator.className = "roll-separator";
-                resultsDiv.appendChild(separator);
-            });
-        }
-
-        function confirmReset() {
-            if (confirm("Are you sure you'd like to reset?")) {
-                resetRolls();
-            }
-        }
-
-        function resetRolls() {
-            rollHistory = [];
-            updateResultsDisplay();
-        }
-
-        function exportRolls() {
-            let exportText = "Roll History:\n";
-            rollHistory.forEach((result, index) => {
-                exportText += `Roll ${index + 1}:\n`;
-                for (const [die, value] of Object.entries(result)) {
-                    exportText += `${die}: ${value} (${result.descriptions[die] || ''})\n`;
-                }
-                exportText += "\n";
-            });
-
-            const blob = new Blob([exportText], { type: "text/plain" });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = "roll_history.txt";
-            link.click();
-        }
-
-        // Load roll tables on page load
-        window.onload = async () => {
-            await loadRollTables();
-
-            // Fetch version.json and update footer text
-            try {
-                const response = await fetch('version.json');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                document.getElementById('version').textContent = `Version: ${data.version}`;
-            } catch (error) {
-                console.error('Error fetching version:', error);
-                document.getElementById('version').textContent = 'Version: Failed to Load';
-            }
-        };
-    </script>
-    <footer>
-        <p id="version" style="color: #ffffff; text-align: center; margin-top: 20px;">Version: Loading...</p>
-    </footer>
-</body>
-</html>
+                    descriptions[die] = rollTables
