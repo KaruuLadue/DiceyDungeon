@@ -19,12 +19,12 @@ body {
     border: 2px solid #ffffff; /* White border for high contrast */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Soft white glow */
-    max-width: 85%;
+    max-width: 75%;
 }
 
 /* Button Styling */
 button {
-    padding: 10px 15px;
+    padding: 10px 25px;
     font-size: 18px;
     cursor: pointer;
     background-color: #ffffff; /* White button for contrast */
@@ -33,7 +33,7 @@ button {
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
     font-weight: bold;
-    font-family: 'Uncial Antiqua', sans-serif; /* Match font with the title */
+    font-family: 'Uncial Antiqua', sans-serif; /* Same font as the title */
 }
 
 button:hover {
@@ -41,11 +41,10 @@ button:hover {
     color: #ffffff; /* Ensure text stays white */
 }
 
-
 /* Results Display */
 #results {
     margin: 20px auto; /* Center the container horizontally */
-    font-size: 22px;
+    font-size: 18px;
     font-family: 'Inconsolata', monospace; /* Monospaced font for roll results */
     font-weight: bold;
     background: #000000; /* Solid black background */
@@ -54,21 +53,20 @@ button:hover {
     border-radius: 5px;
     text-align: left;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Very subtle white glow */
-    width: 70%; /* Dynamic width, 80% of the screen */
+    width: 75%; /* Dynamic width, 75% of the screen */
     display: block;
 }
 
-/* Typing Animation for Results */
-.result-line {
-    display: inline-block;
-    overflow: hidden;
-    white-space: normal;
-    animation: none;
+/* Slide In Animation for Roll Results */
+@keyframes slideInFromTop {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
 }
 
-@keyframes typing {
-    from { width: 0; }
-    to { width: 100%; }
+.result-line {
+    display: inline-block;
+    animation: slideInFromTop 0.5s ease-in-out; /* Slide in from the top */
+    margin-bottom: 10px; /* Keep margin for spacing between results */
 }
 
 /* Roll Separator */
@@ -84,7 +82,7 @@ button:hover {
 h1 {
     color: #ffffff; /* White color for the heading */
     font-family: 'Uncial Antiqua', sans-serif; /* Fantasy-style font */
-    font-size: 4em;
+    font-size: 3em;
     text-shadow: 0 0 5px #808080; /* Soft white glow for the heading */
 }
 
