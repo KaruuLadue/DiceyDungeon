@@ -28,12 +28,18 @@
         document.addEventListener('DOMContentLoaded', () => {
             let rollHistory = [];
             let rollTables = {};
+            let rollTablesLoaded = false;
 
             // Load roll tables from JSON file
             async function loadRollTables() {
                 try {
                     const response = await fetch('rollTables.json');
-                    rollTables = await response.json();
+                    if (response.ok) {
+                        rollTables = await response.json();
+                        rollTablesLoaded = true;
+                    } else {
+                        console.error("Failed to load rollTables.json: " + response.status);
+                    }
                 } catch (error) {
                     console.error("Error loading roll tables:", error);
                 }
@@ -44,7 +50,7 @@
             }
 
             async function rollAllDice() {
-                if (Object.keys(rollTables).length === 0) {
+                if (!rollTablesLoaded) {
                     await loadRollTables(); // Load tables if they aren't already loaded
                 }
 
@@ -62,7 +68,9 @@
                 const descriptions = {};
                 for (const [die, value] of Object.entries(results)) {
                     if (rollTables[die]) {
-                        descriptions[die] = rollTables[die][value - 1];
+                        descriptions[die] = rollTables[die][value - 1] || "";
+                    } else {
+                        descriptions[die] = "";
                     }
                 }
                 results.descriptions = descriptions;
