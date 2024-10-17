@@ -81,10 +81,9 @@
                     if (die !== 'descriptions') {
                         const lineElement = document.createElement("div");
                         lineElement.className = 'result-line';
-                lineElement.dataset.text = `$1`;
+                lineElement.dataset.text = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${result.descriptions[die] || ''})`;
+                resultsDiv.appendChild(lineElement);
                 typeEffect(lineElement);
-                        resultsDiv.appendChild(lineElement);
-                        typeEffect(lineElement);
                     }
                 }
 
@@ -105,11 +104,10 @@
             element.textContent += text.charAt(i);
             i++;
             setTimeout(typeWriter, speed);
-        } else {
+        } }
             element.innerHTML = text; // Set the final HTML once typing completes
         }
     }
-
     typeWriter();
 }
             }
