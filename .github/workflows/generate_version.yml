@@ -18,11 +18,12 @@ jobs:
         echo "{\"version\": \"$(git rev-parse --short HEAD)\"}" > version.json
         cat version.json
 
-    - name: Commit version.json
+    - name: Commit and push version.json
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token for authentication
       run: |
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
         git add version.json
         git commit -m "Update version.json [skip ci]"
         git push
-
