@@ -19,6 +19,7 @@ button:hover {
 
 /* Results Display */
 #results {
+    margin: 20px auto; /* Center the container horizontally */
     display: flex;
     flex-direction: column;
     margin-top: 20px;
