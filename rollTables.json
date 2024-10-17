@@ -1,4 +1,12 @@
 {
+   "D6": [
+    "No Encounter - The room is quiet.",
+    "Minor Hostile - A small group of low-threat entities.",
+    "Cursed or Haunted Presence - An unsettling object or entity.",
+    "Roaming Entity - A group of wandering beings.",
+    "Environmental Hazard - Dangerous terrain or effect.",
+    "Major Hostile - A challenging group or powerful entity.",
+  ], 
   "D8": [
     "No Encounter - The room is quiet.",
     "Minor Hostile - A small group of low-threat entities.",
