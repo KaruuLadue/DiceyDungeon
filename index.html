@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dicey Dungeon</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .roll-title {
+            font-size: 1.5em;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-decoration: underline;
+        }
+        .result-line {
+            margin-bottom: 10px; /* Added margin to separate each result */
+            display: block; /* Ensure block-level behavior */
+        }
+        .match {
+            color: #ab7c7c; /* Color for matching rolls */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -17,54 +32,31 @@
         <button onclick="exportRolls()">Export</button>
         <div id="results"></div>
     </div>
-
-    <!-- Add the audio element for the roll sound -->
-    <audio id="rollSound">
-        <source src="audio/rollsound.mp3" type="audio/mpeg">
-        <source src="audio/rollsound.wav" type="audio/wav">
-        Your browser does not support the audio element.
-    </audio>
-
     <script>
         let rollHistory = [];
         let rollTables = {};
-        const rollSound = document.getElementById('rollSound'); // Reference to the audio element
+        const rollSound = new Audio('audio/rollsound.wav'); // Moved this line to be globally accessible
 
         // Load roll tables from JSON file
         async function loadRollTables() {
             try {
                 const response = await fetch('rollTables.json');
                 rollTables = await response.json();
-                console.log("Roll tables loaded:", rollTables);
+                console.log("Roll tables loaded:", rollTables); // Check if JSON is loaded correctly
             } catch (error) {
                 console.error("Error loading roll tables:", error);
             }
         }
 
-        // Load cached rolls from localStorage
-        function loadCachedRolls() {
-            const cachedRolls = localStorage.getItem('diceyDungeonRolls');
-            if (cachedRolls) {
-                rollHistory = JSON.parse(cachedRolls);
-                updateResultsDisplay();
-            }
-        }
-
-        // Save the current rollHistory to localStorage
-        function saveRollsToCache() {
-            localStorage.setItem('diceyDungeonRolls', JSON.stringify(rollHistory));
-        }
-
-        // Roll a dice
         function rollDice(sides) {
             return Math.floor(Math.random() * sides) + 1;
         }
 
         async function rollAllDice() {
-            rollSound.play(); // Play the roll sound when the Roll button is clicked
+            rollSound.play(); // Play the roll sound every time the Roll button is clicked
 
             if (Object.keys(rollTables).length === 0) {
-                await loadRollTables();
+                await loadRollTables(); // Load tables if they aren't already loaded
             }
 
             const results = {
@@ -87,7 +79,6 @@
             results.descriptions = descriptions;
 
             rollHistory.push(results);
-            saveRollsToCache(); // Save to cache after every roll
             updateResultsDisplay();
         }
 
@@ -95,48 +86,34 @@
             const resultsDiv = document.getElementById("results");
             resultsDiv.innerHTML = "";
 
-            // Display the most recent roll with animation (most recent at the top)
-            const latestResult = rollHistory[rollHistory.length - 1];
-            let latestResultElement = document.createElement("div");
-            latestResultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length}:</h2>`;
-            resultsDiv.appendChild(latestResultElement);
-
-            // Count occurrences of dice values within the current roll for matching
-            const rollValuesCount = {};
-            for (const value of Object.values(latestResult)) {
-                if (typeof value === 'number') { // Only count dice values, not descriptions
-                    rollValuesCount[value] = (rollValuesCount[value] || 0) + 1;
-                }
-            }
-
-            // Display the most recent roll with matching highlight
-            for (const [die, value] of Object.entries(latestResult)) {
-                if (die !== 'descriptions') {
-                    const lineElement = document.createElement("div");
-                    const matchClass = rollValuesCount[value] > 1 ? 'match' : ''; // Apply matching class if needed
-                    lineElement.className = `result-line ${matchClass}`; // Add animation class
-                    lineElement.innerHTML = `<div style="display: block;"><img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
-                                             ${die}: ${value} (${latestResult.descriptions[die] || ''})</div>`;
-                    resultsDiv.appendChild(lineElement);
-                }
-            }
-
-            const separator = document.createElement("hr");
-            separator.className = "roll-separator";
-            resultsDiv.appendChild(separator);
-
-            // Display all previous rolls after the most recent one, without animation or matching highlight
-            rollHistory.slice(0, -1).reverse().forEach((result, index) => {
+            // Step 1: Display the roll results, highlighting any matches within each roll
+            rollHistory.slice().reverse().forEach((result, index) => {
+                // Create the roll title
                 let resultElement = document.createElement("div");
-                resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index - 1}:</h2>`;
+                resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index}:</h2>`;
                 resultsDiv.appendChild(resultElement);
 
+                // Step 2: Count occurrences of dice values within the current roll
+                const rollValuesCount = {};
+                for (const value of Object.values(result)) {
+                    if (typeof value === 'number') { // Only count dice values, not descriptions
+                        rollValuesCount[value] = (rollValuesCount[value] || 0) + 1;
+                    }
+                }
+
+                // Display each die result, applying the match class if needed
                 for (const [die, value] of Object.entries(result)) {
                     if (die !== 'descriptions') {
                         const lineElement = document.createElement("div");
-                        lineElement.className = 'result-line-no-animation'; // No animation for previous results
-                        lineElement.innerHTML = `<div style="display: block;"><img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
-                                                 ${die}: ${value} (${result.descriptions[die] || ''})</div>`;
+                        lineElement.className = 'result-line';
+
+                        // Check if this value is a match (appears more than once within this roll)
+                        const matchClass = rollValuesCount[value] > 1 ? 'match' : '';
+
+                        // Apply the class if it's a match
+                        lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
+                                                 <span class="${matchClass}">${die}: ${value} (${result.descriptions[die] || ''})</span>`;
+
                         resultsDiv.appendChild(lineElement);
                     }
                 }
@@ -155,7 +132,6 @@
 
         function resetRolls() {
             rollHistory = [];
-            localStorage.removeItem('diceyDungeonRolls'); // Clear the cache when resetting
             updateResultsDisplay();
         }
 
@@ -176,11 +152,11 @@
             link.click();
         }
 
-        // Load roll tables and cached rolls on page load
+        // Load roll tables on page load
         window.onload = async () => {
             await loadRollTables();
-            loadCachedRolls(); // Load cached rolls on page load
 
+            // Fetch version.json and update footer text
             try {
                 const response = await fetch('version.json');
                 if (!response.ok) {
