@@ -1,9 +1,10 @@
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
 
 /* General Styling */
 body {
-    font-family: 'Uncial Antiqua', sans-serif; /* Fantasy-style font */
+    font-family: 'Uncial Antiqua', sans-serif; /* Fantasy-style font for main text */
     text-align: center;
     background: url('https://pics.craiyon.com/2024-09-11/gSEevBZuTs2hC7-UHOyYqg.webp') no-repeat center center fixed; /* Background image */
     background-size: cover;
@@ -43,6 +44,7 @@ button:hover {
 #results {
     margin: 20px auto; /* Center the container horizontally */
     font-size: 18px;
+    font-family: 'Inconsolata', monospace; /* Monospaced font for roll results */
     font-weight: bold;
     background: #000000; /* Solid black background */
     border: 1px solid #ffffff; /* White border */
