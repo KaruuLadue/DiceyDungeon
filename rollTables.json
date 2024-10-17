@@ -10,16 +10,16 @@
     "Elite Threat - Dangerous entity, possibly guarding something."
   ],
   "D10": [
-    "Mysterious Figure - Entity could be friend or foe.",
-    "Guardian Presence - Items guarded by an entity or mechanism.",
-    "Enhanced Focus - Party gains temporary boost to checks.",
-    "Illusions - Misleading visuals or sounds fill the room.",
-    "Strange Markings - Walls covered in unknown symbols.",
-    "Dimensional Anomaly - Presence from another realm.",
-    "Collapsing Structure - Room starts collapsing.",
-    "Temporal Distortion - Time behaves strangely in the room.",
-    "Unexpected Aid - Something helpful appears.",
-    "Mimicry - An object or part is not what it seems."
+    "Width of room",
+    "Width of room",
+    "Width of room",
+    "Width of room",
+    "Width of room",
+    "Width of room",
+    "Width of room",
+    "Width of room",
+    "Width of room",
+    "Width of room"
   ],
   "D12": [
     "Empty Room - No notable features.",
