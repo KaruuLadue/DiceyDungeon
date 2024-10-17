@@ -57,7 +57,7 @@ button:hover {
     display: block;
 }
 
-/* Slide In Animation for Roll Results */
+/* Slide In Animation for the most recent roll result */
 @keyframes slideInFromTop {
     from { transform: translateY(-100%); }
     to { transform: translateY(0); }
@@ -67,6 +67,11 @@ button:hover {
     display: inline-block;
     animation: slideInFromTop 0.5s ease-in-out; /* Slide in from the top */
     margin-bottom: 10px; /* Keep margin for spacing between results */
+}
+
+.result-line-no-animation {
+    display: inline-block;
+    margin-bottom: 10px; /* Same styling, but no animation */
 }
 
 /* Roll Separator */
