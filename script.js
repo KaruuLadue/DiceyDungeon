@@ -31,9 +31,9 @@ async function rollAllDice() {
   let output = '';
   for (const [die, result] of Object.entries(results)) {
     if (rollTables[die] && rollTables[die][result - 1]) {
-      output += `${die}: Rolled a ${result} - ${rollTables[die][result - 1]}<br>`;
+      output += `${die}: ${result} - ${rollTables[die][result - 1]}<br>`;
     } else {
-      output += `${die}: Rolled a ${result}<br>`;
+      output += `${die}: ${result}<br>`;
     }
   }
 
