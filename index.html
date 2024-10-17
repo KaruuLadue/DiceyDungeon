@@ -146,8 +146,16 @@
             // Fetch version.json and update footer text
             try {
                 const response = await fetch('version.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 const data = await response.json();
                 document.getElementById('version').textContent = `Version: ${data.version}`;
+            } catch (error) {
+                console.error('Error fetching version:', error);
+                document.getElementById('version').textContent = 'Version: Failed to Load';
+            }
+        }
             } catch (error) {
                 console.error('Error fetching version:', error);
             }
