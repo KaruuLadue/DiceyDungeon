@@ -82,7 +82,7 @@ button:hover {
 h1 {
     color: #ffffff; /* White color for the heading */
     font-family: 'Uncial Antiqua', sans-serif; /* Fantasy-style font */
-    font-size: 6em;
+    font-size: 4em;
     text-shadow: 0 0 5px #808080; /* Soft white glow for the heading */
 }
 
