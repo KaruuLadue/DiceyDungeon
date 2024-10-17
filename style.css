@@ -62,7 +62,7 @@ button:hover {
 .result-line {
     display: inline-block;
     overflow: hidden;
-    white-space: nowrap;
+    white-space: normal;
     animation: none;
 }
 
