@@ -25,7 +25,7 @@ body {
 /* Button Styling */
 button {
     padding: 10px 25px;
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
     background-color: #ffffff; /* White button for contrast */
     color: #000000; /* Black text */
@@ -43,7 +43,7 @@ button:hover {
 /* Results Display */
 #results {
     margin: 20px auto; /* Center the container horizontally */
-    font-size: 18px;
+    font-size: 20px;
     font-family: 'Inconsolata', monospace; /* Monospaced font for roll results */
     font-weight: bold;
     background: #000000; /* Solid black background */
@@ -52,7 +52,7 @@ button:hover {
     border-radius: 5px;
     text-align: left;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Very subtle white glow */
-    width: 75%; /* Dynamic width, 75% of the screen */
+    width: 80%; /* Dynamic width, 80% of the screen */
     display: block;
 }
 
