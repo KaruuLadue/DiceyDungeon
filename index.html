@@ -81,9 +81,9 @@
                     if (die !== 'descriptions') {
                         const lineElement = document.createElement("div");
                         lineElement.className = 'result-line';
-                lineElement.dataset.text = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${result.descriptions[die] || ''})`;
-                resultsDiv.appendChild(lineElement);
-                typeEffect(lineElement);
+                        lineElement.dataset.text = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${result.descriptions[die] || ''})`;
+                        resultsDiv.appendChild(lineElement);
+                        typeEffect(lineElement);
                     }
                 }
 
@@ -94,24 +94,20 @@
         }
 
         function typeEffect(element) {
-    const text = element.dataset.text;
-    element.textContent = '';
-    let i = 0;
-    const speed = 50; // Speed in milliseconds for typing effect
+            const text = element.dataset.text;
+            element.textContent = '';
+            let i = 0;
+            const speed = 50; // Speed in milliseconds for typing effect
 
-    function typeWriter() {
-        if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-            setTimeout(typeWriter, speed);
-        } }
-            element.innerHTML = text; // Set the final HTML once typing completes
-        }
-    }
-    typeWriter();
-}
+            function typeWriter() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, speed);
+                } else {
+                    element.innerHTML = text; // Set the final HTML once typing completes
+                }
             }
-
             typeWriter();
         }
 
