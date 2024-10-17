@@ -93,20 +93,20 @@
                         const lineElement = document.createElement("div");
                         lineElement.className = 'result-line';
                         lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${result.descriptions[die] || ''})`;
-                        resultsDiv.prepend(lineElement);
+                        resultsDiv.appendChild(lineElement);
                     }
                 }
 
                 const separator = document.createElement("hr");
                 separator.className = "roll-separator";
-                resultsDiv.prepend(separator);
+                resultsDiv.appendChild(separator);
             });
 
             // Display the most recent roll with typing animation
             const latestResult = rollHistory[rollHistory.length - 1];
             let latestResultElement = document.createElement("div");
             latestResultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length}:</h2>`;
-            resultsDiv.prepend(latestResultElement);
+            resultsDiv.insertBefore(latestResultElement, resultsDiv.firstChild);
 
             for (const [die, value] of Object.entries(latestResult)) {
                 if (die !== 'descriptions') {
