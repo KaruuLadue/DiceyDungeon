@@ -13,7 +13,7 @@
             text-decoration: underline;
         }
         .result-line {
-            margin-bottom: 10px; /* Added margin to separate each result */
+            margin-bottom: 10px; /* Ensure space between each roll result */
             display: block; /* Ensure block-level behavior */
         }
         .match {
@@ -28,6 +28,13 @@
         .recent-roll {
             position: relative; /* Position relative to container */
             animation: slideInFromTop 0.5s ease-in-out;
+        }
+        /* Ensure proper font usage and line height for readability */
+        .result-line span {
+            font-family: 'Inconsolata', monospace; /* Ensure monospaced font */
+            line-height: 1.5em;
+            font-size: 1.2em;
+            color: #ffffff;
         }
     </style>
 </head>
@@ -138,7 +145,7 @@
                     const matchClass = rollValuesCount[value] > 1 ? 'match' : ''; // Apply matching class if needed
                     lineElement.className = `result-line ${matchClass}`; // Add animation class
                     lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
-                                             ${die}: ${value} (${latestResult.descriptions[die] || ''})`;
+                                             <span>${die}: ${value} (${latestResult.descriptions[die] || ''})</span>`;
                     recentRollDiv.appendChild(lineElement);
                 }
             }
@@ -158,7 +165,7 @@
                         const lineElement = document.createElement("div");
                         lineElement.className = 'result-line'; // No animation for previous results
                         lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
-                                                 ${die}: ${value} (${result.descriptions[die] || ''})`;
+                                                 <span>${die}: ${value} (${result.descriptions[die] || ''})</span>`;
                         resultElement.appendChild(lineElement);
                     }
                 }
