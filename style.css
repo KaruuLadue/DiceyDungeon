@@ -1,63 +1,60 @@
 /* General Styling */
 body {
-    font-family: 'Uncial Antiqua', serif; /* Fantasy-themed Google font */
+    font-family: 'Cormorant Garamond', serif; /* A classic, handwritten-style font */
     text-align: center;
     background-color: #000000; /* Black background */
-    color: #ff0000; /* Red color for text */ /* Black background */
-    color: #f5f5dc; /* Light parchment color for text */
+    color: #ffffff; /* White text for high contrast */
 }
 
 /* Container for Main Content */
 .container {
     margin: 50px auto;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.1); /* Semi-transparent light background */
-    border: 3px solid #d4af37; /* Golden border for a classy, magical look */
+    background: rgba(255, 255, 255, 0.05); /* Lightly transparent white background */
+    border: 2px solid #ffffff; /* White border to give it a hand-drawn look */
     border-radius: 10px;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.8); /* Golden glow effect */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Soft white glow */
     max-width: 600px;
 }
 
 /* Button Styling */
 button {
-    padding: 15px 30px;
-    font-size: 22px;
+    padding: 10px 20px;
+    font-size: 18px;
     cursor: pointer;
-    background-color: #8b0000; /* Dark red for a fantasy look */
-    color: #ffffff; /* White text */ /* Dark red for a fantasy look */
-    color: #ff0000; /* Red text */ /* Light text */
-    border: 2px solid #d4af37; /* Golden border */
+    background-color: #ffffff; /* White button for contrast */
+    color: #000000; /* Black text */
+    border: 2px solid #000000; /* Black border for a pen and paper feel */
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
     font-weight: bold;
-    box-shadow: 0 0 15px rgba(75, 0, 130, 0.7); /* Indigo glow effect */
 }
 
 button:hover {
-    background-color: #a52a2a; /* Lighter red on hover */
-    color: #ff6347; /* Tomato red text color on hover */ /* Gold text color on hover */
+    background-color: #d3d3d3; /* Light gray hover effect */
+    color: #000000; /* Ensure text stays black */
 }
 
 /* Results Display */
 #results {
     margin-top: 20px;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
-    background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
-    border: 2px solid #d4af37; /* Golden border */
-    padding: 15px;
+    background: rgba(255, 255, 255, 0.1); /* Lightly transparent background */
+    border: 1px solid #ffffff; /* White border */
+    padding: 10px;
     border-radius: 5px;
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.7); /* Golden glow effect */
-    text-align: left; /* Left justify the text within the centered text box */
+    text-align: left;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Soft white glow */
 }
 
 /* Heading Styling */
 h1 {
-    color: #d4af37; /* Gold color for the heading */
-    font-family: 'Uncial Antiqua', serif; /* Fantasy-themed Google font */
+    color: #ffffff; /* White color for the heading */
+    font-family: 'Cormorant Garamond', serif; /* Handwritten-style font */
     font-size: 3em;
-    text-shadow: 0 0 10px #808080; /* Grey glow for the heading */ /* Golden glow for the heading */
+    text-shadow: 0 0 5px #ffffff; /* Soft white glow for the heading */
 }
 
 /* Custom Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&display=swap');
