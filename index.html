@@ -17,7 +17,7 @@
             display: block; /* Ensure block-level behavior */
         }
         .match {
-            color: #ab7c7c; /* Color for matching rolls */
+            color: red; /* Color for matching rolls */
         }
     </style>
 </head>
@@ -32,22 +32,39 @@
         <button onclick="exportRolls()">Export</button>
         <div id="results"></div>
     </div>
+
+    <!-- JavaScript -->
     <script>
         let rollHistory = [];
         let rollTables = {};
-        const rollSound = new Audio('audio/rollsound.wav'); // Moved this line to be globally accessible
+        const rollSound = new Audio('audio/rollsound.mp3');
 
         // Load roll tables from JSON file
         async function loadRollTables() {
             try {
                 const response = await fetch('rollTables.json');
                 rollTables = await response.json();
-                console.log("Roll tables loaded:", rollTables); // Check if JSON is loaded correctly
+                console.log("Roll tables loaded:", rollTables);
             } catch (error) {
                 console.error("Error loading roll tables:", error);
             }
         }
 
+        // Load cached rolls from localStorage
+        function loadCachedRolls() {
+            const cachedRolls = localStorage.getItem('diceyDungeonRolls');
+            if (cachedRolls) {
+                rollHistory = JSON.parse(cachedRolls);
+                updateResultsDisplay();
+            }
+        }
+
+        // Save the current rollHistory to localStorage
+        function saveRollsToCache() {
+            localStorage.setItem('diceyDungeonRolls', JSON.stringify(rollHistory));
+        }
+
+        // Roll a dice
         function rollDice(sides) {
             return Math.floor(Math.random() * sides) + 1;
         }
@@ -56,7 +73,7 @@
             rollSound.play(); // Play the roll sound every time the Roll button is clicked
 
             if (Object.keys(rollTables).length === 0) {
-                await loadRollTables(); // Load tables if they aren't already loaded
+                await loadRollTables();
             }
 
             const results = {
@@ -79,6 +96,7 @@
             results.descriptions = descriptions;
 
             rollHistory.push(results);
+            saveRollsToCache(); // Save to cache after every roll
             updateResultsDisplay();
         }
 
@@ -86,14 +104,14 @@
             const resultsDiv = document.getElementById("results");
             resultsDiv.innerHTML = "";
 
-            // Step 1: Display the roll results, highlighting any matches within each roll
+            // Display the roll results, highlighting any matches within each roll
             rollHistory.slice().reverse().forEach((result, index) => {
                 // Create the roll title
                 let resultElement = document.createElement("div");
                 resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index}:</h2>`;
                 resultsDiv.appendChild(resultElement);
 
-                // Step 2: Count occurrences of dice values within the current roll
+                // Count occurrences of dice values within the current roll
                 const rollValuesCount = {};
                 for (const value of Object.values(result)) {
                     if (typeof value === 'number') { // Only count dice values, not descriptions
@@ -113,7 +131,6 @@
                         // Apply the class if it's a match
                         lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
                                                  <span class="${matchClass}">${die}: ${value} (${result.descriptions[die] || ''})</span>`;
-
                         resultsDiv.appendChild(lineElement);
                     }
                 }
@@ -132,6 +149,7 @@
 
         function resetRolls() {
             rollHistory = [];
+            localStorage.removeItem('diceyDungeonRolls'); // Clear the cache when resetting
             updateResultsDisplay();
         }
 
@@ -152,9 +170,10 @@
             link.click();
         }
 
-        // Load roll tables on page load
+        // Load roll tables and cached rolls on page load
         window.onload = async () => {
             await loadRollTables();
+            loadCachedRolls(); // Load any cached rolls when the page loads
 
             // Fetch version.json and update footer text
             try {
