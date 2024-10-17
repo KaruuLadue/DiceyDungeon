@@ -78,6 +78,7 @@
             // Display the most recent roll first
             const latestResult = rollHistory[rollHistory.length - 1];
             let latestResultElement = document.createElement("div");
+            latestResultElement.className = 'result-section';
             latestResultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length}:</h2>`;
             resultsDiv.appendChild(latestResultElement);
 
@@ -86,6 +87,7 @@
                     const lineElement = document.createElement("div");
                     lineElement.className = 'result-line';
                     lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${latestResult.descriptions[die] || ''})`;
+                    lineElement.style.marginBottom = '10px';
                     resultsDiv.appendChild(lineElement);
                 }
             }
@@ -97,6 +99,7 @@
             // Display all previous rolls without animation
             rollHistory.slice(0, -1).reverse().forEach((result, index) => {
                 let resultElement = document.createElement("div");
+                resultElement.className = 'result-section';
                 resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index - 1}:</h2>`;
                 resultsDiv.appendChild(resultElement);
 
@@ -105,6 +108,7 @@
                         const lineElement = document.createElement("div");
                         lineElement.className = 'result-line';
                         lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${result.descriptions[die] || ''})`;
+                    lineElement.style.marginBottom = '10px';
                         resultsDiv.appendChild(lineElement);
                     }
                 }
@@ -127,13 +131,17 @@
         }
 
         function exportRolls() {
-            let exportText = "Roll History:\n";
+            let exportText = "Roll History:
+";
             rollHistory.forEach((result, index) => {
-                exportText += `Roll ${index + 1}:\n`;
+                exportText += `Roll ${index + 1}:
+`;
                 for (const [die, value] of Object.entries(result)) {
-                    exportText += `${die}: ${value} (${result.descriptions[die] || ''})\n`;
+                    exportText += `${die}: ${value} (${result.descriptions[die] || ''})
+`;
                 }
-                exportText += "\n";
+                exportText += "
+";
             });
 
             const blob = new Blob([exportText], { type: "text/plain" });
@@ -143,10 +151,10 @@
             link.click();
         }
 
-        // Ensure buttons are ready after DOM is loaded
-        document.addEventListener('DOMContentLoaded', async () => {
+        // Load roll tables on page load
+        window.onload = async () => {
             await loadRollTables();
-
+            
             // Fetch version.json and update footer text
             try {
                 const response = await fetch('version.json');
@@ -159,7 +167,7 @@
                 console.error('Error fetching version:', error);
                 document.getElementById('version').textContent = 'Version: Failed to Load';
             }
-        });
+        };
     </script>
 </body>
 </html>
