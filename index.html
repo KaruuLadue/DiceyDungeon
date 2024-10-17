@@ -35,14 +35,14 @@
 
         // Load roll tables from JSON file
         async function loadRollTables() {
-            try {
-                const response = await fetch('rollTables.json');
-                rollTables = await response.json();
-            } catch (error) {
-                console.error("Error loading roll tables:", error);
-            }
-        }
-
+    try {
+        const response = await fetch('rollTables.json');
+        rollTables = await response.json();
+        console.log("Roll tables loaded:", rollTables); // Check if JSON is loaded correctly
+    } catch (error) {
+        console.error("Error loading roll tables:", error);
+    }
+}
         function rollDice(sides) {
             return Math.floor(Math.random() * sides) + 1;
         }
