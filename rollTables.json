@@ -1,17 +1,17 @@
 {
     "D4": [
-    "Immediate doorway",
-    "Short hallway",
-    "Medium hallway",
-    "Long hallway"
+    "= Immediate doorway",
+    "= Short hallway",
+    "= Medium hallway",
+    "= Long hallway"
   ],
     "D6": [
-    "Additional exits",
-    "Additional exits",
-    "Additional exits",
-    "Additional exits",
-    "Additional exits",
-    "Additional exits"
+    "= 1 Additional exits",
+    "= 1 Additional exits",
+    "= 2 Additional exits",
+    "= 2 Additional exits",
+    "= 3 Additional exits",
+    "= 3 Additional exits"
   ],
   "D8": [
     "No Encounter - The room is quiet.",
