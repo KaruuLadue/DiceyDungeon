@@ -65,10 +65,10 @@
             resultsDiv.innerHTML = "";
 
             rollHistory.slice().reverse().forEach((result, index) => {
-                let resultText = `Roll ${rollHistory.length - index}:`;
+                let resultText = `<h2 class='roll-title'>Roll ${rollHistory.length - index}:</h2>`;
                 for (const [die, value] of Object.entries(result)) {
                     if (die !== 'descriptions') {
-                        resultText += `<div><img src="icons/${die}.png" alt="${die} icon" style="width: 40px; height: 40px; object-fit: contain; vertical-align: middle; margin-right: 8px;"> ${die}: ${value} (${result.descriptions[die] || ''})</div>`;
+                        resultText += `<div><img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${result.descriptions[die] || ''})</div>`;
                     }
                 }
                 const resultElement = document.createElement("div");
