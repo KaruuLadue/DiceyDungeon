@@ -1,9 +1,8 @@
 /* General Styling */
 body {
-    font-family: 'MedievalSharp', serif; /* We'll use a fantasy-themed Google font */
+    font-family: 'Uncial Antiqua', serif; /* Fantasy-themed Google font */
     text-align: center;
-    background: url('https://images.unsplash.com/photo-1589392332550-1e3b0e0d7d63?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed; /* Fantasy-style background */
-    background-size: cover;
+    background-color: #000000; /* Black background */
     color: #f5f5dc; /* Light parchment color for text */
 }
 
@@ -11,47 +10,51 @@ body {
 .container {
     margin: 50px auto;
     padding: 20px;
-    background: rgba(0, 0, 0, 0.7); /* Semi-transparent dark background */
-    border: 2px solid #d4af37; /* Golden border for a classy, magical look */
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent light background */
+    border: 3px solid #d4af37; /* Golden border for a classy, magical look */
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.8); /* Golden glow effect */
     max-width: 600px;
 }
 
 /* Button Styling */
 button {
     padding: 15px 30px;
-    font-size: 18px;
+    font-size: 22px;
     cursor: pointer;
-    background-color: #2c3e50; /* Deep dark blue for fantasy look */
+    background-color: #4b0082; /* Dark indigo for a fantasy look */
     color: #f5f5dc; /* Light text */
     border: 2px solid #d4af37; /* Golden border */
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
     font-weight: bold;
+    box-shadow: 0 0 15px rgba(75, 0, 130, 0.7); /* Indigo glow effect */
 }
 
 button:hover {
-    background-color: #34495e; /* Slightly lighter blue on hover */
+    background-color: #6a0dad; /* Lighter purple on hover */
     color: #d4af37; /* Gold text color on hover */
 }
 
 /* Results Display */
 #results {
     margin-top: 20px;
+    font-size: 20px;
     font-weight: bold;
-    background: rgba(255, 255, 255, 0.1); /* Light semi-transparent background */
-    border: 1px solid #d4af37; /* Golden border */
-    padding: 10px;
+    background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+    border: 2px solid #d4af37; /* Golden border */
+    padding: 15px;
     border-radius: 5px;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.7); /* Golden glow effect */
 }
 
 /* Heading Styling */
 h1 {
     color: #d4af37; /* Gold color for the heading */
-    font-family: 'Uncial Antiqua', cursive; /* Add a fantasy-themed Google font */
-    font-size: 2.5em;
+    font-family: 'Uncial Antiqua', serif; /* Fantasy-themed Google font */
+    font-size: 3em;
+    text-shadow: 0 0 10px #d4af37; /* Golden glow for the heading */
 }
 
 /* Custom Fonts */
-@import
+@import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
