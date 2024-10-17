@@ -1,10 +1,9 @@
 /* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Sixtyfour+Sans+Convergence&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
 
 /* General Styling */
 body {
-    font-family: 'Sixtyfour Sans Convergence', sans-serif; /* Fantasy-style font */
+    font-family: 'Uncial Antiqua', sans-serif; /* Fantasy-style font */
     text-align: center;
     background: url('https://pics.craiyon.com/2024-09-11/gSEevBZuTs2hC7-UHOyYqg.webp') no-repeat center center fixed; /* Background image */
     background-size: cover;
@@ -80,7 +79,7 @@ button:hover {
 /* Heading Styling */
 h1 {
     color: #ffffff; /* White color for the heading */
-    font-family: 'Sixtyfour Sans Convergence', sans-serif; /* Fantasy-style font */
+    font-family: 'Uncial Antiqua', sans-serif; /* Fantasy-style font */
     font-size: 3em;
     text-shadow: 0 0 5px #808080; /* Soft white glow for the heading */
 }
