@@ -55,12 +55,20 @@ button:hover {
 .result-line {
     display: inline-block;
     overflow: hidden;
+    border-right: 2px solid white; /* Caret effect */
     white-space: nowrap;
-    animation: typing 3s steps(30, end) 1;
+    animation: typing 3s steps(40, end) 1, blink-caret 0.75s step-end infinite;
 }
 
 @keyframes typing {
     from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: white; }
+}
     to { width: 100%; }
 }
 
