@@ -1,6 +1,6 @@
 /* General Styling */
 body {
-    font-family: 'Sixtyfour Convergence', san-serif; /* Fantasy-style font */
+    font-family: 'Press Start 2P', sans-serif; /* Retro-style font similar to Xtradex */ /* Fantasy-style font */
     text-align: center;
     background: url('https://pics.craiyon.com/2024-09-11/gSEevBZuTs2hC7-UHOyYqg.webp') no-repeat center center fixed; /* Background image */
     background-size: cover;
@@ -43,12 +43,25 @@ button:hover {
     font-weight: bold;
     background: #000000; /* Solid black background */
     border: 1px solid #ffffff; /* White border */
-    padding: 5px;
+    padding: 10px;
     border-radius: 5px;
     text-align: left;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Very subtle white glow */
-    width: 85%; /* Dynamic width, 75% of the screen */
+    width: 75%; /* Dynamic width, 75% of the screen */
     display: block;
+}
+
+/* Typing Animation for Results */
+.result-line {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 1.5s steps(30, end) 1;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
 }
 
 /* Roll Separator */
@@ -63,7 +76,7 @@ button:hover {
 /* Heading Styling */
 h1 {
     color: #ffffff; /* White color for the heading */
-    font-family: 'Sixtyfour Convergence', sans-serif; /* Fantasy-style font */
+    font-family: 'Press Start 2P', sans-serif; /* Retro-style font similar to Xtradex */ /* Fantasy-style font */
     font-size: 3em;
     text-shadow: 0 0 5px #808080; /* Soft white glow for the heading */
 }
@@ -86,5 +99,5 @@ h1 {
 }
 
 /* Custom Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
