@@ -24,7 +24,7 @@ body {
 
 /* Button Styling */
 button {
-    padding: 15px 15px;
+    padding: 10px 15px;
     font-size: 18px;
     cursor: pointer;
     background-color: #ffffff; /* White button for contrast */
