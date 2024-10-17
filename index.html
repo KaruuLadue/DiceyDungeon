@@ -68,7 +68,7 @@
                 let resultText = `Roll ${rollHistory.length - index}:`;
                 for (const [die, value] of Object.entries(result)) {
                     if (die !== 'descriptions') {
-                        resultText += `<div>${die}: ${value} (${result.descriptions[die] || ''})</div>`;
+                        resultText += `<div>${die}: ${value} ${result.descriptions[die] || ''}</div>`;
                     }
                 }
                 const resultElement = document.createElement("div");
