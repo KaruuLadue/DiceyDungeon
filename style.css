@@ -2,10 +2,10 @@
 body {
     font-family: 'Cormorant Garamond', serif; /* A classic, handwritten-style font */
     text-align: center;
-    background: url('https://goblincoach.com/wp-content/uploads/2023/08/SDGroup.jpg') no-repeat center center fixed; /* Background image from URL */
+    background: url('YOUR_IMAGE_URL_HERE') no-repeat center center fixed; /* Background image from URL */
     background-attachment: fixed; /* Parallax effect */
     background-size: cover; /* Make sure the image covers the whole background */
-    color: #ffffff; /* Black text */ */
+    color: #ffffff; /* White text for high contrast with black background */ /* Black text */ */
     border: 2px solid #ffffff; /* White border for high contrast */ /* Black border for a pen and paper feel */
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
@@ -19,11 +19,14 @@ button:hover {
 
 /* Results Display */
 #results {
+    display: flex;
+    flex-direction: column;
     margin-top: 20px;
     font-size: 18px;
     font-weight: bold;
-    background: rgba(0, 0, 0, 0.9); /* Dark, mostly opaque black background */ /* Lightly transparent background */
+    background: #000000; /* Solid black background */
     border: 1px solid #ffffff; /* White border */
+    width: 75%; /* Dynamic width, 75% of the screen */ /* White border */
     padding: 10px;
     border-radius: 5px;
     text-align: left;
