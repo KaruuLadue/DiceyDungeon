@@ -19,7 +19,7 @@ body {
     border: 2px solid #ffffff; /* White border for high contrast */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Soft white glow */
-    max-width: 75%;
+    max-width: 80%;
 }
 
 /* Button Styling */
@@ -53,7 +53,7 @@ button:hover {
     border-radius: 5px;
     text-align: left;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Very subtle white glow */
-    width: 75%; /* Dynamic width, 75% of the screen */
+    width: 80%; /* Dynamic width, 75% of the screen */
     display: block;
 }
 
