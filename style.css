@@ -5,17 +5,17 @@ body {
     background: url('https://goblincoach.com/wp-content/uploads/2023/08/SDGroup.jpg') no-repeat center center fixed; /* Background image from URL */
     background-attachment: fixed; /* Parallax effect */
     background-size: cover; /* Make sure the image covers the whole background */
-    color: #ffffff; /* White text for high contrast */
+    color: #d4af37; /* White text for high contrast */
 }
 
 /* Container for Main Content */
 .container {
     margin: 50px auto;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.05); /* Lightly transparent white background */
-    border: 2px solid #ffffff; /* White border to give it a hand-drawn look */
+    background: rgba(0, 0, 0, 0.1); /* Lightly transparent white background */
+    border: 2px solid #d4af37; /* White border to give it a hand-drawn look */
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Soft white glow */
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); /* Soft white glow */
     max-width: 600px;
 }
 
@@ -24,8 +24,8 @@ button {
     padding: 10px 20px;
     font-size: 18px;
     cursor: pointer;
-    background-color: #ffffff; /* White button for contrast */
-    color: #000000; /* Black text */
+    background-color: #8b0000; /* White button for contrast */
+    color: #ffffff; /* Black text */
     border: 2px solid #000000; /* Black border for a pen and paper feel */
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
@@ -34,7 +34,7 @@ button {
 
 button:hover {
     background-color: #d3d3d3; /* Light gray hover effect */
-    color: #000000; /* Ensure text stays black */
+    color: #ffffff; /* Ensure text stays black */
 }
 
 /* Results Display */
@@ -42,7 +42,7 @@ button:hover {
     margin-top: 20px;
     font-size: 18px;
     font-weight: bold;
-    background: rgba(255, 255, 255, 0.1); /* Lightly transparent background */
+    background: rgba(0, 0, 0, 0.1); /* Lightly transparent background */
     border: 1px solid #ffffff; /* White border */
     padding: 10px;
     border-radius: 5px;
@@ -55,7 +55,7 @@ h1 {
     color: #ffffff; /* White color for the heading */
     font-family: 'Cormorant Garamond', serif; /* Handwritten-style font */
     font-size: 3em;
-    text-shadow: 0 0 5px #ffffff; /* Soft white glow for the heading */
+    text-shadow: 0 0 5px #808080; /* Soft white glow for the heading */
 }
 
 /* Custom Fonts */
