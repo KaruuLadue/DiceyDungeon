@@ -91,7 +91,7 @@
                 if (die !== 'descriptions') {
                     const lineElement = document.createElement("div"); // Use a block-level element like <div>
                     lineElement.className = 'result-line';
-                    lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${latestResult.descriptions[die] || ''}) <br>`;
+                    lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${latestResult.descriptions[die] || ''})`;
                     resultsDiv.appendChild(lineElement);
                 }
             }
@@ -110,7 +110,7 @@
                     if (die !== 'descriptions') {
                         const lineElement = document.createElement("div"); // Again, use <div> for each line
                         lineElement.className = 'result-line';
-                        lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${result.descriptions[die] || ''}) <br>`;
+                        lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${result.descriptions[die] || ''})`;
                         resultsDiv.appendChild(lineElement);
                     }
                 }
