@@ -1,6 +1,10 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Sixtyfour+Sans+Convergence&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+
 /* General Styling */
 body {
-    font-family: 'Sixtyfour Convergence', sans-serif; /* Fantasy-style font */
+    font-family: 'Sixtyfour Sans Convergence', sans-serif; /* Fantasy-style font */
     text-align: center;
     background: url('https://pics.craiyon.com/2024-09-11/gSEevBZuTs2hC7-UHOyYqg.webp') no-repeat center center fixed; /* Background image */
     background-size: cover;
@@ -63,8 +67,6 @@ button:hover {
     from { width: 0; }
     to { width: 100%; }
 }
-    to { width: 100%; }
-}
 
 /* Roll Separator */
 .roll-separator {
@@ -78,7 +80,7 @@ button:hover {
 /* Heading Styling */
 h1 {
     color: #ffffff; /* White color for the heading */
-    font-family: 'Sixtyfour Convergence', sans-serif; /* Fantasy-style font */
+    font-family: 'Sixtyfour Sans Convergence', sans-serif; /* Fantasy-style font */
     font-size: 3em;
     text-shadow: 0 0 5px #808080; /* Soft white glow for the heading */
 }
@@ -99,7 +101,3 @@ h1 {
     margin-bottom: 10px;
     text-decoration: underline;
 }
-
-/* Custom Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
