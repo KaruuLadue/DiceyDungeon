@@ -57,7 +57,7 @@ button:hover {
     overflow: hidden;
     border-right: 2px solid white; /* Caret effect */
     white-space: nowrap;
-    animation: typing 3s steps(40, end) 1, blink-caret 0.75s step-end infinite;
+    animation: typing 3s steps(40, end) 1;
 }
 
 @keyframes typing {
