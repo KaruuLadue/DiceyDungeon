@@ -40,7 +40,8 @@
         <button onclick="rollAllDice()">Roll</button>
         <button onclick="confirmReset()">Reset</button>
         <button onclick="exportRolls()">Export</button>
-        <div id="results"></div>
+        <div id="recent-roll"></div> <!-- Container for the most recent roll -->
+        <div id="previous-rolls"></div> <!-- Container for previous rolls -->
     </div>
     <script>
         let rollHistory = [];
@@ -108,15 +109,19 @@
         }
 
         function updateResultsDisplay() {
-            const resultsDiv = document.getElementById("results");
-            resultsDiv.innerHTML = "";
+            const recentRollDiv = document.getElementById("recent-roll");
+            const previousRollsDiv = document.getElementById("previous-rolls");
+
+            // Clear the containers
+            recentRollDiv.innerHTML = "";
+            previousRollsDiv.innerHTML = "";
 
             // Display the most recent roll with animation
             const latestResult = rollHistory[rollHistory.length - 1];
             let latestResultElement = document.createElement("div");
             latestResultElement.className = 'recent-roll'; // Apply animation only to the most recent roll
             latestResultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length}:</h2>`;
-            resultsDiv.appendChild(latestResultElement);
+            recentRollDiv.appendChild(latestResultElement);
 
             // Count occurrences of dice values within the current roll for matching
             const rollValuesCount = {};
@@ -134,19 +139,19 @@
                     lineElement.className = `result-line ${matchClass}`; // Add animation class
                     lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
                                              ${die}: ${value} (${latestResult.descriptions[die] || ''})`;
-                    latestResultElement.appendChild(lineElement);
+                    recentRollDiv.appendChild(lineElement);
                 }
             }
 
             const separator = document.createElement("hr");
             separator.className = "roll-separator";
-            latestResultElement.appendChild(separator);
+            recentRollDiv.appendChild(separator);
 
-            // Display all previous rolls without animation
+            // Display all previous rolls in the separate container without animation
             rollHistory.slice(0, -1).reverse().forEach((result, index) => {
                 let resultElement = document.createElement("div");
                 resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index - 1}:</h2>`;
-                resultsDiv.appendChild(resultElement);
+                previousRollsDiv.appendChild(resultElement);
 
                 for (const [die, value] of Object.entries(result)) {
                     if (die !== 'descriptions') {
@@ -160,7 +165,7 @@
 
                 const separator = document.createElement("hr");
                 separator.className = "roll-separator";
-                resultElement.appendChild(separator);
+                previousRollsDiv.appendChild(separator);
             });
         }
 
