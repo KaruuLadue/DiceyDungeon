@@ -12,7 +12,7 @@ body {
 .container {
     margin: 50px auto;
     padding: 20px;
-    background: rgba(0, 0, 0, 0.1); /* Lightly transparent white background */
+    background: rgba(0, 0, 0, 0.1); /* no transparent white background */
     border: 2px solid #d4af37; /* White border to give it a hand-drawn look */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); /* Soft white glow */
@@ -42,7 +42,7 @@ button:hover {
     margin-top: 20px;
     font-size: 18px;
     font-weight: bold;
-    background: rgba(0, 0, 0, 0.1); /* Lightly transparent background */
+    background: rgba(0, 0, 0, 0); /* no transparent background */
     border: 1px solid #ffffff; /* White border */
     padding: 10px;
     border-radius: 5px;
