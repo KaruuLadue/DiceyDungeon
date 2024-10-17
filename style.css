@@ -56,7 +56,7 @@ button:hover {
     display: inline-block;
     overflow: hidden;
     white-space: nowrap;
-    animation: typing 3s steps(40, end) 1;
+    animation: none;
 }
 
 @keyframes typing {
