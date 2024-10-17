@@ -25,10 +25,10 @@
     
     
 <script>
-        window.onload = () => {
+        window.onload = async () => {
             let rollHistory = [];
             let rollTables = {};
-            let rollTablesLoaded = false;
+            
 
             // Load roll tables from JSON file
             async function loadRollTables() {
@@ -49,10 +49,8 @@
                 return Math.floor(Math.random() * sides) + 1;
             }
 
-            async function rollAllDice() {
-                if (!rollTablesLoaded) {
-                    await loadRollTables(); // Load tables if they aren't already loaded
-                }
+            function rollAllDice() {
+                
 
                 const results = {
                     D4: rollDice(4),
@@ -139,11 +137,10 @@
 
             // Load roll tables on page load
             loadRollTables();
-            loadRollTables();
-        });
+        }
     </script>
 <footer>
-        <p style="color: #ffffff; text-align: center; margin-top: 20px;">Version: 1.0.X</p>
+        <p style="color: #ffffff; text-align: center; margin-top: 20px;">Version: 1.0.1</p>
     </footer>
 </body>
 </html>
