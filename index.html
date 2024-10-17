@@ -3,15 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dicey Dungeon</title>
+    <title>Dice Roll Simulator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Dicey Dungeon</h1>
+        <h1>Dice Roll Simulator</h1>
         <button onclick="rollAllDice()">Roll</button>
+        <button onclick="resetRolls()">Reset</button>
+        <button onclick="exportRolls()">Export</button>
         <div id="results"></div>
     </div>
-    <script src="script.js"></script>
+    <script>
+        let rollHistory = [];
+
+        function rollDice(sides) {
+            return Math.floor(Math.random() * sides) + 1;
+        }
+
+        function rollAllDice() {
+            const results = {
+                D4: rollDice(4),
+                D6: rollDice(6),
+                D8: rollDice(8),
+                D10: rollDice(10),
+                D12: rollDice(12),
+                D20: rollDice(20),
+                D100: rollDice(100)
+            };
+
+            rollHistory.push(results);
+            updateResultsDisplay();
+        }
+
+        function updateResultsDisplay() {
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = "";
+
+            rollHistory.forEach((result, index) => {
+                let resultText = `Roll ${index + 1}: `;
+                for (const [die, value] of Object.entries(result)) {
+                    resultText += `${die}: ${value} | `;
+                }
+                const resultElement = document.createElement("div");
+                resultElement.textContent = resultText;
+                resultsDiv.appendChild(resultElement);
+            });
+        }
+
+        function resetRolls() {
+            rollHistory = [];
+            updateResultsDisplay();
+        }
+
+        function exportRolls() {
+            let exportText = "Roll History:\n";
+            rollHistory.forEach((result, index) => {
+                exportText += `Roll ${index + 1}: `;
+                for (const [die, value] of Object.entries(result)) {
+                    exportText += `${die}: ${value} | `;
+                }
+                exportText += "\n";
+            });
+
+            const blob = new Blob([exportText], { type: "text/plain" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "roll_history.txt";
+            link.click();
+        }
+    </script>
 </body>
 </html>
