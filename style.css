@@ -1,21 +1,57 @@
+/* General Styling */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'MedievalSharp', serif; /* We'll use a fantasy-themed Google font */
     text-align: center;
-    background-color: #f0f0f0;
+    background: url('https://images.unsplash.com/photo-1589392332550-1e3b0e0d7d63?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed; /* Fantasy-style background */
+    background-size: cover;
+    color: #f5f5dc; /* Light parchment color for text */
 }
+
+/* Container for Main Content */
 .container {
-    margin-top: 50px;
+    margin: 50px auto;
     padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent dark background */
+    border: 2px solid #d4af37; /* Golden border for a classy, magical look */
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    max-width: 600px;
 }
+
+/* Button Styling */
 button {
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 15px 30px;
+    font-size: 18px;
     cursor: pointer;
+    background-color: #2c3e50; /* Deep dark blue for fantasy look */
+    color: #f5f5dc; /* Light text */
+    border: 2px solid #d4af37; /* Golden border */
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    font-weight: bold;
 }
+
+button:hover {
+    background-color: #34495e; /* Slightly lighter blue on hover */
+    color: #d4af37; /* Gold text color on hover */
+}
+
+/* Results Display */
 #results {
     margin-top: 20px;
     font-weight: bold;
+    background: rgba(255, 255, 255, 0.1); /* Light semi-transparent background */
+    border: 1px solid #d4af37; /* Golden border */
+    padding: 10px;
+    border-radius: 5px;
 }
+
+/* Heading Styling */
+h1 {
+    color: #d4af37; /* Gold color for the heading */
+    font-family: 'Uncial Antiqua', cursive; /* Add a fantasy-themed Google font */
+    font-size: 2.5em;
+}
+
+/* Custom Fonts */
+@import
