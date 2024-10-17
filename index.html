@@ -89,6 +89,8 @@
                 const lineElement = document.createElement("div");
                 lineElement.className = 'result-line';
                 lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${latestResult.descriptions[die] || ''})`;
+resultsDiv.appendChild(lineElement);
+
                 resultsDiv.appendChild(lineElement);
             }
         }
@@ -107,7 +109,8 @@
                 if (die !== 'descriptions') {
                     const lineElement = document.createElement("div");
                     lineElement.className = 'result-line';
-                    lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${result.descriptions[die] || ''})`;
+                    lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${latestResult.descriptions[die] || ''})`;
+resultsDiv.appendChild(lineElement);
                     resultsDiv.appendChild(lineElement);
                 }
             }
