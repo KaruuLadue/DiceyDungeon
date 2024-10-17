@@ -38,6 +38,7 @@ button:hover {
 
 /* Results Display */
 #results {
+    font-family: 'Inconsolata', monospace; /* Monospaced, modern font for results */
     margin: 20px auto; /* Center the container horizontally */
     font-size: 18px;
     font-weight: bold;
@@ -62,3 +63,4 @@ h1 {
 
 /* Custom Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
