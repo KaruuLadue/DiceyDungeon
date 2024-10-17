@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dicey Dungeon</title>
     <link rel="stylesheet" href="style.css">
-<style>
+    <style>
         .roll-title {
             font-size: 1.5em;
             color: #ffffff;
@@ -17,107 +17,211 @@
 <body>
     <div class="container">
         <h1>Dicey Dungeon</h1>
-        <button onclick="rollAllDice()">Roll</button>
-        <button onclick="confirmReset()">Reset</button>
-        <button onclick="exportRolls()">Export</button>
+        <button id="rollButton">Roll</button>
+        <button id="resetButton">Reset</button>
+        <button id="exportButton">Export</button>
         <div id="results"></div>
     </div>
-    <script>
-        let rollHistory = [];
-        let rollTables = {};
+    
+    
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let rollHistory = [];
 
-        // Load roll tables from JSON file
-        async function loadRollTables() {
-            try {
-                const response = await fetch('rollTables.json');
-                rollTables = await response.json();
-            } catch (error) {
-                console.error("Error loading roll tables:", error);
-            }
-        }
-
-        function rollDice(sides) {
-            return Math.floor(Math.random() * sides) + 1;
-        }
-
-        async function rollAllDice() {
-            if (Object.keys(rollTables).length === 0) {
-                await loadRollTables(); // Load tables if they aren't already loaded
+            function rollDice(sides) {
+                return Math.floor(Math.random() * sides) + 1;
             }
 
-            const results = {
-                D4: rollDice(4),
-                D6: rollDice(6),
-                D8: rollDice(8),
-                D10: rollDice(10),
-                D12: rollDice(12),
-                D20: rollDice(20),
-                D100: rollDice(100)
-            };
+            function rollAllDice() {
+                const results = {
+                    D4: rollDice(4),
+                    D6: rollDice(6),
+                    D8: rollDice(8),
+                    D10: rollDice(10),
+                    D12: rollDice(12),
+                    D20: rollDice(20),
+                    D100: rollDice(100)
+                };
 
-            // Append roll table descriptions
-            const descriptions = {};
-            for (const [die, value] of Object.entries(results)) {
-                if (rollTables[die]) {
-                    descriptions[die] = rollTables[die][value - 1];
+                rollHistory.unshift(results); // Add the latest result to the beginning of the history
+                updateResultsDisplay();
+            }
+
+            function updateResultsDisplay() {
+                const resultsDiv = document.getElementById("results");
+                resultsDiv.innerHTML = "";
+
+                rollHistory.forEach((result, index) => {
+                    let resultElement = document.createElement("div");
+                    resultElement.className = 'result-section';
+                    resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index}:</h2>`;
+                    resultsDiv.appendChild(resultElement);
+
+                    for (const [die, value] of Object.entries(result)) {
+                        const lineElement = document.createElement("div");
+                        lineElement.className = 'result-line';
+                        lineElement.innerHTML = `${die}: ${value}`;
+                        lineElement.style.marginBottom = '10px';
+                        resultsDiv.appendChild(lineElement);
+                    }
+
+                    const separator = document.createElement("hr");
+                    separator.className = "roll-separator";
+                    resultsDiv.appendChild(separator);
+                });
+            }
+
+            function confirmReset() {
+                if (confirm("Are you sure you'd like to reset?")) {
+                    resetRolls();
                 }
             }
-            results.descriptions = descriptions;
 
-            rollHistory.push(results);
-            updateResultsDisplay();
-        }
+            function resetRolls() {
+                rollHistory = [];
+                updateResultsDisplay();
+            }
 
-        function updateResultsDisplay() {
-            const resultsDiv = document.getElementById("results");
-            resultsDiv.innerHTML = "";
+            function exportRolls() {
+                let exportText = "Roll History:
+";
+                rollHistory.forEach((result, index) => {
+                    exportText += `Roll ${index + 1}:
+`;
+                    for (const [die, value] of Object.entries(result)) {
+                        exportText += `${die}: ${value}
+`;
+                    }
+                    exportText += "
+";
+                });
 
-            rollHistory.slice().reverse().forEach((result, index) => {
-                let resultText = `<h2 class='roll-title'>Roll ${rollHistory.length - index}:</h2>`;
-                for (const [die, value] of Object.entries(result)) {
-                    if (die !== 'descriptions') {
-                        resultText += `<div><img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} ${result.descriptions[die] || ''}</div>`;
+                const blob = new Blob([exportText], { type: "text/plain" });
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "roll_history.txt";
+                link.click();
+            }
+
+            // Attach event listeners to buttons
+            document.getElementById('rollButton').onclick = rollAllDice;
+            document.getElementById('resetButton').onclick = confirmReset;
+            document.getElementById('exportButton').onclick = exportRolls;
+        });
+    </script>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let rollHistory = [];
+            let rollTables = {};
+
+            // Load roll tables from JSON file
+            async function loadRollTables() {
+                try {
+                    const response = await fetch('rollTables.json');
+                    rollTables = await response.json();
+                } catch (error) {
+                    console.error("Error loading roll tables:", error);
+                }
+            }
+
+            function rollDice(sides) {
+                return Math.floor(Math.random() * sides) + 1;
+            }
+
+            async function rollAllDice() {
+                if (Object.keys(rollTables).length === 0) {
+                    await loadRollTables(); // Load tables if they aren't already loaded
+                }
+
+                const results = {
+                    D4: rollDice(4),
+                    D6: rollDice(6),
+                    D8: rollDice(8),
+                    D10: rollDice(10),
+                    D12: rollDice(12),
+                    D20: rollDice(20),
+                    D100: rollDice(100)
+                };
+
+                // Append roll table descriptions
+                const descriptions = {};
+                for (const [die, value] of Object.entries(results)) {
+                    if (rollTables[die]) {
+                        descriptions[die] = rollTables[die][value - 1];
                     }
                 }
-                const resultElement = document.createElement("div");
-                resultElement.innerHTML = resultText;
-                resultsDiv.appendChild(resultElement);
-                const separator = document.createElement("hr");
-                separator.className = "roll-separator";
-                resultsDiv.appendChild(separator);
-            });
-        }
+                results.descriptions = descriptions;
 
-        function confirmReset() {
-            if (confirm("Are you sure you'd like to reset?")) {
-                resetRolls();
+                rollHistory.unshift(results); // Add the latest result to the beginning of the history
+                updateResultsDisplay();
             }
-        }
 
-        function resetRolls() {
-            rollHistory = [];
-            updateResultsDisplay();
-        }
+            function updateResultsDisplay() {
+                const resultsDiv = document.getElementById("results");
+                resultsDiv.innerHTML = "";
 
-        function exportRolls() {
-            let exportText = "Roll History:\n";
-            rollHistory.forEach((result, index) => {
-                exportText += `Roll ${index + 1}:\n`;
-                for (const [die, value] of Object.entries(result)) {
-                    exportText += `${die}: ${value} (${result.descriptions[die] || ''})\n`;
+                rollHistory.forEach((result, index) => {
+                    let resultElement = document.createElement("div");
+                    resultElement.className = 'result-section';
+                    resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index}:</h2>`;
+                    resultsDiv.appendChild(resultElement);
+
+                    for (const [die, value] of Object.entries(result)) {
+                        if (die !== 'descriptions') {
+                            const lineElement = document.createElement("div");
+                            lineElement.className = 'result-line';
+                            lineElement.innerHTML = `${die}: ${value} (${result.descriptions[die] || ''})`;
+                            lineElement.style.marginBottom = '10px';
+                            resultsDiv.appendChild(lineElement);
+                        }
+                    }
+
+                    const separator = document.createElement("hr");
+                    separator.className = "roll-separator";
+                    resultsDiv.appendChild(separator);
+                });
+            }
+
+            function confirmReset() {
+                if (confirm("Are you sure you'd like to reset?")) {
+                    resetRolls();
                 }
-                exportText += "\n";
-            });
+            }
 
-            const blob = new Blob([exportText], { type: "text/plain" });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = "roll_history.txt";
-            link.click();
-        }
+            function resetRolls() {
+                rollHistory = [];
+                updateResultsDisplay();
+            }
 
-        // Load roll tables on page load
-        window.onload = loadRollTables;
+            function exportRolls() {
+                let exportText = "Roll History:
+";
+                rollHistory.forEach((result, index) => {
+                    exportText += `Roll ${index + 1}:
+`;
+                    for (const [die, value] of Object.entries(result)) {
+                        exportText += `${die}: ${value} (${result.descriptions[die] || ''})
+`;
+                    }
+                    exportText += "
+";
+                });
+
+                const blob = new Blob([exportText], { type: "text/plain" });
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "roll_history.txt";
+                link.click();
+            }
+
+            // Attach event listeners to buttons
+            document.getElementById('rollButton').onclick = rollAllDice;
+            document.getElementById('resetButton').onclick = confirmReset;
+            document.getElementById('exportButton').onclick = exportRolls;
+
+            // Load roll tables on page load
+            loadRollTables();
+        });
     </script>
 </body>
 </html>
