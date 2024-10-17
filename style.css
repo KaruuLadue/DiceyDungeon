@@ -2,7 +2,9 @@
 body {
     font-family: 'Cormorant Garamond', serif; /* A classic, handwritten-style font */
     text-align: center;
-    background-color: #000000; /* Black background */
+    background: url('YOUR_IMAGE_URL_HERE') no-repeat center center fixed; /* Background image from URL */
+    background-attachment: fixed; /* Parallax effect */
+    background-size: cover; /* Make sure the image covers the whole background */
     color: #ffffff; /* White text for high contrast */
 }
 
