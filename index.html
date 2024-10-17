@@ -19,6 +19,16 @@
         .match {
             color: #ab7c7c; /* Color for matching rolls */
         }
+        /* Animation for sliding the most recent roll in from the top */
+        @keyframes slideInFromTop {
+            from { transform: translateY(-50px); } /* Adjusted relative to the container */
+            to { transform: translateY(0); }
+        }
+        /* Apply animation only to the most recent roll */
+        .recent-roll {
+            position: relative; /* Position relative to container */
+            animation: slideInFromTop 0.5s ease-in-out;
+        }
     </style>
 </head>
 <body>
@@ -46,6 +56,20 @@
             } catch (error) {
                 console.error("Error loading roll tables:", error);
             }
+        }
+
+        // Load cached rolls from localStorage
+        function loadCachedRolls() {
+            const cachedRolls = localStorage.getItem('diceyDungeonRolls');
+            if (cachedRolls) {
+                rollHistory = JSON.parse(cachedRolls);
+                updateResultsDisplay();
+            }
+        }
+
+        // Save the current rollHistory to localStorage
+        function saveRollsToCache() {
+            localStorage.setItem('diceyDungeonRolls', JSON.stringify(rollHistory));
         }
 
         function rollDice(sides) {
@@ -79,6 +103,7 @@
             results.descriptions = descriptions;
 
             rollHistory.push(results);
+            saveRollsToCache(); // Save rolls to localStorage after each roll
             updateResultsDisplay();
         }
 
@@ -86,41 +111,56 @@
             const resultsDiv = document.getElementById("results");
             resultsDiv.innerHTML = "";
 
-            // Step 1: Display the roll results, highlighting any matches within each roll
-            rollHistory.slice().reverse().forEach((result, index) => {
-                // Create the roll title
+            // Display the most recent roll with animation
+            const latestResult = rollHistory[rollHistory.length - 1];
+            let latestResultElement = document.createElement("div");
+            latestResultElement.className = 'recent-roll'; // Apply animation only to the most recent roll
+            latestResultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length}:</h2>`;
+            resultsDiv.appendChild(latestResultElement);
+
+            // Count occurrences of dice values within the current roll for matching
+            const rollValuesCount = {};
+            for (const value of Object.values(latestResult)) {
+                if (typeof value === 'number') { // Only count dice values, not descriptions
+                    rollValuesCount[value] = (rollValuesCount[value] || 0) + 1;
+                }
+            }
+
+            // Display the most recent roll with matching highlight
+            for (const [die, value] of Object.entries(latestResult)) {
+                if (die !== 'descriptions') {
+                    const lineElement = document.createElement("div");
+                    const matchClass = rollValuesCount[value] > 1 ? 'match' : ''; // Apply matching class if needed
+                    lineElement.className = `result-line ${matchClass}`; // Add animation class
+                    lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
+                                             ${die}: ${value} (${latestResult.descriptions[die] || ''})`;
+                    latestResultElement.appendChild(lineElement);
+                }
+            }
+
+            const separator = document.createElement("hr");
+            separator.className = "roll-separator";
+            latestResultElement.appendChild(separator);
+
+            // Display all previous rolls without animation
+            rollHistory.slice(0, -1).reverse().forEach((result, index) => {
                 let resultElement = document.createElement("div");
-                resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index}:</h2>`;
+                resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index - 1}:</h2>`;
                 resultsDiv.appendChild(resultElement);
 
-                // Step 2: Count occurrences of dice values within the current roll
-                const rollValuesCount = {};
-                for (const value of Object.values(result)) {
-                    if (typeof value === 'number') { // Only count dice values, not descriptions
-                        rollValuesCount[value] = (rollValuesCount[value] || 0) + 1;
-                    }
-                }
-
-                // Display each die result, applying the match class if needed
                 for (const [die, value] of Object.entries(result)) {
                     if (die !== 'descriptions') {
                         const lineElement = document.createElement("div");
-                        lineElement.className = 'result-line';
-
-                        // Check if this value is a match (appears more than once within this roll)
-                        const matchClass = rollValuesCount[value] > 1 ? 'match' : '';
-
-                        // Apply the class if it's a match
+                        lineElement.className = 'result-line'; // No animation for previous results
                         lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
-                                                 <span class="${matchClass}">${die}: ${value} (${result.descriptions[die] || ''})</span>`;
-
-                        resultsDiv.appendChild(lineElement);
+                                                 ${die}: ${value} (${result.descriptions[die] || ''})`;
+                        resultElement.appendChild(lineElement);
                     }
                 }
 
                 const separator = document.createElement("hr");
                 separator.className = "roll-separator";
-                resultsDiv.appendChild(separator);
+                resultElement.appendChild(separator);
             });
         }
 
@@ -132,6 +172,7 @@
 
         function resetRolls() {
             rollHistory = [];
+            localStorage.removeItem('diceyDungeonRolls'); // Clear the cache when resetting
             updateResultsDisplay();
         }
 
@@ -152,11 +193,11 @@
             link.click();
         }
 
-        // Load roll tables on page load
+        // Load roll tables and cached rolls on page load
         window.onload = async () => {
             await loadRollTables();
+            loadCachedRolls(); // Load cached rolls on page load
 
-            // Fetch version.json and update footer text
             try {
                 const response = await fetch('version.json');
                 if (!response.ok) {
