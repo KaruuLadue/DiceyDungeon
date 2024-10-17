@@ -43,11 +43,11 @@ button:hover {
     font-weight: bold;
     background: #000000; /* Solid black background */
     border: 1px solid #ffffff; /* White border */
-    padding: 10px;
+    padding: 5px;
     border-radius: 5px;
     text-align: left;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Very subtle white glow */
-    width: 75%; /* Dynamic width, 75% of the screen */
+    width: 85%; /* Dynamic width, 75% of the screen */
     display: block;
 }
 
