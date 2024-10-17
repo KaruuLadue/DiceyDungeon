@@ -101,10 +101,20 @@
             latestResultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length}:</h2>`;
             resultsDiv.appendChild(latestResultElement);
 
+            // Count occurrences of dice values within the current roll for matching
+            const rollValuesCount = {};
+            for (const value of Object.values(latestResult)) {
+                if (typeof value === 'number') { // Only count dice values, not descriptions
+                    rollValuesCount[value] = (rollValuesCount[value] || 0) + 1;
+                }
+            }
+
+            // Display the most recent roll with matching highlight
             for (const [die, value] of Object.entries(latestResult)) {
                 if (die !== 'descriptions') {
                     const lineElement = document.createElement("div");
-                    lineElement.className = 'result-line'; // Apply animation only to the most recent result
+                    const matchClass = rollValuesCount[value] > 1 ? 'match' : ''; // Apply matching class if needed
+                    lineElement.className = `result-line ${matchClass}`; // Add animation class
                     lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
                                              ${die}: ${value} (${latestResult.descriptions[die] || ''})`;
                     resultsDiv.appendChild(lineElement);
@@ -115,7 +125,7 @@
             separator.className = "roll-separator";
             resultsDiv.appendChild(separator);
 
-            // Display all previous rolls after the most recent one, without animation
+            // Display all previous rolls after the most recent one, without animation or matching highlight
             rollHistory.slice(0, -1).reverse().forEach((result, index) => {
                 let resultElement = document.createElement("div");
                 resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index - 1}:</h2>`;
