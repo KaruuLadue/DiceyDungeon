@@ -71,8 +71,8 @@ h1 {
 
 /* Styling for Dice Icons */
 .dice-icon {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     object-fit: contain; /* Ensures the icon fits within the box without stretching */
     vertical-align: middle;
     margin-right: 8px;
