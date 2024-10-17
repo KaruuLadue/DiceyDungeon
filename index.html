@@ -13,19 +13,21 @@
             text-decoration: underline;
         }
         .result-line {
-            margin-bottom: 10px; /* Added margin to separate each result */
-            display: block; /* Ensure block-level behavior */
+            margin-bottom: 10px;
+            display: block;
         }
         .match {
             color: #ab7c7c; /* Color for matching rolls */
         }
-        /* Animation for sliding the most recent roll in from the top */
+
+        /* Animation for sliding in the entire recent roll container */
         @keyframes slideInFromTop {
-            from { transform: translateY(-20px); opacity: 0; } /* Start slightly above with no opacity */
-            to { transform: translateY(0); opacity: 1; } /* End in the correct position with full opacity */
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
-        /* Apply animation only to the most recent roll */
-        .recent-roll {
+
+        /* Apply the slide animation to the entire recent-roll container */
+        .recent-roll-container {
             animation: slideInFromTop 0.5s ease-in-out;
         }
     </style>
@@ -44,14 +46,14 @@
     <script>
         let rollHistory = [];
         let rollTables = {};
-        const rollSound = new Audio('audio/rollsound.wav'); // Moved this line to be globally accessible
+        const rollSound = new Audio('audio/rollsound.wav'); // Play the roll sound every time the Roll button is clicked
 
         // Load roll tables from JSON file
         async function loadRollTables() {
             try {
                 const response = await fetch('rollTables.json');
                 rollTables = await response.json();
-                console.log("Roll tables loaded:", rollTables); // Check if JSON is loaded correctly
+                console.log("Roll tables loaded:", rollTables);
             } catch (error) {
                 console.error("Error loading roll tables:", error);
             }
@@ -71,15 +73,17 @@
             localStorage.setItem('diceyDungeonRolls', JSON.stringify(rollHistory));
         }
 
+        // Roll dice with a given number of sides
         function rollDice(sides) {
             return Math.floor(Math.random() * sides) + 1;
         }
 
+        // Roll all dice and update the display
         async function rollAllDice() {
-            rollSound.play(); // Play the roll sound every time the Roll button is clicked
+            rollSound.play(); // Play the roll sound
 
             if (Object.keys(rollTables).length === 0) {
-                await loadRollTables(); // Load tables if they aren't already loaded
+                await loadRollTables();
             }
 
             const results = {
@@ -106,61 +110,81 @@
             updateResultsDisplay();
         }
 
+        // Update the display to show all rolls
         function updateResultsDisplay() {
             const resultsDiv = document.getElementById("results");
             resultsDiv.innerHTML = "";
 
-            // Step 1: Display the roll results, highlighting any matches within each roll
-            rollHistory.slice().reverse().forEach((result, index) => {
-                // Create the roll title
+            // Create a container for the most recent roll
+            const recentRollContainer = document.createElement("div");
+            recentRollContainer.className = 'recent-roll-container'; // Apply animation to the entire container
+            const latestResult = rollHistory[rollHistory.length - 1];
+            let latestResultElement = document.createElement("div");
+            latestResultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length}:</h2>`;
+            recentRollContainer.appendChild(latestResultElement);
+
+            // Count occurrences of dice values within the current roll
+            const rollValuesCount = {};
+            for (const value of Object.values(latestResult)) {
+                if (typeof value === 'number') {
+                    rollValuesCount[value] = (rollValuesCount[value] || 0) + 1;
+                }
+            }
+
+            // Display each die result for the most recent roll
+            for (const [die, value] of Object.entries(latestResult)) {
+                if (die !== 'descriptions') {
+                    const lineElement = document.createElement("div");
+                    lineElement.className = 'result-line';
+
+                    const matchClass = rollValuesCount[value] > 1 ? 'match' : '';
+                    lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
+                                             <span class="${matchClass}">${die}: ${value} (${latestResult.descriptions[die] || ''})</span>`;
+                    latestResultElement.appendChild(lineElement);
+                }
+            }
+
+            const separator = document.createElement("hr");
+            recentRollContainer.appendChild(separator);
+
+            resultsDiv.appendChild(recentRollContainer); // Append the recent roll with animation
+
+            // Display all previous rolls without animation
+            rollHistory.slice(0, -1).reverse().forEach((result, index) => {
                 let resultElement = document.createElement("div");
-                resultElement.className = (index === 0) ? 'recent-roll' : ''; // Apply animation only to the most recent roll
-                resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index}:</h2>`;
+                resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index - 1}:</h2>`;
                 resultsDiv.appendChild(resultElement);
 
-                // Step 2: Count occurrences of dice values within the current roll
-                const rollValuesCount = {};
-                for (const value of Object.values(result)) {
-                    if (typeof value === 'number') { // Only count dice values, not descriptions
-                        rollValuesCount[value] = (rollValuesCount[value] || 0) + 1;
-                    }
-                }
-
-                // Display each die result, applying the match class if needed
                 for (const [die, value] of Object.entries(result)) {
                     if (die !== 'descriptions') {
                         const lineElement = document.createElement("div");
                         lineElement.className = 'result-line';
-
-                        // Check if this value is a match (appears more than once within this roll)
-                        const matchClass = rollValuesCount[value] > 1 ? 'match' : '';
-
-                        // Apply the class if it's a match
                         lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
-                                                 <span class="${matchClass}">${die}: ${value} (${result.descriptions[die] || ''})</span>`;
-
+                                                 ${die}: ${value} (${result.descriptions[die] || ''})`;
                         resultElement.appendChild(lineElement);
                     }
                 }
 
                 const separator = document.createElement("hr");
-                separator.className = "roll-separator";
-                resultElement.appendChild(separator);
+                resultsDiv.appendChild(separator);
             });
         }
 
+        // Confirm and reset all rolls
         function confirmReset() {
             if (confirm("Are you sure you'd like to reset?")) {
                 resetRolls();
             }
         }
 
+        // Reset all rolls and clear localStorage
         function resetRolls() {
             rollHistory = [];
             localStorage.removeItem('diceyDungeonRolls'); // Clear the cache when resetting
             updateResultsDisplay();
         }
 
+        // Export roll history to a text file
         function exportRolls() {
             let exportText = "Roll History:\n";
             rollHistory.forEach((result, index) => {
@@ -178,7 +202,7 @@
             link.click();
         }
 
-        // Load roll tables on page load
+        // Load roll tables and cached rolls on page load
         window.onload = async () => {
             await loadRollTables();
             loadCachedRolls(); // Load cached rolls on page load
