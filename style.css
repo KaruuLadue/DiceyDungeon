@@ -1,6 +1,6 @@
 /* General Styling */
 body {
-    font-family: 'Sixtyfour Convergence', san-sarif; /* Fantasy-style font */
+    font-family: 'Sixtyfour Convergence', sans-serif; /* Fantasy-style font */
     text-align: center;
     background: url('https://pics.craiyon.com/2024-09-11/gSEevBZuTs2hC7-UHOyYqg.webp') no-repeat center center fixed; /* Background image */
     background-size: cover;
@@ -49,14 +49,22 @@ button:hover {
     text-align: left;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Very subtle white glow */
     width: 75%; /* Dynamic width, 75% of the screen */
-    display: flex;
-    flex-direction: column;
+    display: block; /* Allow block elements for each roll */
+}
+
+/* Roll Separator */
+.roll-separator {
+    margin: 10px 0;
+    border: 0;
+    height: 1px;
+    background: #ffffff;
+    opacity: 0.5;
 }
 
 /* Heading Styling */
 h1 {
     color: #ffffff; /* White color for the heading */
-    font-family: 'Sixtyfour Convergence', cursive; /* Fantasy-style font */
+    font-family: 'Sixtyfour Convergence', sans-serif; /* Fantasy-style font */
     font-size: 3em;
     text-shadow: 0 0 5px #808080; /* Soft white glow for the heading */
 }
