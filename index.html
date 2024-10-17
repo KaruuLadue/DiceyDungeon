@@ -76,7 +76,7 @@
                 let resultText = `<h2 class='roll-title'>Roll ${rollHistory.length - index}:</h2>`;
                 for (const [die, value] of Object.entries(result)) {
                     if (die !== 'descriptions') {
-                        resultText += `<div><img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} (${result.descriptions[die] || ''})</div>`;
+                        resultText += `<div><img src="icons/${die}.png" alt="${die} icon" class="dice-icon"> ${die}: ${value} ${result.descriptions[die] || ''}</div>`;
                     }
                 }
                 const resultElement = document.createElement("div");
