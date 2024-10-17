@@ -110,7 +110,8 @@
                 separator.className = "roll-separator";
                 resultsDiv.appendChild(separator);
             });
-            });
+        }
+
         function confirmReset() {
             if (confirm("Are you sure you'd like to reset?")) {
                 resetRolls();
@@ -155,15 +156,10 @@
                 console.error('Error fetching version:', error);
                 document.getElementById('version').textContent = 'Version: Failed to Load';
             }
-        }
-            } catch (error) {
-                console.error('Error fetching version:', error);
-            }
         };
     </script>
-<footer>
+    <footer>
         <p id="version" style="color: #ffffff; text-align: center; margin-top: 20px;">Version: Loading...</p>
     </footer>
-
 </body>
 </html>
