@@ -115,8 +115,8 @@
                     const lineElement = document.createElement("div");
                     const matchClass = rollValuesCount[value] > 1 ? 'match' : ''; // Apply matching class if needed
                     lineElement.className = `result-line ${matchClass}`; // Add animation class
-                    lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
-                                             ${die}: ${value} (${latestResult.descriptions[die] || ''})`;
+                    lineElement.innerHTML = `<div style="display: block;"><img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
+                                             ${die}: ${value} (${latestResult.descriptions[die] || ''})</div>`;
                     resultsDiv.appendChild(lineElement);
                 }
             }
@@ -135,8 +135,8 @@
                     if (die !== 'descriptions') {
                         const lineElement = document.createElement("div");
                         lineElement.className = 'result-line-no-animation'; // No animation for previous results
-                        lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
-                                                 ${die}: ${value} (${result.descriptions[die] || ''})`;
+                        lineElement.innerHTML = `<div style="display: block;"><img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
+                                                 ${die}: ${value} (${result.descriptions[die] || ''})</div>`;
                         resultsDiv.appendChild(lineElement);
                     }
                 }
