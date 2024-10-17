@@ -1,1 +1,28 @@
+name: Generate Version
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate_version:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Generate version.json
+      run: |
+        echo "{\"version\": \"$(git rev-parse --short HEAD)\"}" > version.json
+        cat version.json
+
+    - name: Commit version.json
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git add version.json
+        git commit -m "Update version.json [skip ci]"
+        git push
 
