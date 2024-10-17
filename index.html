@@ -17,9 +17,9 @@
 <body>
     <div class="container">
         <h1>Dicey Dungeon</h1>
-        <button onclick="rollAllDice()">Roll</button>
-        <button onclick="confirmReset()">Reset</button>
-        <button onclick="exportRolls()">Export</button>
+        <button id="rollButton">Roll</button>
+        <button id="resetButton">Reset</button>
+        <button id="exportButton">Export</button>
         <div id="results"></div>
     </div>
     <footer>
@@ -131,9 +131,9 @@
             }
 
             // Attach event listeners to buttons
-            document.querySelector('button[onclick="rollAllDice()"]')?.addEventListener('click', rollAllDice);
-            document.querySelector('button[onclick="confirmReset()"]')?.addEventListener('click', confirmReset);
-            document.querySelector('button[onclick="exportRolls()"]')?.addEventListener('click', exportRolls);
+            document.getElementById('rollButton').addEventListener('click', rollAllDice);
+            document.getElementById('resetButton').addEventListener('click', confirmReset);
+            document.getElementById('exportButton').addEventListener('click', exportRolls);
 
             // Load roll tables on page load
             loadRollTables();
