@@ -3,6 +3,7 @@ body {
     font-family: 'Uncial Antiqua', serif; /* Fantasy-themed Google font */
     text-align: center;
     background-color: #000000; /* Black background */
+    color: #ff0000; /* Red color for text */ /* Black background */
     color: #f5f5dc; /* Light parchment color for text */
 }
 
@@ -23,6 +24,7 @@ button {
     font-size: 22px;
     cursor: pointer;
     background-color: #8b0000; /* Dark red for a fantasy look */
+    color: #ffffff; /* White text */ /* Dark red for a fantasy look */
     color: #ff0000; /* Red text */ /* Light text */
     border: 2px solid #d4af37; /* Golden border */
     border-radius: 5px;
