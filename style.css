@@ -1,6 +1,6 @@
 /* General Styling */
 body {
-    font-family: 'Press Start 2P', sans-serif; /* Retro-style font similar to Xtradex */ /* Fantasy-style font */
+    font-family: 'Sixtyfour Convergence', sans-serif; /* Fantasy-style font */
     text-align: center;
     background: url('https://pics.craiyon.com/2024-09-11/gSEevBZuTs2hC7-UHOyYqg.webp') no-repeat center center fixed; /* Background image */
     background-size: cover;
@@ -55,7 +55,6 @@ button:hover {
 .result-line {
     display: inline-block;
     overflow: hidden;
-    border-right: 2px solid white; /* Caret effect */
     white-space: nowrap;
     animation: typing 3s steps(40, end) 1;
 }
@@ -63,11 +62,6 @@ button:hover {
 @keyframes typing {
     from { width: 0; }
     to { width: 100%; }
-}
-
-@keyframes blink-caret {
-    from, to { border-color: transparent; }
-    50% { border-color: white; }
 }
     to { width: 100%; }
 }
@@ -84,7 +78,7 @@ button:hover {
 /* Heading Styling */
 h1 {
     color: #ffffff; /* White color for the heading */
-    font-family: 'Press Start 2P', sans-serif; /* Retro-style font similar to Xtradex */ /* Fantasy-style font */
+    font-family: 'Sixtyfour Convergence', sans-serif; /* Fantasy-style font */
     font-size: 3em;
     text-shadow: 0 0 5px #808080; /* Soft white glow for the heading */
 }
@@ -107,5 +101,5 @@ h1 {
 }
 
 /* Custom Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
