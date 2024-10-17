@@ -13,7 +13,7 @@ body {
 
 /* Container for Main Content */
 .container {
-    margin: 50px auto;
+    margin: 25px auto;
     padding: 20px;
     background-color: rgba(0, 0, 0, 0.7); /* Black background with 70% opacity */
     border: 2px solid #ffffff; /* White border for high contrast */
@@ -24,8 +24,8 @@ body {
 
 /* Button Styling */
 button {
-    padding: 10px 25px;
-    font-size: 18px;
+    padding: 10px 18px;
+    font-size: 16px;
     cursor: pointer;
     background-color: #ffffff; /* White button for contrast */
     color: #000000; /* Black text */
@@ -43,7 +43,7 @@ button:hover {
 
 /* Results Display */
 #results {
-    margin: 20px auto; /* Center the container horizontally */
+    margin: 15px auto; /* Center the container horizontally */
     font-size: 18px;
     font-family: 'Inconsolata', monospace; /* Monospaced font for roll results */
     font-weight: bold;
@@ -52,8 +52,8 @@ button:hover {
     padding: 10px;
     border-radius: 5px;
     text-align: left;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Very subtle white glow */
-    width: 80%; /* Dynamic width, 75% of the screen */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Very subtle white glow */
+    width: 80%; /* Dynamic width of the screen */
     display: block;
 }
 
@@ -97,7 +97,7 @@ h1 {
     height: 30px;
     object-fit: contain; /* Ensures the icon fits within the box without stretching */
     vertical-align: middle;
-    margin-right: 8px;
+    margin-right: 5px;
 }
 
 /* Roll Title Styling */
@@ -105,5 +105,5 @@ h1 {
     font-size: 1.5em;
     color: #ffffff;
     margin-bottom: 10px;
-    text-decoration: underline;
+    text-decoration: bold;
 }
