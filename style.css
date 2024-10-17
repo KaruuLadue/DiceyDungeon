@@ -1,17 +1,24 @@
 /* General Styling */
 body {
-    font-family: 'Cormorant Garamond', serif; /* A classic, handwritten-style font */
+    font-family: 'Sixtyfour Convergence', cursive; /* Fantasy-style font */
     text-align: center;
-    background: url('https://pics.craiyon.com/2024-09-11/gSEevBZuTs2hC7-UHOyYqg.webp') no-repeat center center fixed; /* Background image from URL */
-    background-attachment: fixed; /* Parallax effect */
-    background-size: cover; /* Make sure the image covers the whole background */
-    color: #ffffff; /* White text for high contrast with black background */ /* Black text */ */
-    border: 2px solid #ffffff; /* White border for high contrast */ /* Black border for a pen and paper feel */
-    border-radius: 5px;
-    transition: all 0.3s ease-in-out;
-    font-weight: bold;
+    background: url('https://pics.craiyon.com/2024-09-11/gSEevBZuTs2hC7-UHOyYqg.webp') no-repeat center center fixed; /* Background image */
+    background-size: cover;
+    color: #ffffff; /* White text for high contrast */
 }
 
+/* Container for Main Content */
+.container {
+    margin: 50px auto;
+    padding: 20px;
+    background: #000000; /* Solid black background */
+    border: 2px solid #ffffff; /* White border for high contrast */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Soft white glow */
+    max-width: 75%;
+}
+
+/* Button Styling */
 button {
     padding: 15px 30px;
     font-size: 18px;
@@ -32,27 +39,26 @@ button:hover {
 /* Results Display */
 #results {
     margin: 20px auto; /* Center the container horizontally */
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
     font-size: 18px;
     font-weight: bold;
     background: #000000; /* Solid black background */
     border: 1px solid #ffffff; /* White border */
-    width: 75%; /* Dynamic width, 75% of the screen */ /* White border */
     padding: 10px;
     border-radius: 5px;
     text-align: left;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Very subtle white glow */ /* Soft white glow */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Very subtle white glow */
+    width: 75%; /* Dynamic width, 75% of the screen */
+    display: flex;
+    flex-direction: column;
 }
 
 /* Heading Styling */
 h1 {
     color: #ffffff; /* White color for the heading */
-    font-family: 'Cormorant Garamond', serif; /* Handwritten-style font */
+    font-family: 'Sixtyfour Convergence', cursive; /* Fantasy-style font */
     font-size: 3em;
     text-shadow: 0 0 5px #808080; /* Soft white glow for the heading */
 }
 
 /* Custom Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap');
