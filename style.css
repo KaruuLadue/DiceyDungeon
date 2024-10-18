@@ -55,8 +55,8 @@ button:hover {
 
 /* Results Display */
 #results {
-    margin: 30px auto; /* Center the container horizontally */
-    font-size: 20px;
+    margin: 10px auto; /* Center the container horizontally */
+    font-size: 18px;
     font-family: 'Inconsolata', monospace; /* Monospaced font for roll results */
     font-weight: bold;
     background-color: rgba(0, 0, 0, 0.8); /* Black background with 80% opacity */
