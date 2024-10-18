@@ -27,8 +27,8 @@ body {
 .container {
     margin: 5px auto;
     padding: 5px;
-    background-color: rgba(0, 0, 0, 0.7); /* Black background with 70% opacity */
-    border: 2px solid #ffffff; /* White border for high contrast */
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with 70% opacity */
+    border: 0px solid #ffffff; /* White border for high contrast */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); /* Soft white glow */
     max-width: 95%;
