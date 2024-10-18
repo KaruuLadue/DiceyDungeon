@@ -67,7 +67,7 @@ button:hover {
     text-align: left;
     text-indent: 20px; /* Indents the first line of text in the paragraph by 20 pixels */
     box-shadow: 0 0 10px rgba(162, 136, 90, 0.9); /* Very subtle white glow */
-    width: 55%; /* Dynamic width of the screen */
+    width: 60%; /* Dynamic width of the screen */
     display: block;
 }
 
@@ -142,9 +142,9 @@ h1 {
     }
 
     #results {
-        width: 95%; /* Make results container larger for smaller screens */
+        width: 90%; /* Make results container larger for smaller screens */
         font-size: 14px;
-        text-indent: 5px; /* Indents the first line of text in the paragraph by 20 pixels */
+        text-indent: 0px; /* Indents the first line of text in the paragraph by 20 pixels */
     }
 
     h1 {
