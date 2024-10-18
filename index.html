@@ -122,6 +122,7 @@
             const latestResult = rollHistory[rollHistory.length - 1];
             let latestResultElement = document.createElement("div");
             latestResultElement.innerHTML = `<h2 class='roll-title'><img src="icons/dice_icon.png" alt="dice icon" class="roll-icon"> Roll ${rollHistory.length}:</h2>`;
+            <hr>;
             recentRollContainer.appendChild(latestResultElement);
 
             // Count occurrences of dice values within the current roll
