@@ -64,7 +64,7 @@ button:hover {
     margin-right: 5px;
     border-radius: 5px;
     text-align: left;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Very subtle white glow */
+    box-shadow: 0 0 10px rgba(162, 136, 90, 0.5); /* Very subtle white glow */
     width: 65%; /* Dynamic width of the screen */
     display: block;
 }
