@@ -82,11 +82,6 @@ button:hover {
     margin-bottom: 5px; /* Keep margin for spacing between results */
 }
 
-.result-line-no-animation {
-    display: inline-block;
-    margin-bottom: 10px; /* Same styling, but no animation */
-}
-
 /* Roll Separator */
 .roll-separator {
     margin: 10px 0;
@@ -126,7 +121,7 @@ h1 {
     font-size: 1.5em;
     color: #ffffff;
     margin-bottom: 5px;
-    text-decoration: none;
+    text-decoration: bold;
 }
 
 /* Responsive Styles for Mobile Devices */
