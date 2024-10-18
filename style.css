@@ -30,7 +30,8 @@ body {
     background-color: rgba(0, 0, 0, 0); /* Black background with 100% opacity */
     border: 0px solid #ffffff; /* White border for high contrast */
     border-radius: 10px;
-    max-width: 95%;
+    max-width: 100%;
+    width: 90%;
 }
 
 /* Button Styling */
