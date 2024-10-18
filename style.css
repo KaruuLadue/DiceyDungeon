@@ -30,7 +30,7 @@ body {
     background-color: rgba(0, 0, 0, 0); /* Black background with 100% opacity */
     border: 0px solid #ffffff; /* White border for high contrast */
     border-radius: 10px;
-    max-width: 100%;
+    max-width: 95%;
 }
 
 /* Button Styling */
@@ -142,7 +142,7 @@ h1 {
 
     #results {
         width: 95%; /* Make results container larger for smaller screens */
-        font-size: 12px;
+        font-size: 14px;
     }
 
     h1 {
