@@ -56,12 +56,13 @@ button:hover {
 /* Results Display */
 #results {
     margin: 15px auto; /* Center the container horizontally */
-    font-size: 18px;
+    font-size: 20px;
     font-family: 'Inconsolata', monospace; /* Monospaced font for roll results */
     font-weight: bold;
     background-color: rgba(0, 0, 0, 0.8); /* Black background with 80% opacity */
     border: 1px solid #ffffff; /* White border */
     padding: 10px;
+    margin-left: 20px;
     border-radius: 5px;
     text-align: left;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Very subtle white glow */
