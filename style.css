@@ -11,6 +11,18 @@ body {
     color: #ffffff; /* White text for high contrast */
 }
 
+.instructions-link {
+    font-family: inherit; /* This will use the same font as the surrounding text, such as the title */
+    color: #3498db; /* Replace with your desired color, e.g., a nice blue */
+    text-decoration: none; /* Removes the underline for a cleaner look */
+    font-size: inherit; /* Matches the font size of the title */
+}
+
+.instructions-link:hover {
+    color: #2980b9; /* Optional: Change color on hover for better user experience */
+    text-decoration: underline; /* Optional: Underline on hover to indicate it's a clickable link */
+}
+
 /* Container for Main Content */
 .container {
     margin: 5px auto;
