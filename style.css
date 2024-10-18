@@ -6,7 +6,7 @@
 body {
     font-family: 'Uncial Antiqua', sans-serif; /* Fantasy-style font for main text */
     text-align: center;
-    background: url('https://pics.craiyon.com/2024-09-11/gSEevBZuTs2hC7-UHOyYqg.webp') no-repeat center center fixed; /* Background image */
+    background: url('images/background.jpg') no-repeat center center fixed; /* Background image */
     background-size: cover;
     color: #ffffff; /* White text for high contrast */
 }
