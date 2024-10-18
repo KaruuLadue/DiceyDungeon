@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customize Roll Tables - Dicey Dungeon</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container {
+            max-width: 75%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.9);
+            border-radius: 10px;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+        }
+
+        .roll-table-form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #d4af37;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Customize Roll Tables</h1>
+        <p>Here you can edit the descriptions for each of the dice rolls. Please modify the values as needed and click "Save Changes" to store your custom roll tables.</p>
+
+        <form id="rollTableForm" class="roll-table-form"></form>
+
+        <button onclick="saveChanges()">Save Changes</button>
+        <button onclick="resetToDefaults()">Reset to Defaults</button>
+        <button onclick="window.location.href='index.html'">Back to Main</button>
+    </div>
+
+    <script>
+        let rollTables = {};
+
+        // Load roll tables from either JSON or localStorage
+        async function loadRollTables() {
+            try {
+                const cachedRollTables = localStorage.getItem('customRollTables');
+                if (cachedRollTables) {
+                    rollTables = JSON.parse(cachedRollTables);
+                } else {
+                    const response = await fetch('rollTables.json');
+                    rollTables = await response.json();
+                }
+                populateForm();
+            } catch (error) {
+                console.error("Error loading roll tables:", error);
+            }
+        }
+
+        // Populate the form with roll tables for customization
+        function populateForm() {
+            const form = document.getElementById('rollTableForm');
+            form.innerHTML = '';
+
+            for (const [dice, entries] of Object.entries(rollTables)) {
+                const label = document.createElement('label');
+                label.innerText = `Customize ${dice} Roll Table:`;
+
+                const textarea = document.createElement('textarea');
+                textarea.id = dice;
+                textarea.value = entries.join('\n');
+
+                form.appendChild(label);
+                form.appendChild(textarea);
+            }
+        }
+
+        // Save the updated roll tables to localStorage
+        function saveChanges() {
+            const form = document.getElementById('rollTableForm');
+            for (const [dice] of Object.entries(rollTables)) {
+                const textarea = document.getElementById(dice);
+                rollTables[dice] = textarea.value.split('\n');
+            }
+
+            localStorage.setItem('customRollTables', JSON.stringify(rollTables));
+            alert('Changes have been saved!');
+        }
+
+        // Reset roll tables to defaults by removing the custom version from localStorage
+        function resetToDefaults() {
+            if (confirm('Are you sure you want to reset all custom roll tables to their default values?')) {
+                localStorage.removeItem('customRollTables');
+                loadRollTables();
+                alert('Roll tables have been reset to default values.');
+            }
+        }
+
+        // Load roll tables on page load
+        window.onload = loadRollTables;
+    </script>
+</body>
+</html>
