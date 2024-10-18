@@ -78,7 +78,7 @@ button:hover {
 .result-line {
     display: inline-block;
     animation: slideInFromTop 0.8s ease-in-out; /* Slide in from the top */
-    margin-bottom: 15px; /* Keep margin for spacing between results */
+    margin-bottom: 5px; /* Keep margin for spacing between results */
 }
 
 .result-line-no-animation {
