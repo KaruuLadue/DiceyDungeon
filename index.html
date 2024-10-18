@@ -153,7 +153,7 @@
             // Display all previous rolls
             rollHistory.slice(0, -1).reverse().forEach((result, index) => {
                 let resultElement = document.createElement("div");
-                resultElement.innerHTML = `<h2 class='roll-title'><img src="icons/dice_icon.png" alt="dice icon" class="roll-icon"> Roll ${rollHistory.length - index - 1}:</h2>`;
+                resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index - 1}:</h2>`;
                 resultsDiv.appendChild(resultElement);
 
                 for (const [die, value] of Object.entries(result)) {
