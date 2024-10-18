@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template - Dicey Dungeon</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Add any specific styles for this template here */
+        .container {
+            max-width: 75%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.85);
+            border-radius: 10px;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+        }
+        h1, h2, h3, h4 {
+            color: #d4af37;
+            text-align: center;
+        }
+        p, ul, ol, table {
+            color: #ffffff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #111;
+            color: #ffffff;
+        }
+        table th, table td {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: center;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        .instructions-link {
+            color: #ffffff;
+            text-decoration: underline;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dicey Dungeon Instructions</h1>
+        <p>Welcome to Dicey Dungeon! Below you will find instructions on how to play and enjoy your adventure.</p>
+        
+        <!-- Content placeholder -->
+        
+        <h3>Section Title</h3>
+        <p>Insert content here. Feel free to modify container sizes, titles, and any content you need.</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Header 1</th>
+                    <th>Header 2</th>
+                    <th>Header 3</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Data 1</td>
+                    <td>Data 2</td>
+                    <td>Data 3</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <ul>
+            <li>Example item 1</li>
+            <li>Example item 2</li>
+        </ul>
+    </div>
+    <footer>
+        <p style="color: #ffffff; text-align: center; margin-top: 20px;">Version: 1.0.0</p>
+    </footer>
+</body>
+</html>
