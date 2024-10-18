@@ -139,7 +139,7 @@
                     lineElement.className = 'result-line';
 
                     const matchClass = rollValuesCount[value] > 1 ? 'match' : '';
-                    lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
+                    lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="roll-icon">
                                              <span class="${matchClass}">${die}: ${value} (${latestResult.descriptions[die] || ''})</span>`;
                     latestResultElement.appendChild(lineElement);
                 }
