@@ -111,6 +111,14 @@ h1 {
     margin-right: 5px;
 }
 
+.roll-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain; /* Ensures the icon fits within the box without stretching */
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
 /* Roll Title Styling */
 .roll-title {
     font-size: 1.5em;
