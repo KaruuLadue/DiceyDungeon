@@ -58,7 +58,24 @@
 
         .button-group {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .reset-button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            font-size: 0.9em;
+            color: #ffffff;
+            background-color: #c0392b;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .reset-button:hover {
+            background-color: #a93226;
         }
     </style>
 </head>
@@ -69,24 +86,31 @@
 
         <label for="d4Table">D4 Roll Table:</label>
         <textarea id="d4Table"></textarea>
+        <button class="reset-button" onclick="resetTable('D4')">Reset D4 Table</button>
 
         <label for="d6Table">D6 Roll Table:</label>
         <textarea id="d6Table"></textarea>
+        <button class="reset-button" onclick="resetTable('D6')">Reset D6 Table</button>
 
         <label for="d8Table">D8 Roll Table:</label>
         <textarea id="d8Table"></textarea>
+        <button class="reset-button" onclick="resetTable('D8')">Reset D8 Table</button>
 
         <label for="d10Table">D10 Roll Table:</label>
         <textarea id="d10Table"></textarea>
+        <button class="reset-button" onclick="resetTable('D10')">Reset D10 Table</button>
 
         <label for="d12Table">D12 Roll Table:</label>
         <textarea id="d12Table"></textarea>
+        <button class="reset-button" onclick="resetTable('D12')">Reset D12 Table</button>
 
         <label for="d20Table">D20 Roll Table:</label>
         <textarea id="d20Table"></textarea>
+        <button class="reset-button" onclick="resetTable('D20')">Reset D20 Table</button>
 
         <label for="d100Table">D100 Roll Table:</label>
         <textarea id="d100Table"></textarea>
+        <button class="reset-button" onclick="resetTable('D100')">Reset D100 Table</button>
 
         <div class="button-group">
             <button onclick="saveRollTables()">Save</button>
@@ -95,7 +119,22 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', loadCustomRollTables);
+        let defaultRollTables = {};
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadDefaultRollTables();
+            loadCustomRollTables();
+        });
+
+        async function loadDefaultRollTables() {
+            try {
+                const response = await fetch('rollTables.json');
+                defaultRollTables = await response.json();
+                console.log("Default roll tables loaded:", defaultRollTables);
+            } catch (error) {
+                console.error("Error loading default roll tables:", error);
+            }
+        }
 
         function loadCustomRollTables() {
             // Load roll tables from localStorage if available
@@ -124,6 +163,15 @@
 
             localStorage.setItem('customRollTables', JSON.stringify(rollTables));
             alert('Roll tables saved successfully!');
+        }
+
+        function resetTable(die) {
+            if (defaultRollTables[die]) {
+                document.getElementById(die.toLowerCase() + 'Table').value = defaultRollTables[die].join('\n');
+                alert(`${die} Roll Table has been reset to default values.`);
+            } else {
+                alert(`Default values for ${die} not found.`);
+            }
         }
 
         function goBack() {
