@@ -61,7 +61,7 @@ button:hover {
     font-weight: bold;
     background-color: rgba(0, 0, 0, 0.8); /* Black background with 80% opacity */
     border: 1px solid #ffffff; /* White border */
-    padding: 30px;
+    padding: 40px;
     border-radius: 5px;
     text-align: left;
     box-shadow: 0 0 10px rgba(162, 136, 90, 0.9); /* Very subtle white glow */
