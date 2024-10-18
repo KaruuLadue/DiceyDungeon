@@ -111,13 +111,13 @@ h1 {
     vertical-align: middle;
     margin-right: 5px;
 }
-
+/* Roll Result Icon Styling */
 .roll-icon {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     object-fit: contain; /* Ensures the icon fits within the box without stretching */
     vertical-align: middle;
-    margin-right: 5px;
+    margin-right: 10px;
 }
 
 /* Roll Title Styling */
