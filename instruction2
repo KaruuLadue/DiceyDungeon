@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dicey Dungeon Instructions</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .roll-title {
+            font-size: 1.5em;
+            color: #ffffff;
+            margin-bottom: 5px;
+            text-decoration: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>
+            <img src="icons/dice_icon.png" alt="Dice Icon" class="title-icon">
+            Dicey Dungeon Instructions
+        </h1>
+<table>
+    <thead>
+        <tr>
+            <th>Dice</th>
+            <th>Purpose</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>D4 ÷ 2</td>
+            <td>Hallway Length</td>
+            <td>Determines how long to draw the hallway (in squares).</td>
+        </tr>
+        <tr>
+            <td>D4</td>
+            <td>Starting Wall for Exit</td>
+            <td>Identifies the wall for the first exit in a room.</td>
+        </tr>
+        <tr>
+            <td>D6 ÷ 2</td>
+            <td>Additional Exits</td>
+            <td>Determines the number of extra doors/exits.</td>
+        </tr>
+        <tr>
+            <td>D8</td>
+            <td>Room Encounter</td>
+            <td>Use the encounter roll table to determine room events.</td>
+        </tr>
+        <tr>
+            <td>D10</td>
+            <td>Room Length</td>
+            <td>Establishes the length of the room.</td>
+        </tr>
+        <tr>
+            <td>D12</td>
+            <td>Room Type</td>
+            <td>Roll to determine the type of room (use roll table).</td>
+        </tr>
+        <tr>
+            <td>D20</td>
+            <td>Room Modifier</td>
+            <td>Adds modifiers to the room using the modifier roll table.</td>
+        </tr>
+        <tr>
+            <td>D100</td>
+            <td>Room Width</td>
+            <td>Establishes the width of the room.</td>
+        </tr>
+    </tbody>
+</table>
+    
+    <footer>
+        <p id="version" style="color: #ffffff; text-align: center; margin-top: 20px;">Version: Loading...</p>
+    </footer>
+</body>
+</html>
