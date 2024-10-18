@@ -50,16 +50,24 @@
         let rollTables = {};
         const rollSound = new Audio('audio/rollsound.wav'); // Play the roll sound every time the Roll button is clicked
 
-        // Load roll tables from JSON file
-        async function loadRollTables() {
-            try {
-                const response = await fetch('rollTables.json');
-                rollTables = await response.json();
-                console.log("Roll tables loaded:", rollTables);
-            } catch (error) {
-                console.error("Error loading roll tables:", error);
-            }
+// Load roll tables from JSON file or localStorage
+async function loadRollTables() {
+    try {
+        // Check if custom roll tables exist in localStorage
+        const cachedRollTables = localStorage.getItem('customRollTables');
+        if (cachedRollTables) {
+            rollTables = JSON.parse(cachedRollTables);
+        } else {
+            // Fallback to default rollTables.json if no customization is found
+            const response = await fetch('rollTables.json');
+            rollTables = await response.json();
         }
+        console.log("Roll tables loaded:", rollTables);
+    } catch (error) {
+        console.error("Error loading roll tables:", error);
+    }
+}
+
 
         // Load cached rolls from localStorage
         function loadCachedRolls() {
