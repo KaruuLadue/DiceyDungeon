@@ -5,7 +5,7 @@
 Dicey Dungeon is a web-based tool designed to generate randomized dungeon scenarios using the full set of Dungeons & Dragons dice. Players can roll dice to determine hallway lengths, room encounters, modifiers, and more, allowing for a dynamic and unpredictable dungeon-crawling experience.
 
 <p align="center">
-  <img src="./images/example.png" alt="Dicey Dungeon" width="50%" max-width="500"/>
+  <img src="./images/example.png" alt="Dicey Dungeon" width="60%" max-width="500"/>
 </p>
 
 ## Features
