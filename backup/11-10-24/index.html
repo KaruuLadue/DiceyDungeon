@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dicey Dungeon</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .roll-title {
+            font-size: 1.5em;
+            color: #ffffff;
+            margin-bottom: 5px;
+            text-decoration: bold;
+        }
+
+        .result-line {
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .match {
+            color: #ab7c7c; /* Color for matching rolls */
+        }
+
+        /* Animation for sliding in the entire recent roll container */
+        @keyframes slideInFromTop {
+            from { transform: translateY(-15px); opacity: 0; }  /* Adjust to a smaller distance */
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Apply the slide animation to the entire recent-roll container */
+        .recent-roll-container {
+            animation: slideInFromTop 0.8s ease-in-out;
+        }
+
+        /* General logo styling for larger screens */
+        .logo {
+            width: 400px;  /* Set the width of the logo for desktop */
+            height: auto;  /* Keep aspect ratio */
+            margin: 20px 0;  /* Margin to separate from the title */
+        }
+
+        /* Mobile adjustments for logo */
+        @media (max-width: 768px) {
+            .logo {
+                width: 250px;  /* Set the width of the logo for smaller screens */
+                height: auto;  /* Keep aspect ratio */
+            }
+
+            .container {
+                width: 90%;  /* Adjust container to fit better on smaller screens */
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p align="center">
+            <img src="images/logo.png" alt="Dicey Dungeon Logo" class="logo">
+        </p>
+        <button onclick="rollAllDice()">Roll</button>
+        <button onclick="confirmReset()">Reset</button>
+        <button onclick="exportRolls()">Save</button>
+        <button onclick="window.location.href='customize.html'">Edit</button> <!-- New Customize button -->
+        <div id="results"></div>
+    </div>
+    <script>
+        let rollHistory = [];
+        let rollTables = {};
+        const rollSound = new Audio('audio/rollsound.wav'); // Play the roll sound every time the Roll button is clicked
+
+        // Load roll tables from JSON file or localStorage
+        async function loadRollTables() {
+            try {
+                // Check if custom roll tables exist in localStorage
+                const cachedRollTables = localStorage.getItem('customRollTables');
+                if (cachedRollTables) {
+                    rollTables = JSON.parse(cachedRollTables);
+                } else {
+                    // Fallback to default rollTables.json if no customization is found
+                    const response = await fetch('rollTables.json');
+                    rollTables = await response.json();
+                }
+                console.log("Roll tables loaded:", rollTables);
+            } catch (error) {
+                console.error("Error loading roll tables:", error);
+            }
+        }
+
+        // Load cached rolls from localStorage
+        function loadCachedRolls() {
+            const cachedRolls = localStorage.getItem('diceyDungeonRolls');
+            if (cachedRolls) {
+                rollHistory = JSON.parse(cachedRolls);
+                updateResultsDisplay(); // Display cached rolls
+            }
+        }
+
+        // Save the current rollHistory to localStorage
+        function saveRollsToCache() {
+            localStorage.setItem('diceyDungeonRolls', JSON.stringify(rollHistory));
+        }
+
+        // Roll dice with a given number of sides
+        function rollDice(sides) {
+            return Math.floor(Math.random() * sides) + 1;
+        }
+
+        // Roll all dice and update the display
+        async function rollAllDice() {
+            rollSound.play(); // Play the roll sound
+
+            if (Object.keys(rollTables).length === 0) {
+                await loadRollTables();
+            }
+
+            const results = {
+                D4: rollDice(4),
+                D6: rollDice(6),
+                D8: rollDice(8),
+                D10: rollDice(10),
+                D100: rollDice(100),
+                D12: rollDice(12),
+                D20: rollDice(20)
+            };
+
+            // Append roll table descriptions
+            const descriptions = {};
+            for (const [die, value] of Object.entries(results)) {
+                if (rollTables[die]) {
+                    descriptions[die] = rollTables[die][value - 1];
+                }
+            }
+            results.descriptions = descriptions;
+
+            rollHistory.push(results);
+            saveRollsToCache(); // Save to localStorage after every roll
+            updateResultsDisplay();
+        }
+
+        // Update the display to show all rolls
+        function updateResultsDisplay() {
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = "";
+
+            // Create a container for the most recent roll
+            const recentRollContainer = document.createElement("div");
+            recentRollContainer.className = 'recent-roll-container'; // Apply animation to the entire container
+            const latestResult = rollHistory[rollHistory.length - 1];
+            let latestResultElement = document.createElement("div");
+            latestResultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length}:</h2>`;
+            recentRollContainer.appendChild(latestResultElement);
+
+            // Count occurrences of dice values within the current roll
+            const rollValuesCount = {};
+            for (const value of Object.values(latestResult)) {
+                if (typeof value === 'number') {
+                    rollValuesCount[value] = (rollValuesCount[value] || 0) + 1;
+                }
+            }
+
+            // Display each die result for the most recent roll
+            for (const [die, value] of Object.entries(latestResult)) {
+                if (die !== 'descriptions') {
+                    const lineElement = document.createElement("div");
+                    lineElement.className = 'result-line';
+
+                    const matchClass = rollValuesCount[value] > 1 ? 'match' : '';
+                    lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
+                                             <span class="${matchClass}">${die}: ${value} (${latestResult.descriptions[die] || ''})</span>`;
+                    latestResultElement.appendChild(lineElement);
+                }
+            }
+
+            const separator = document.createElement("hr");
+            recentRollContainer.appendChild(separator);
+
+            resultsDiv.appendChild(recentRollContainer); // Append the recent roll with animation
+
+            // Display all previous rolls
+            rollHistory.slice(0, -1).reverse().forEach((result, index) => {
+                let resultElement = document.createElement("div");
+                resultElement.innerHTML = `<h2 class='roll-title'>Roll ${rollHistory.length - index - 1}:</h2>`;
+                resultsDiv.appendChild(resultElement);
+
+                for (const [die, value] of Object.entries(result)) {
+                    if (die !== 'descriptions') {
+                        const lineElement = document.createElement("div");
+                        lineElement.className = 'result-line';
+                        lineElement.innerHTML = `<img src="icons/${die}.png" alt="${die} icon" class="dice-icon">
+                                                 ${die}: ${value} (${result.descriptions[die] || ''})`;
+                        resultElement.appendChild(lineElement);
+                    }
+                }
+
+                const separator = document.createElement("hr");
+                resultsDiv.appendChild(separator);
+            });
+        }
+
+        // Confirm and reset all rolls
+        function confirmReset() {
+            if (confirm("Are you sure you'd like to reset?")) {
+                resetRolls();
+            }
+        }
+
+        // Reset all rolls and clear localStorage
+        function resetRolls() {
+            rollHistory = [];
+            localStorage.removeItem('diceyDungeonRolls'); // Clear the cache when resetting
+            updateResultsDisplay();
+        }
+
+        // Export roll history to a text file
+        function exportRolls() {
+            let exportText = "Roll History:\n";
+            rollHistory.forEach((result, index) => {
+                exportText += `Roll ${index + 1}:\n`;
+                for (const [die, value] of Object.entries(result)) {
+                    exportText += `${die}: ${value} (${result.descriptions[die] || ''})\n`;
+                }
+                exportText += "\n";
+            });
+
+            const blob = new Blob([exportText], { type: "text/plain" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "roll_history.txt";
+            link.click();
+        }
+
+        // Load roll tables and cached rolls on page load
+        window.onload = async () => {
+            await loadRollTables();
+            loadCachedRolls(); // Load cached rolls on page load
+
+            // Fetch version.json and update footer text
+            try {
+                const response = await fetch('version.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                document.getElementById('version').textContent = `Version: ${data.version}`;
+            } catch (error) {
+                console.error('Error fetching version:', error);
+                document.getElementById('version').textContent = 'Version: Failed to Load';
+            }
+        };
+    </script>
+    <footer>
+        <center>
+            <h3><a href="instructions.html" class="instructions-link">Instructions</a></h3><br>
+            <p id="version" style="color: #ffffff; text-align: center; margin-top: 20px;">Version: Loading...</p>
+        </center>
+    </footer>
+</body>
+</html>

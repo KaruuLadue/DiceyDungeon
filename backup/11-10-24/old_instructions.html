@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dicey Dungeon Instructions</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+    <h3>Quick Reference: Dice Overview</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Dice</th>
+                <th>Purpose</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>D4 ÷ 2</strong></td>
+                <td>Hallway Length</td>
+                <td>Determines how long to draw the hallway (in squares).</td>
+            </tr>
+            <tr>
+                <td><strong>D4</strong></td>
+                <td>Starting Wall for Exit</td>
+                <td>Identifies the wall for the first exit in a room.</td>
+            </tr>
+            <tr>
+                <td><strong>D6 ÷ 2</strong></td>
+                <td>Additional Exits</td>
+                <td>Determines the number of extra doors/exits.</td>
+            </tr>
+            <tr>
+                <td><strong>D8</strong></td>
+                <td>Room Encounter</td>
+                <td>Use the encounter roll table to determine room events.</td>
+            </tr>
+            <tr>
+                <td><strong>D10</strong></td>
+                <td>Room Length</td>
+                <td>Establishes the length of the room.</td>
+            </tr>
+            <tr>
+                <td><strong>D12</strong></td>
+                <td>Room Type</td>
+                <td>Roll to determine the type of room (use roll table).</td>
+            </tr>
+            <tr>
+                <td><strong>D20</strong></td>
+                <td>Room Modifier</td>
+                <td>Adds modifiers to the room using the modifier roll table.</td>
+            </tr>
+            <tr>
+                <td><strong>D100</strong></td>
+                <td>Room Width</td>
+                <td>Establishes the width of the room.</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="container">
+    <h3>How to Play</h3>
+
+    <h4>Step 1: Roll All Dice</h4>
+    <p>Roll all <strong>7 dice</strong> together: <strong>D4, D6, D8, D10, D12, D20,</strong> and <strong>D100</strong>. Each one guides how you build the dungeon.</p>
+
+    <h4>Step 2: Draw the Hallway</h4>
+    <p>Use the <strong>D4</strong> result divided by 2 (round up) to determine how long to draw the hallway (in squares). Draw it in any direction.</p>
+
+    <h4>Step 3: Number of Doors</h4>
+    <ul>
+        <li><strong>D6 ÷ 2 (round up)</strong>: This roll gives you the <strong>total number of doors or exits</strong> for the room.</li>
+    </ul>
+
+    <h4>Step 4: Add Exits</h4>
+    <p>Use the <strong>D4</strong> result (full value) to determine which walls have exits. Count clockwise from the entrance:</p>
+    <ul>
+        <li>Example: If <strong>2</strong> is rolled, exits are on walls <strong>2</strong> and <strong>3</strong>.</li>
+    </ul>
+    <p>Place exits in the middle of the wall, adjusting for fit. Roll <strong>D10</strong> to determine if an exit is locked or hidden.</p>
+
+    <h4>Step 5: Create a Room</h4>
+    <ul>
+        <li><strong>D10</strong> result gives the <strong>room length</strong>.</li>
+        <li><strong>D100</strong> result (first digit) gives the <strong>room width</strong>.</li>
+    </ul>
+
+    <h4>Step 6: Room Type and Features (D12)</h4>
+    <h4>Step 7: Room Encounters (D8)</h4>
+    <h4>Step 8: Room Modifiers (D20)</h4>
+    <h4>Step 9: Special Events</h4>
+    <ul>
+        <li>If <strong>matching numbers</strong> are rolled on the <strong>D20</strong>, <strong>D8</strong>, or <strong>D12</strong>, roll <strong>D8</strong> again and add that result to the room encounter.</li>
+        <li>If all three (<strong>D20</strong>, <strong>D8</strong>, and <strong>D12</strong>) match, roll the <strong>D8</strong> three times and add all results to the encounter.</li>
+    </ul>
+
+    <h3>Progressing Through the Dungeon</h3>
+    <p>Choose an exit and repeat the steps, drawing hallways and rooms based on the dice rolls. Avoid placing doors at the edge of the map; treat them as solid walls.</p>
+
+    <h3>Ending the Game</h3>
+    <p>The game ends when the entire grid is filled, a major objective is completed, or players decide to end the session.</p>
+    </div>
+    <h3>Room Progress Tracking</h3>
+    <p>To help track each room and the results of your rolls, use the following table format to record details quickly and easily:</p>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Room #</th>
+                <th>D4 (Hallway Length)</th>
+                <th>D4 (Wall for Exit)</th>
+                <th>D6 (Additional Exits)</th>
+                <th>D8 (Encounter)</th>
+                <th>D10 (Room Length)</th>
+                <th>D12 (Room Type)</th>
+                <th>D20 (Modifier)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,164 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+
+/* General Styling */
+body {
+    font-family: 'Uncial Antiqua', sans-serif; /* Fantasy-style font for main text */
+    font-weight: normal;
+    text-align: center;
+    background: url('images/background.jpg') no-repeat center center fixed; /* Background image */
+    background-size: cover;
+    color: #ffffff; /* White text for high contrast */
+}
+
+.instructions-link {
+    font-family: inherit; /* This will use the same font as the surrounding text, such as the title */
+    color: #3498db; /* Replace with your desired color, e.g., a nice blue */
+    text-decoration: none; /* Removes the underline for a cleaner look */
+    font-size: inherit; /* Matches the font size of the title */
+}
+
+.instructions-link:hover {
+    color: #2980b9; /* Optional: Change color on hover for better user experience */
+    text-decoration: underline; /* Optional: Underline on hover to indicate it's a clickable link */
+}
+
+/* Container for Main Content */
+.container {
+    margin: 0px auto;
+    padding: 0px;
+    background-color: rgba(0, 0, 0, 0); /* Black background with 100% opacity */
+    border: 0px solid #ffffff; /* White border for high contrast */
+    border-radius: 10px;
+    max-width: 100%;
+    width: 90%;
+}
+
+/* Button Styling */
+button {
+    padding: 10px 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #d4af37; /* White button for contrast */
+    color: #000000; /* Black text */
+    border: 2px solid #000000; /* Black border for a pen and paper feel */
+    border-radius: 5px;
+    margin-bottom: 10px; /* Keep margin for spacing between results */
+    transition: all 0.5s ease-in-out;
+    font-weight: bold;
+    font-family: 'Uncial Antiqua', sans-serif; /* Same font as the title */
+}
+
+button:hover {
+    background-color: #808080; /* Grey hover effect */
+    color: #ffffff; /* Ensure text stays white */
+}
+
+/* Results Display */
+#results {
+    margin: 10px auto; /* Center the container horizontally */
+    font-size: 18px;
+    font-family: 'Inconsolata', monospace; /* font for roll results */
+    font-weight: normal;
+    background-color: rgba(0, 0, 0, 0.8); /* Black background with 80% opacity */
+    border: 1px solid #ffffff; /* White border */
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+    text-indent: 20px; /* Indents the first line of text in the paragraph by 20 pixels */
+    box-shadow: 0 0 10px rgba(162, 136, 90, 0.9); /* Very subtle white glow */
+    width: 60%; /* Dynamic width of the screen */
+    display: block;
+}
+
+/* Slide In Animation for the most recent roll result */
+@keyframes slideInFromTop {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}
+
+.result-line {
+    display: inline-block;
+    animation: slideInFromTop 0.8s ease-in-out; /* Slide in from the top */
+    margin-bottom: 5px; /* Keep margin for spacing between results */
+}
+
+/* Roll Separator */
+.roll-separator {
+    margin: 10px 0;
+    border: 0;
+    height: 1px;
+    background: #ffffff;
+    opacity: 0.5;
+}
+
+/* Heading Styling */
+h1 {
+    color: #ffffff; /* White color for the heading */
+    font-family: 'Uncial Antiqua', sans-serif; /* Fantasy-style font */
+    font-size: 3em;
+    text-shadow: 0 0 5px #808080; /* Soft white glow for the heading */
+}
+
+/* Dice Icon Styling */
+.dice-icon {
+    width: 30px;
+    height: 30px;
+    object-fit: contain; /* Ensures the icon fits within the box without stretching */
+    vertical-align: middle;
+    margin-right: 5px;
+}
+/* Roll Result Icon Styling */
+.roll-icon {
+    width: 50px;
+    height: 50px;
+    object-fit: contain; /* Ensures the icon fits within the box without stretching */
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+/* Roll Title Styling */
+.roll-title {
+    font-size: 1.5em;
+    color: #ffffff;
+    margin-bottom: 5px;
+    text-decoration: bold;
+}
+
+/* Responsive Styles for Mobile Devices */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 5px;
+    }
+
+    .container {
+        margin: 5px;
+        padding: 5px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+
+    #results {
+        width: 90%; /* Make results container larger for smaller screens */
+        font-size: 14px;
+        text-indent: 0px; /* Indents the first line of text in the paragraph by 20 pixels */
+    }
+
+    h1 {
+        font-size: 2.5em;
+    }
+
+    .roll-title {
+        font-size: 1.2em;
+    }
+
+    .dice-icon, .roll-icon {
+        width: 20px;
+        height: 20px;
+    }
+} 
