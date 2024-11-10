@@ -15,10 +15,12 @@
             margin-bottom: 5px;
             text-decoration: bold;
         }
+
         .result-line {
             margin-bottom: 10px;
             display: block;
         }
+
         .match {
             color: #ab7c7c; /* Color for matching rolls */
         }
@@ -26,34 +28,40 @@
         /* Animation for sliding in the entire recent roll container */
         @keyframes slideInFromTop {
             from { transform: translateY(-15px); opacity: 0; }  /* Adjust to a smaller distance */
-            to { transform: translateY(0); opacity: 2; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         /* Apply the slide animation to the entire recent-roll container */
         .recent-roll-container {
             animation: slideInFromTop 0.8s ease-in-out;
-        /* General logo styling for larger screens */
-            
-/* Mobile adjustments for logo */
-@media (max-width: 100px) {
-.logo {
-    width: 25px;  /* Set the width of the logo for desktop */
-    height: auto;  /* Keep aspect ratio */
-    margin: 20px 0;  /* Margin to separate from the title */
-    }
+        }
 
-    .container {
-        width: 90%;  /* Adjust container to fit better on smaller screens */
-        margin: 0 auto;
-    }
-}
+        /* General logo styling for larger screens */
+        .logo {
+            width: 200px;  /* Set the width of the logo for desktop */
+            height: auto;  /* Keep aspect ratio */
+            margin: 20px 0;  /* Margin to separate from the title */
+        }
+
+        /* Mobile adjustments for logo */
+        @media (max-width: 768px) {
+            .logo {
+                width: 150px;  /* Set the width of the logo for smaller screens */
+                height: auto;  /* Keep aspect ratio */
+            }
+
+            .container {
+                width: 90%;  /* Adjust container to fit better on smaller screens */
+                margin: 0 auto;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-       <p align="center">
-        <img src="images/logo.png" alt="Dicey Dungeon Logo" class="logo">
-</p>
+        <p align="center">
+            <img src="images/logo.png" alt="Dicey Dungeon Logo" class="logo">
+        </p>
         <button onclick="rollAllDice()">Roll</button>
         <button onclick="confirmReset()">Reset</button>
         <button onclick="exportRolls()">Save</button>
@@ -65,23 +73,24 @@
         let rollTables = {};
         const rollSound = new Audio('audio/rollsound.wav'); // Play the roll sound every time the Roll button is clicked
 
-// Load roll tables from JSON file or localStorage
-async function loadRollTables() {
-    try {
-        // Check if custom roll tables exist in localStorage
-        const cachedRollTables = localStorage.getItem('customRollTables');
-        if (cachedRollTables) {
-            rollTables = JSON.parse(cachedRollTables);
-        } else {
-            // Fallback to default rollTables.json if no customization is found
-            const response = await fetch('rollTables.json');
-            rollTables = await response.json();
+        // Load roll tables from JSON file or localStorage
+        async function loadRollTables() {
+            try {
+                // Check if custom roll tables exist in localStorage
+                const cachedRollTables = localStorage.getItem('customRollTables');
+                if (cachedRollTables) {
+                    rollTables = JSON.parse(cachedRollTables);
+                } else {
+                    // Fallback to default rollTables.json if no customization is found
+                    const response = await fetch('rollTables.json');
+                    rollTables = await response.json();
+                }
+                console.log("Roll tables loaded:", rollTables);
+            } catch (error) {
+                console.error("Error loading roll tables:", error);
+            }
         }
-        console.log("Roll tables loaded:", rollTables);
-    } catch (error) {
-        console.error("Error loading roll tables:", error);
-    }
-}
+
         // Load cached rolls from localStorage
         function loadCachedRolls() {
             const cachedRolls = localStorage.getItem('diceyDungeonRolls');
@@ -245,8 +254,10 @@ async function loadRollTables() {
         };
     </script>
     <footer>
-        <center><h3><a href="instructions.html" class="instructions-link">Instructions</a></h3><br>
-        <p id="version" style="color: #ffffff; text-align: center; margin-top: 20px;">Version: Loading...</p></center>
+        <center>
+            <h3><a href="instructions.html" class="instructions-link">Instructions</a></h3><br>
+            <p id="version" style="color: #ffffff; text-align: center; margin-top: 20px;">Version: Loading...</p>
+        </center>
     </footer>
 </body>
 </html>
