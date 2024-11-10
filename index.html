@@ -33,16 +33,13 @@
         .recent-roll-container {
             animation: slideInFromTop 0.8s ease-in-out;
         /* General logo styling for larger screens */
+            
+/* Mobile adjustments for logo */
+@media (max-width: 300px) {
 .logo {
     width: 100px;  /* Set the width of the logo for desktop */
     height: auto;  /* Keep aspect ratio */
     margin: 20px 0;  /* Margin to separate from the title */
-}
-/* Mobile adjustments for logo */
-@media (max-width: 300px) {
-    .logo {
-        width: 150px;  /* Adjust logo size for smaller screens */
-        height: auto;  /* Maintain aspect ratio */
     }
 
     .container {
