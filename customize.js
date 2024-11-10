@@ -1,27 +1,19 @@
-// Store the default roll tables
 let defaultRollTables = {};
 let currentRollTables = {};
 
-// Load both default and custom roll tables
 async function loadCurrentValues() {
     try {
-        // Load default tables
         const response = await fetch('rollTables.json');
         defaultRollTables = await response.json();
-
-        // Load custom tables if they exist
         const customTables = localStorage.getItem('customRollTables');
         currentRollTables = customTables ? JSON.parse(customTables) : {...defaultRollTables};
-
-        // Populate all input fields
         populateAllFields();
     } catch (error) {
         console.error("Error loading roll tables:", error);
-        showError("Failed to load roll tables", "global");
+        showGlobalError("Failed to load roll tables");
     }
 }
 
-// Populate input fields for a specific die
 function populateFields(dieType) {
     const values = currentRollTables[dieType] || defaultRollTables[dieType] || [];
     values.forEach((value, index) => {
@@ -32,14 +24,12 @@ function populateFields(dieType) {
     });
 }
 
-// Populate all dice input fields
 function populateAllFields() {
     Object.keys(diceConfig).forEach(dieType => {
         populateFields(dieType);
     });
 }
 
-// Reset a specific table to default values
 function resetTable(dieType) {
     if (defaultRollTables[dieType]) {
         defaultRollTables[dieType].forEach((value, index) => {
@@ -54,13 +44,11 @@ function resetTable(dieType) {
     }
 }
 
-// Save a specific table
 function saveTable(dieType) {
     try {
         const values = [];
         const numSides = diceConfig[dieType].sides;
 
-        // Collect all values
         for (let i = 0; i < numSides; i++) {
             const input = document.getElementById(`${dieType}-${i}`);
             if (!input.value.trim()) {
@@ -69,19 +57,98 @@ function saveTable(dieType) {
             values.push(input.value.trim());
         }
 
-        // Update current tables
         currentRollTables[dieType] = values;
-
-        // Save to localStorage
         localStorage.setItem('customRollTables', JSON.stringify(currentRollTables));
-
         showSuccess(`${dieType} table saved successfully`, dieType);
     } catch (error) {
         showError(error.message, dieType);
     }
 }
 
-// Random result generators (placeholder - expand these as needed)
+function saveAllTables() {
+    try {
+        Object.keys(diceConfig).forEach(dieType => {
+            const values = [];
+            const numSides = diceConfig[dieType].sides;
+
+            for (let i = 0; i < numSides; i++) {
+                const input = document.getElementById(`${dieType}-${i}`);
+                if (!input.value.trim()) {
+                    throw new Error(`${dieType}: Entry ${i + 1} cannot be empty`);
+                }
+                values.push(input.value.trim());
+            }
+
+            currentRollTables[dieType] = values;
+        });
+
+        localStorage.setItem('customRollTables', JSON.stringify(currentRollTables));
+        showGlobalSuccess("All tables saved successfully");
+    } catch (error) {
+        showGlobalError(error.message);
+    }
+}
+
+function exportTables() {
+    try {
+        const tables = localStorage.getItem('customRollTables');
+        if (!tables) {
+            throw new Error("No custom tables found to export");
+        }
+
+        const blob = new Blob([tables], { type: 'application/json' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'dicey_dungeon_tables.json';
+        link.click();
+        showGlobalSuccess("Tables exported successfully");
+    } catch (error) {
+        showGlobalError("Failed to export tables: " + error.message);
+    }
+}
+
+async function importTables(event) {
+    try {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            try {
+                const tables = JSON.parse(e.target.result);
+                
+                // Validate the imported data
+                Object.keys(diceConfig).forEach(dieType => {
+                    if (!Array.isArray(tables[dieType]) || 
+                        tables[dieType].length !== diceConfig[dieType].sides) {
+                        throw new Error(`Invalid data format for ${dieType}`);
+                    }
+                });
+
+                if (localStorage.getItem('customRollTables')) {
+                    if (confirm("Custom tables already exist. Do you want to replace them?")) {
+                        currentRollTables = tables;
+                        localStorage.setItem('customRollTables', JSON.stringify(tables));
+                        populateAllFields();
+                        showGlobalSuccess("Tables imported successfully");
+                    }
+                } else {
+                    currentRollTables = tables;
+                    localStorage.setItem('customRollTables', JSON.stringify(tables));
+                    populateAllFields();
+                    showGlobalSuccess("Tables imported successfully");
+                }
+            } catch (error) {
+                showGlobalError("Invalid file format: " + error.message);
+            }
+        };
+        reader.readAsText(file);
+    } catch (error) {
+        showGlobalError("Failed to import tables: " + error.message);
+    }
+    event.target.value = ''; // Reset file input
+}
+
 const generators = {
     room: [
         "Dusty Chamber", "Hidden Alcove", "Grand Hall", "Dark Corridor",
@@ -100,18 +167,15 @@ const generators = {
     ]
 };
 
-// Randomize a single entry
 function randomizeEntry(dieType, index) {
     const input = document.getElementById(`${dieType}-${index}`);
     if (input) {
-        // Choose appropriate generator based on die type
-        const generator = generators.room; // Expand this logic based on die type
+        const generator = generators.room;
         const randomValue = generator[Math.floor(Math.random() * generator.length)];
         input.value = randomValue;
     }
 }
 
-// Randomize entire table
 function randomizeTable(dieType) {
     const numSides = diceConfig[dieType].sides;
     for (let i = 0; i < numSides; i++) {
@@ -120,7 +184,6 @@ function randomizeTable(dieType) {
     showSuccess(`${dieType} table randomized`, dieType);
 }
 
-// Show success message
 function showSuccess(message, dieType) {
     const successDiv = document.getElementById(`${dieType}-success`);
     const errorDiv = document.getElementById(`${dieType}-error`);
@@ -136,7 +199,6 @@ function showSuccess(message, dieType) {
     }
 }
 
-// Show error message
 function showError(message, dieType) {
     const successDiv = document.getElementById(`${dieType}-success`);
     const errorDiv = document.getElementById(`${dieType}-error`);
@@ -152,12 +214,30 @@ function showError(message, dieType) {
     }
 }
 
-// Initialize tooltips and other UI enhancements
+function showGlobalSuccess(message) {
+    const globalMessage = document.getElementById('globalMessage');
+    globalMessage.textContent = message;
+    globalMessage.className = 'global-message success show';
+    
+    setTimeout(() => {
+        globalMessage.classList.remove('show');
+    }, 3000);
+}
+
+function showGlobalError(message) {
+    const globalMessage = document.getElementById('globalMessage');
+    globalMessage.textContent = message;
+    globalMessage.className = 'global-message error show';
+    
+    setTimeout(() => {
+        globalMessage.classList.remove('show');
+    }, 3000);
+}
+
 function initializeUI() {
     // Add any additional UI initialization here
 }
 
-// Initialize everything when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     initializeUI();
 });

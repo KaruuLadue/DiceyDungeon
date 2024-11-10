@@ -6,6 +6,18 @@
     <title>Customize Roll Tables - Dicey Dungeon</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        .navigation-bar {
+            position: sticky;
+            top: 0;
+            background-color: rgba(0, 0, 0, 0.95);
+            padding: 15px;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            border-bottom: 1px solid #d4af37;
+        }
+
         .dice-section {
             background-color: rgba(0, 0, 0, 0.9);
             border: 1px solid #d4af37;
@@ -95,6 +107,32 @@
             opacity: 1;
         }
 
+        .global-message {
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1001;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .global-message.success {
+            background-color: rgba(76, 175, 80, 0.9);
+            color: white;
+        }
+
+        .global-message.error {
+            background-color: rgba(244, 67, 54, 0.9);
+            color: white;
+        }
+
+        .global-message.show {
+            opacity: 1;
+        }
+
         button {
             min-width: 100px;
         }
@@ -105,7 +143,15 @@
             margin: 20px 0;
         }
 
+        #fileInput {
+            display: none;
+        }
+
         @media screen and (max-width: 768px) {
+            .navigation-bar {
+                flex-wrap: wrap;
+            }
+
             .dice-header {
                 flex-direction: column;
                 gap: 10px;
@@ -125,10 +171,18 @@
     </style>
 </head>
 <body>
+    <div class="navigation-bar">
+        <button onclick="window.location.href='index.html'">Go Back</button>
+        <button onclick="saveAllTables()">Save All</button>
+        <button onclick="exportTables()">Export Tables</button>
+        <button onclick="document.getElementById('fileInput').click()">Import Tables</button>
+        <input type="file" id="fileInput" accept=".json" onchange="importTables(event)">
+    </div>
+
     <div class="container">
         <h3>Customize Roll Tables</h3>
+        <div id="globalMessage" class="global-message"></div>
 
-        <!-- Template for dice sections -->
         <div id="diceContainer">
             <!-- Dice sections will be generated here -->
         </div>
@@ -139,7 +193,6 @@
     </div>
 
     <script>
-        // Define the dice configuration
         const diceConfig = {
             D4: { sides: 4, description: 'Hallway Length' },
             D6: { sides: 6, description: 'Additional Exits' },
@@ -148,9 +201,8 @@
             D12: { sides: 12, description: 'Room Type' },
             D20: { sides: 20, description: 'Room Modifier' },
             D100: { sides: 100, description: 'Length of Room' }
-};
+        };
 
-        // Create HTML for a dice section
         function createDiceSection(dieType, config) {
             return `
                 <div class="dice-section" id="${dieType}-section">
@@ -177,15 +229,11 @@
             `;
         }
 
-        // Initialize the page
         document.addEventListener('DOMContentLoaded', async () => {
-            // Generate all dice sections
             const container = document.getElementById('diceContainer');
             Object.entries(diceConfig).forEach(([dieType, config]) => {
                 container.innerHTML += createDiceSection(dieType, config);
             });
-
-            // Load and populate the current values
             await loadCurrentValues();
         });
     </script>
