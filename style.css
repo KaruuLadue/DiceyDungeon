@@ -5,6 +5,7 @@
 /* General Styling */
 body {
     font-family: 'Uncial Antiqua', sans-serif; /* Fantasy-style font for main text */
+    font-weight: bold;
     text-align: center;
     background: url('images/background.jpg') no-repeat center center fixed; /* Background image */
     background-size: cover;
