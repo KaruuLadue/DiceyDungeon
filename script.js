@@ -15,13 +15,12 @@ const defaultConfig = {
         D20: true,
         D100: true
     },
-    generateImages: false,  // Start false until implementation
+    generateImages: false,
     soundEnabled: true
 };
 
 let activeConfig = { ...defaultConfig };
 
-// Load roll tables from JSON file or localStorage
 async function loadRollTables() {
     try {
         const cachedTables = localStorage.getItem('customRollTables');
@@ -39,40 +38,14 @@ async function loadRollTables() {
     }
 }
 
-// Load configuration from localStorage
-function loadConfig() {
-    try {
-        const savedConfig = localStorage.getItem('diceyDungeonConfig');
-        if (savedConfig) {
-            activeConfig = { ...defaultConfig, ...JSON.parse(savedConfig) };
-        }
-    } catch (error) {
-        console.error("Error loading config:", error);
-        activeConfig = { ...defaultConfig };
-    }
-}
-
-// Save configuration to localStorage
-function saveConfig() {
-    try {
-        localStorage.setItem('diceyDungeonConfig', JSON.stringify(activeConfig));
-    } catch (error) {
-        console.error("Error saving config:", error);
-        displayError("Failed to save configuration.");
-    }
-}
-
-// Roll dice with a given number of sides
 function rollDice(sides) {
     return Math.floor(Math.random() * sides) + 1;
 }
 
-// Process a single roll with all enabled dice
 async function processRoll() {
     const results = {};
     const descriptions = {};
     
-    // Only roll enabled dice
     for (const [die, enabled] of Object.entries(activeConfig.enabledDice)) {
         if (enabled) {
             results[die] = rollDice(parseInt(die.slice(1)));
@@ -82,17 +55,13 @@ async function processRoll() {
         }
     }
 
-    // Structure the results
     const structuredResult = structureRoomData(results, descriptions);
-    
-    // Add to history and save
     rollHistory.push(structuredResult);
     saveRollsToCache();
     
     return structuredResult;
 }
 
-// Structure flat roll data into room format
 function structureRoomData(results, descriptions) {
     return {
         id: Date.now().toString(),
@@ -145,7 +114,6 @@ function structureRoomData(results, descriptions) {
     };
 }
 
-// Display error message
 function displayError(message, duration = 5000) {
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
@@ -154,26 +122,27 @@ function displayError(message, duration = 5000) {
     setTimeout(() => errorDiv.remove(), duration);
 }
 
-// Update the results display
 function updateResultsDisplay(result) {
     const resultsDiv = document.getElementById("results");
     const recentRollContainer = document.createElement("div");
     recentRollContainer.className = 'recent-roll-container';
 
-    // Add room details
     const rollTitle = document.createElement("h2");
     rollTitle.className = 'roll-title';
     rollTitle.textContent = `Roll ${rollHistory.length}:`;
     recentRollContainer.appendChild(rollTitle);
 
-    // Add each enabled die result
+    const rollValues = new Map();
+
     Object.entries(result.rolls).forEach(([section, data]) => {
         Object.entries(data).forEach(([key, rollData]) => {
-            if (rollData && rollData.die) {
+            if (rollData && rollData.die && rollData.value) {
+                rollValues.set(rollData.value, (rollValues.get(rollData.value) || 0) + 1);
+                
                 const lineElement = document.createElement("div");
                 lineElement.className = 'result-line';
+                lineElement.setAttribute('data-value', rollData.value);
                 
-                // Create icon and text
                 lineElement.innerHTML = `
                     <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
                     <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
@@ -184,16 +153,29 @@ function updateResultsDisplay(result) {
         });
     });
 
-    // Add separator
+    if (activeConfig.highlightMatches) {
+        recentRollContainer.querySelectorAll('.result-line').forEach(line => {
+            const value = line.getAttribute('data-value');
+            if (rollValues.get(parseInt(value)) > 1) {
+                line.classList.add('match');
+            }
+        });
+    }
+
     const separator = document.createElement("hr");
     separator.className = 'roll-separator';
     recentRollContainer.appendChild(separator);
 
-    // Insert at the top
+    if (activeConfig.generateImages) {
+        const visualizationDiv = document.createElement("div");
+        visualizationDiv.className = 'room-visualization';
+        visualizationDiv.textContent = 'Room visualization placeholder';
+        recentRollContainer.appendChild(visualizationDiv);
+    }
+
     resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
 }
 
-// Roll all dice and update display
 async function rollAllDice() {
     if (activeConfig.soundEnabled) {
         await rollSound.play().catch(console.error);
@@ -203,7 +185,6 @@ async function rollAllDice() {
     updateResultsDisplay(result);
 }
 
-// Load cached rolls from localStorage
 function loadCachedRolls() {
     try {
         const cachedRolls = localStorage.getItem('diceyDungeonRolls');
@@ -217,7 +198,6 @@ function loadCachedRolls() {
     }
 }
 
-// Save current roll history to localStorage
 function saveRollsToCache() {
     try {
         localStorage.setItem('diceyDungeonRolls', JSON.stringify(rollHistory));
@@ -227,16 +207,18 @@ function saveRollsToCache() {
     }
 }
 
-// Reset all rolls
-function resetRolls() {
+function confirmReset() {
     if (confirm("Are you sure you'd like to reset?")) {
-        rollHistory = [];
-        localStorage.removeItem('diceyDungeonRolls');
-        document.getElementById("results").innerHTML = '';
+        resetRolls();
     }
 }
 
-// Export roll history to text file
+function resetRolls() {
+    rollHistory = [];
+    localStorage.removeItem('diceyDungeonRolls');
+    document.getElementById("results").innerHTML = '';
+}
+
 function exportRolls() {
     let exportText = "Roll History:\n\n";
     rollHistory.forEach((result, index) => {
@@ -258,13 +240,100 @@ function exportRolls() {
     link.click();
 }
 
+// Configuration Panel Functions
+function toggleConfig() {
+    const configPanel = document.getElementById('configPanel');
+    configPanel.classList.toggle('hidden');
+    
+    if (!configPanel.classList.contains('hidden')) {
+        updateConfigDisplay();
+    }
+}
+
+function updateConfigDisplay() {
+    document.getElementById('highlightMatches').checked = activeConfig.highlightMatches;
+    document.getElementById('soundEnabled').checked = activeConfig.soundEnabled;
+    document.getElementById('generateImages').checked = activeConfig.generateImages;
+    
+    Object.entries(activeConfig.enabledDice).forEach(([die, enabled]) => {
+        const checkbox = document.getElementById(`${die}enabled`);
+        if (checkbox) {
+            checkbox.checked = enabled;
+        }
+    });
+}
+
+function updateConfig(setting, value) {
+    activeConfig[setting] = value;
+    saveConfig();
+    
+    switch(setting) {
+        case 'highlightMatches':
+            updateHighlightStyles();
+            break;
+        case 'generateImages':
+            toggleRoomVisualization(value);
+            break;
+    }
+}
+
+function updateDiceConfig(die, enabled) {
+    activeConfig.enabledDice[die] = enabled;
+    saveConfig();
+}
+
+function toggleRoomVisualization(show) {
+    const visualizationDiv = document.getElementById('roomVisualization');
+    if (visualizationDiv) {
+        visualizationDiv.classList.toggle('hidden', !show);
+    }
+}
+
+function updateHighlightStyles() {
+    const resultLines = document.querySelectorAll('.result-line');
+    resultLines.forEach(line => {
+        const value = line.getAttribute('data-value');
+        if (value) {
+            const matches = document.querySelectorAll(`[data-value="${value}"]`);
+            if (matches.length > 1 && activeConfig.highlightMatches) {
+                line.classList.add('match');
+            } else {
+                line.classList.remove('match');
+            }
+        }
+    });
+}
+
+function saveConfig() {
+    try {
+        localStorage.setItem('diceyDungeonConfig', JSON.stringify(activeConfig));
+    } catch (error) {
+        console.error("Error saving config:", error);
+        displayError("Failed to save configuration");
+    }
+}
+
+function loadConfig() {
+    try {
+        const savedConfig = localStorage.getItem('diceyDungeonConfig');
+        if (savedConfig) {
+            activeConfig = { ...defaultConfig, ...JSON.parse(savedConfig) };
+        }
+        updateConfigDisplay();
+    } catch (error) {
+        console.error("Error loading config:", error);
+        activeConfig = { ...defaultConfig };
+        displayError("Failed to load configuration. Using defaults.");
+    }
+}
+
 // Initialize on page load
-window.onload = async () => {
+document.addEventListener('DOMContentLoaded', async () => {
     await loadRollTables();
     loadConfig();
     loadCachedRolls();
+    updateConfigDisplay();
     
-    // Update version display
     try {
         const response = await fetch('version.json');
         if (response.ok) {
@@ -275,4 +344,4 @@ window.onload = async () => {
         console.error('Error fetching version:', error);
         document.getElementById('version').textContent = 'Version: Unknown';
     }
-};
+});
