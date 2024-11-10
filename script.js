@@ -123,44 +123,41 @@ function displayError(message, duration = 5000) {
 }
 
 function updateResultsDisplay(result) {
-  const resultsDiv = document.getElementById("results");
-  const recentRollContainer = document.createElement("div");
-  recentRollContainer.className = 'recent-roll-container';
+    const resultsDiv = document.getElementById("results");
+    const recentRollContainer = document.createElement("div");
+    recentRollContainer.className = 'recent-roll-container';
 
-  const rollTitle = document.createElement("h2");
-  rollTitle.className = 'roll-title';
-  rollTitle.textContent = `Roll ${rollHistory.length}:`;
-  recentRollContainer.appendChild(rollTitle);
+    const rollTitle = document.createElement("h2");
+    rollTitle.className = 'roll-title';
+    rollTitle.textContent = `Roll ${rollHistory.length}:`;
+    recentRollContainer.appendChild(rollTitle);
 
-  const rollValues = new Map();
+    const rollValues = new Map();
 
-  Object.entries(result.rolls).forEach(([section, data]) => {
-      Object.entries(data).forEach(([key, rollData]) => {
-          if (rollData && rollData.die && rollData.value) {
-              // Validation log for all dice
-              console.log(`Processing ${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}`);
-              
-              rollValues.set(rollData.value, (rollValues.get(rollData.value) || 0) + 1);
-              
-              const lineElement = document.createElement("div");
-              lineElement.className = 'result-line';
-              lineElement.setAttribute('data-value', rollData.value);
-              
-              lineElement.innerHTML = `
-                  <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
-                  <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
-              `;
-              
-              recentRollContainer.appendChild(lineElement);
-          } else {
-              // Log an error if there is an issue with the roll data
-              console.error(`Invalid roll data for ${key}: `, rollData);
-          }
-      });
-  });
-
-  resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
-}
+    Object.entries(result.rolls).forEach(([section, data]) => {
+        Object.entries(data).forEach(([key, rollData]) => {
+            if (rollData && rollData.die && rollData.value) {
+                // Validation log for all dice
+                console.log(`Processing ${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}`);
+                
+                rollValues.set(rollData.value, (rollValues.get(rollData.value) || 0) + 1);
+                
+                const lineElement = document.createElement("div");
+                lineElement.className = 'result-line';
+                lineElement.setAttribute('data-value', rollData.value);
+                
+                lineElement.innerHTML = `
+                    <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
+                    <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
+                `;
+                
+                recentRollContainer.appendChild(lineElement);
+            } else {
+                // Log an error if there is an issue with the roll data
+                console.error(`Invalid roll data for ${key}: `, rollData);
+            }
+        });
+    });
 
     if (activeConfig.highlightMatches) {
         recentRollContainer.querySelectorAll('.result-line').forEach(line => {
@@ -338,11 +335,32 @@ function loadConfig() {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', async () => {
-    await loadRollTables();
-    loadConfig();
-    loadCachedRolls();
+    console.log("DOMContentLoaded event fired.");
+
+    try {
+        await loadRollTables();
+        console.log("Roll tables loaded.");
+    } catch (error) {
+        console.error("Failed to load roll tables:", error);
+    }
+
+    try {
+        loadConfig();
+        console.log("Configuration loaded.");
+    } catch (error) {
+        console.error("Failed to load configuration:", error);
+    }
+
+    try {
+        loadCachedRolls();
+        console.log("Cached rolls loaded.");
+    } catch (error) {
+        console.error("Failed to load cached rolls:", error);
+    }
+
     updateConfigDisplay();
-    
+    console.log("Configuration display updated.");
+
     try {
         const response = await fetch('version.json');
         if (response.ok) {
