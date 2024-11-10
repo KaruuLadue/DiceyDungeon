@@ -1,183 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customize Roll Tables - Dicey Dungeon</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .container {
-            max-width: 75%;
-            margin: 0 auto;
-            padding: 20px;
+        .dice-section {
             background-color: rgba(0, 0, 0, 0.9);
+            border: 1px solid #d4af37;
             border-radius: 10px;
-            color: #ffffff;
-            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            padding: 20px;
         }
 
-        h3 {
+        .dice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d4af37;
+        }
+
+        .dice-title {
             color: #d4af37;
-            text-align: center;
-            margin-bottom: 15px;
+            margin: 0;
+            font-size: 1.5em;
         }
 
-        label {
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
+        .dice-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            gap: 10px;
+        }
+
+        .input-row label {
+            min-width: 30px;
             color: #d4af37;
         }
 
-        textarea {
-            width: 100%;
-            height: 100px;
-            padding: 10px;
+        .input-row input {
+            flex: 1;
+            padding: 8px;
             background-color: #222;
             color: #ffffff;
             border: 1px solid #555;
             border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .randomize-entry {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+            padding: 0 5px;
+            color: #d4af37;
+        }
+
+        .randomize-entry:hover {
+            color: #ffffff;
+        }
+
+        .success-message {
+            color: #4CAF50;
+            padding: 10px;
+            margin-top: 10px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .success-message.show {
+            opacity: 1;
+        }
+
+        .error-message {
+            color: #f44336;
+            padding: 10px;
+            margin-top: 10px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .error-message.show {
+            opacity: 1;
         }
 
         button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            font-size: 1em;
-            color: #ffffff;
-            background-color: #d4af37;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+            min-width: 100px;
         }
 
-        button:hover {
-            background-color: #b38f34;
-        }
-
-        .button-group {
+        .navigation-buttons {
             display: flex;
             justify-content: center;
-            margin-top: 30px;
+            margin: 20px 0;
         }
 
-        .reset-button {
-            margin-top: 10px;
-            padding: 5px 10px;
-            font-size: 0.9em;
-            color: #ffffff;
-            background-color: #c0392b;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+        @media screen and (max-width: 768px) {
+            .dice-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
 
-        .reset-button:hover {
-            background-color: #a93226;
+            .dice-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            button {
+                padding: 8px;
+                min-width: auto;
+            }
         }
     </style>
 </head>
-
 <body>
     <div class="container">
         <h3>Customize Roll Tables</h3>
 
-        <label for="d4Table">D4 Roll Table:</label>
-        <textarea id="d4Table"></textarea>
-        <button class="reset-button" onclick="resetTable('D4')">Reset D4 Table</button>
+        <!-- Template for dice sections -->
+        <div id="diceContainer">
+            <!-- Dice sections will be generated here -->
+        </div>
 
-        <label for="d6Table">D6 Roll Table:</label>
-        <textarea id="d6Table"></textarea>
-        <button class="reset-button" onclick="resetTable('D6')">Reset D6 Table</button>
-
-        <label for="d8Table">D8 Roll Table:</label>
-        <textarea id="d8Table"></textarea>
-        <button class="reset-button" onclick="resetTable('D8')">Reset D8 Table</button>
-
-        <label for="d10Table">D10 Roll Table:</label>
-        <textarea id="d10Table"></textarea>
-        <button class="reset-button" onclick="resetTable('D10')">Reset D10 Table</button>
-
-        <label for="d12Table">D12 Roll Table:</label>
-        <textarea id="d12Table"></textarea>
-        <button class="reset-button" onclick="resetTable('D12')">Reset D12 Table</button>
-
-        <label for="d20Table">D20 Roll Table:</label>
-        <textarea id="d20Table"></textarea>
-        <button class="reset-button" onclick="resetTable('D20')">Reset D20 Table</button>
-
-        <label for="d100Table">D100 Roll Table:</label>
-        <textarea id="d100Table"></textarea>
-        <button class="reset-button" onclick="resetTable('D100')">Reset D100 Table</button>
-
-        <div class="button-group">
-            <button onclick="saveRollTables()">Save</button>
-            <button onclick="goBack()">Go Back</button>
+        <div class="navigation-buttons">
+            <button onclick="window.location.href='index.html'">Go Back</button>
         </div>
     </div>
 
     <script>
-        let defaultRollTables = {};
+        // Define the dice configuration
+        const diceConfig = {
+            D20: { sides: 20, description: 'Room Modifier' },
+            D12: { sides: 12, description: 'Room Type' },
+            D10: { sides: 10, description: 'Width of Room' },
+            D8: { sides: 8, description: 'Room Encounter' },
+            D6: { sides: 6, description: 'Additional Exits' },
+            D4: { sides: 4, description: 'Hallway Length' },
+            D100: { sides: 100, description: 'Length of Room' }
+        };
 
+        // Create HTML for a dice section
+        function createDiceSection(dieType, config) {
+            return `
+                <div class="dice-section" id="${dieType}-section">
+                    <div class="dice-header">
+                        <h4 class="dice-title">${dieType} - ${config.description}</h4>
+                        <div class="dice-controls">
+                            <button onclick="resetTable('${dieType}')">Reset</button>
+                            <button onclick="randomizeTable('${dieType}')">Randomize</button>
+                            <button onclick="saveTable('${dieType}')">Save Table</button>
+                        </div>
+                    </div>
+                    <div id="${dieType}-entries">
+                        ${Array.from({length: config.sides}, (_, i) => `
+                            <div class="input-row">
+                                <label>${i + 1}:</label>
+                                <input type="text" id="${dieType}-${i}" placeholder="Enter result for ${i + 1}">
+                                <button class="randomize-entry" onclick="randomizeEntry('${dieType}', ${i})">🎲</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="success-message" id="${dieType}-success"></div>
+                    <div class="error-message" id="${dieType}-error"></div>
+                </div>
+            `;
+        }
+
+        // Initialize the page
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadDefaultRollTables();
-            loadCustomRollTables();
+            // Generate all dice sections
+            const container = document.getElementById('diceContainer');
+            Object.entries(diceConfig).forEach(([dieType, config]) => {
+                container.innerHTML += createDiceSection(dieType, config);
+            });
+
+            // Load and populate the current values
+            await loadCurrentValues();
         });
-
-        async function loadDefaultRollTables() {
-            try {
-                const response = await fetch('rollTables.json');
-                defaultRollTables = await response.json();
-                console.log("Default roll tables loaded:", defaultRollTables);
-            } catch (error) {
-                console.error("Error loading default roll tables:", error);
-            }
-        }
-
-        function loadCustomRollTables() {
-            // Load roll tables from localStorage if available
-            const rollTables = JSON.parse(localStorage.getItem('customRollTables')) || {};
-
-            // Load each table if it exists
-            document.getElementById('d4Table').value = rollTables.D4 ? rollTables.D4.join('\n') : '';
-            document.getElementById('d6Table').value = rollTables.D6 ? rollTables.D6.join('\n') : '';
-            document.getElementById('d8Table').value = rollTables.D8 ? rollTables.D8.join('\n') : '';
-            document.getElementById('d10Table').value = rollTables.D10 ? rollTables.D10.join('\n') : '';
-            document.getElementById('d12Table').value = rollTables.D12 ? rollTables.D12.join('\n') : '';
-            document.getElementById('d20Table').value = rollTables.D20 ? rollTables.D20.join('\n') : '';
-            document.getElementById('d100Table').value = rollTables.D100 ? rollTables.D100.join('\n') : '';
-        }
-
-        function saveRollTables() {
-            const rollTables = {
-                D4: document.getElementById('d4Table').value.split('\n'),
-                D6: document.getElementById('d6Table').value.split('\n'),
-                D8: document.getElementById('d8Table').value.split('\n'),
-                D10: document.getElementById('d10Table').value.split('\n'),
-                D12: document.getElementById('d12Table').value.split('\n'),
-                D20: document.getElementById('d20Table').value.split('\n'),
-                D100: document.getElementById('d100Table').value.split('\n')
-            };
-
-            localStorage.setItem('customRollTables', JSON.stringify(rollTables));
-            alert('Roll tables saved successfully!');
-        }
-
-        function resetTable(die) {
-            if (defaultRollTables[die]) {
-                document.getElementById(die.toLowerCase() + 'Table').value = defaultRollTables[die].join('\n');
-                alert(`${die} Roll Table has been reset to default values.`);
-            } else {
-                alert(`Default values for ${die} not found.`);
-            }
-        }
-
-        function goBack() {
-            window.location.href = 'index.html';
-        }
     </script>
+    <script src="customize.js"></script>
 </body>
-
 </html>
