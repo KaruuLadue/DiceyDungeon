@@ -153,10 +153,6 @@ function updateResultsDisplay(result) {
       });
   });
 
-  // Append the recent roll container to the results div
-  resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
-}
-
     if (activeConfig.highlightMatches) {
         recentRollContainer.querySelectorAll('.result-line').forEach(line => {
             const value = line.getAttribute('data-value');
