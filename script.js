@@ -124,17 +124,114 @@ function displayError(message, duration = 5000) {
 
 function updateResultsDisplay(result) {
     const resultsDiv = document.getElementById("results");
+    const recentRollContainer = document.createElement("div");
+    recentRollContainer.className = 'recent-roll-container';
+
+    const rollTitle = document.createElement("h2");
+    rollTitle.className = 'roll-title';
+    rollTitle.textContent = `Roll ${rollHistory.length}:`;
+    recentRollContainer.appendChild(rollTitle);
+
+    const rollValues = new Map();
+
+    Object.entries(result.rolls).forEach(([section, data]) => {
+        Object.entries(data).forEach(([key, rollData]) => {
+            if (rollData && rollData.die && rollData.value) {
+                rollValues.set(rollData.value, (rollValues.get(rollData.value) || 0) + 1);
+                
+                const lineElement = document.createElement("div");
+                lineElement.className = 'result-line';
+                lineElement.setAttribute('data-value', rollData.value);
+                
+                lineElement.innerHTML = `
+                    <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
+                    <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
+                `;
+                
+                recentRollContainer.appendChild(lineElement);
+            }
+        });
+    });
+
+    if (activeConfig.highlightMatches) {
+        recentRollContainer.querySelectorAll('.result-line').forEach(line => {
+            const value = line.getAttribute('data-value');
+            if (rollValues.get(parseInt(value)) > 1) {
+                line.classList.add('match');
+            }
+        });
+    }
+
+    const separator = document.createElement("hr");
+    separator.className = 'roll-separator';
+    recentRollContainer.appendChild(separator);
+
+    if (activeConfig.generateImages) {
+        const visualizationDiv = document.createElement("div");
+        visualizationDiv.className = 'room-visualization';
+        visualizationDiv.textContent = 'Room visualization placeholder';
+        recentRollContainer.appendChild(visualizationDiv);
+    }
+
+    resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
+}
+
+// Room Visualilzation components
+function updateResultsDisplay(result) {
+  const resultsDiv = document.getElementById("results");
+  const vizDiv = document.getElementById("roomVisualization");
+  
+  // Regular roll results
+  let output = '';
+  for (const [die, value] of Object.entries(result)) {
+      if (rollTables[die] && rollTables[die][value - 1]) {
+          output += `${die}: ${value} - ${rollTables[die][value - 1]}<br>`;
+      } else {
+          output += `${die}: ${value}<br>`;
+      }
+  }
+  resultsDiv.innerHTML = output;
+
+  // Only show visualization if enabled in config
+  if (activeConfig.generateImages) {
+      vizDiv.classList.remove('hidden');
+      // Render the room visualization
+      ReactDOM.render(
+          React.createElement(window.RoomVisualization, {
+              diceResults: result,
+              gridColor: '#666666',
+              backgroundColor: '#1a1a1a'
+          }),
+          vizDiv
+      );
+  } else {
+      vizDiv.classList.add('hidden');
+  }
+}
+
+async function rollAllDice() {
+  if (activeConfig.soundEnabled) {
+      await rollSound.play().catch(console.error);
+  }
+  
+  const result = await processRoll();
+  updateResultsDisplay(result);
+}
+    
+    const result = await processRoll();
+    function updateResultsDisplay(result) {
+    const resultsDiv = document.getElementById("results");
     const vizDiv = document.getElementById("roomVisualization");
     
     // Regular roll results
     let output = '';
-    Object.entries(result.rolls).forEach(([section, data]) => {
-        Object.entries(data).forEach(([key, rollData]) => {
-            if (rollData && rollData.die && rollData.value) {
-                output += `${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}<br>`;
-            }
-        });
-    });
+    for (const [die, value] of Object.entries(result)) {
+        if (rollTables[die] && rollTables[die][value - 1]) {
+            output += `${die}: ${value} - ${rollTables[die][value - 1]}<br>`;
+        } else {
+            output += `${die}: ${value}<br>`;
+        }
+    }
     resultsDiv.innerHTML = output;
 
     // Only show visualization if enabled in config
@@ -143,7 +240,7 @@ function updateResultsDisplay(result) {
         // Render the room visualization
         ReactDOM.render(
             React.createElement(window.RoomVisualization, {
-                diceResults: result.rolls,
+                diceResults: result,
                 gridColor: '#666666',
                 backgroundColor: '#1a1a1a'
             }),
@@ -152,15 +249,6 @@ function updateResultsDisplay(result) {
     } else {
         vizDiv.classList.add('hidden');
     }
-}
-
-async function rollAllDice() {
-    if (activeConfig.soundEnabled) {
-        await rollSound.play().catch(console.error);
-    }
-    
-    const result = await processRoll();
-    updateResultsDisplay(result);
 }
 
 function loadCachedRolls() {
