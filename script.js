@@ -183,12 +183,16 @@ function updateResultsDisplay(result) {
 }
 
 async function rollAllDice() {
-    if (activeConfig.soundEnabled) {
-        await rollSound.play().catch(console.error);
-    }
-    
-    const result = await processRoll();
-    updateResultsDisplay(result);
+  if (activeConfig.soundEnabled) {
+      await rollSound.play().catch(console.error);
+  }
+
+  const result = await processRoll();
+  
+  // Logging result for debugging
+  console.log("Roll result:", result);
+  
+  updateResultsDisplay(result);
 }
 
 function loadCachedRolls() {
