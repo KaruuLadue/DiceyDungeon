@@ -43,23 +43,24 @@ function rollDice(sides) {
 }
 
 async function processRoll() {
-    const results = {};
-    const descriptions = {};
-    
-    for (const [die, enabled] of Object.entries(activeConfig.enabledDice)) {
-        if (enabled) {
-            results[die] = rollDice(parseInt(die.slice(1)));
-            if (rollTables[die]) {
-                descriptions[die] = rollTables[die][results[die] - 1];
-            }
-        }
-    }
+  const results = {};
+  const descriptions = {};
 
-    const structuredResult = structureRoomData(results, descriptions);
-    rollHistory.push(structuredResult);
-    saveRollsToCache();
-    
-    return structuredResult;
+  for (const [die, enabled] of Object.entries(activeConfig.enabledDice)) {
+      if (enabled) {
+          results[die] = rollDice(parseInt(die.slice(1)));
+          if (rollTables[die]) {
+              descriptions[die] = rollTables[die][results[die] - 1];
+          }
+          console.log(`Rolled ${die}: ${results[die]} (${descriptions[die]})`); // Debugging log
+      }
+  }
+
+  const structuredResult = structureRoomData(results, descriptions);
+  rollHistory.push(structuredResult);
+  saveRollsToCache();
+
+  return structuredResult;
 }
 
 function structureRoomData(results, descriptions) {
