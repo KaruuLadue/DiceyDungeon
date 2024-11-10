@@ -123,35 +123,39 @@ function displayError(message, duration = 5000) {
 }
 
 function updateResultsDisplay(result) {
-    const resultsDiv = document.getElementById("results");
-    const recentRollContainer = document.createElement("div");
-    recentRollContainer.className = 'recent-roll-container';
+  const resultsDiv = document.getElementById("results");
+  const recentRollContainer = document.createElement("div");
+  recentRollContainer.className = 'recent-roll-container';
 
-    const rollTitle = document.createElement("h2");
-    rollTitle.className = 'roll-title';
-    rollTitle.textContent = `Roll ${rollHistory.length}:`;
-    recentRollContainer.appendChild(rollTitle);
+  const rollTitle = document.createElement("h2");
+  rollTitle.className = 'roll-title';
+  rollTitle.textContent = `Roll ${rollHistory.length}:`;
+  recentRollContainer.appendChild(rollTitle);
 
-    const rollValues = new Map();
+  const rollValues = new Map();
 
-    Object.entries(result.rolls).forEach(([section, data]) => {
-        Object.entries(data).forEach(([key, rollData]) => {
-            if (rollData && rollData.die && rollData.value) {
-                rollValues.set(rollData.value, (rollValues.get(rollData.value) || 0) + 1);
-                
-                const lineElement = document.createElement("div");
-                lineElement.className = 'result-line';
-                lineElement.setAttribute('data-value', rollData.value);
-                
-                lineElement.innerHTML = `
-                    <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
-                    <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
-                `;
-                
-                recentRollContainer.appendChild(lineElement);
-            }
-        });
-    });
+  Object.entries(result.rolls).forEach(([section, data]) => {
+      Object.entries(data).forEach(([key, rollData]) => {
+          if (rollData && rollData.die && rollData.value) {
+              rollValues.set(rollData.value, (rollValues.get(rollData.value) || 0) + 1);
+              
+              const lineElement = document.createElement("div");
+              lineElement.className = 'result-line';
+              lineElement.setAttribute('data-value', rollData.value);
+              
+              lineElement.innerHTML = `
+                  <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
+                  <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
+              `;
+              
+              recentRollContainer.appendChild(lineElement);
+          }
+      });
+  });
+
+  // Append the recent roll container to the results div
+  resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
+}
 
     if (activeConfig.highlightMatches) {
         recentRollContainer.querySelectorAll('.result-line').forEach(line => {
