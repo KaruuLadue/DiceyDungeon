@@ -64,55 +64,56 @@ async function processRoll() {
 }
 
 function structureRoomData(results, descriptions) {
-    return {
-        id: Date.now().toString(),
-        timestamp: new Date().toISOString(),
-        rolls: {
-            hallway: {
-                length: results.D4 ? {
-                    die: "D4",
-                    value: results.D4,
-                    description: descriptions.D4
-                } : null,
-                exits: results.D6 ? {
-                    die: "D6",
-                    value: results.D6,
-                    description: descriptions.D6
-                } : null
-            },
-            room: {
-                encounter: results.D8 ? {
-                    die: "D8",
-                    value: results.D8,
-                    description: descriptions.D8
-                } : null,
-                dimensions: {
-                    width: results.D10 ? {
-                        die: "D10",
-                        value: results.D10,
-                        description: descriptions.D10
-                    } : null,
-                    length: results.D100 ? {
-                        die: "D100",
-                        value: results.D100,
-                        description: descriptions.D100
-                    } : null
-                },
-                type: results.D12 ? {
-                    die: "D12",
-                    value: results.D12,
-                    description: descriptions.D12
-                } : null,
-                modifier: results.D20 ? {
-                    die: "D20",
-                    value: results.D20,
-                    description: descriptions.D20
-                } : null
-            }
-        },
-        imageGenerated: false,
-        config: { ...activeConfig }
-    };
+  return {
+      id: Date.now().toString(),
+      timestamp: new Date().toISOString(),
+      rolls: {
+          // Ordered as D4, D6, D8, D10, D100, D12, D20
+          hallway: {
+              length: results.D4 ? {
+                  die: "D4",
+                  value: results.D4,
+                  description: descriptions.D4
+              } : null,
+              exits: results.D6 ? {
+                  die: "D6",
+                  value: results.D6,
+                  description: descriptions.D6
+              } : null
+          },
+          room: {
+              encounter: results.D8 ? {
+                  die: "D8",
+                  value: results.D8,
+                  description: descriptions.D8
+              } : null,
+              dimensions: {
+                  width: results.D10 ? {
+                      die: "D10",
+                      value: results.D10,
+                      description: descriptions.D10
+                  } : null,
+                  length: results.D100 ? {
+                      die: "D100",
+                      value: results.D100,
+                      description: descriptions.D100
+                  } : null
+              },
+              type: results.D12 ? {
+                  die: "D12",
+                  value: results.D12,
+                  description: descriptions.D12
+              } : null,
+              modifier: results.D20 ? {
+                  die: "D20",
+                  value: results.D20,
+                  description: descriptions.D20
+              } : null
+          }
+      },
+      imageGenerated: false,
+      config: { ...activeConfig }
+  };
 }
 
 function displayError(message, duration = 5000) {
