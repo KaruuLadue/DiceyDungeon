@@ -124,63 +124,67 @@ function displayError(message, duration = 5000) {
 }
 
 function updateResultsDisplay(result) {
-    const resultsDiv = document.getElementById("results");
-    const recentRollContainer = document.createElement("div");
-    recentRollContainer.className = 'recent-roll-container';
+  const resultsDiv = document.getElementById("results");
+  const recentRollContainer = document.createElement("div");
+  recentRollContainer.className = 'recent-roll-container';
 
-    const rollTitle = document.createElement("h2");
-    rollTitle.className = 'roll-title';
-    rollTitle.textContent = `Roll ${rollHistory.length}:`;
-    recentRollContainer.appendChild(rollTitle);
+  const rollTitle = document.createElement("h2");
+  rollTitle.className = 'roll-title';
+  rollTitle.textContent = `Roll ${rollHistory.length}:`;
+  recentRollContainer.appendChild(rollTitle);
 
-    const rollValues = new Map();
+  const rollValues = new Map();
 
-    Object.entries(result.rolls).forEach(([section, data]) => {
-        Object.entries(data).forEach(([key, rollData]) => {
-            if (rollData && rollData.die && rollData.value) {
-                // Validation log for all dice
-                console.log(`Processing ${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}`);
-                
-                rollValues.set(rollData.value, (rollValues.get(rollData.value) || 0) + 1);
-                
-                const lineElement = document.createElement("div");
-                lineElement.className = 'result-line';
-                lineElement.setAttribute('data-value', rollData.value);
-                
-                lineElement.innerHTML = `
-                    <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
-                    <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
-                `;
-                
-                recentRollContainer.appendChild(lineElement);
-            } else {
-                // Log an error if there is an issue with the roll data
-                console.error(`Invalid roll data for ${key}: `, rollData);
-            }
-        });
-    });
+  // Recursively process roll data
+  function processRollData(data, parentKey = '') {
+      Object.entries(data).forEach(([key, rollData]) => {
+          if (rollData && rollData.die && rollData.value) {
+              console.log(`Processing ${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}`);
+              
+              rollValues.set(rollData.value, (rollValues.get(rollData.value) || 0) + 1);
 
-    if (activeConfig.highlightMatches) {
-        recentRollContainer.querySelectorAll('.result-line').forEach(line => {
-            const value = line.getAttribute('data-value');
-            if (rollValues.get(parseInt(value)) > 1) {
-                line.classList.add('match');
-            }
-        });
-    }
+              const lineElement = document.createElement("div");
+              lineElement.className = 'result-line';
+              lineElement.setAttribute('data-value', rollData.value);
 
-    const separator = document.createElement("hr");
-    separator.className = 'roll-separator';
-    recentRollContainer.appendChild(separator);
+              lineElement.innerHTML = `
+                  <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
+                  <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
+              `;
 
-    if (activeConfig.generateImages) {
-        const visualizationDiv = document.createElement("div");
-        visualizationDiv.className = 'room-visualization';
-        visualizationDiv.textContent = 'Room visualization placeholder';
-        recentRollContainer.appendChild(visualizationDiv);
-    }
+              recentRollContainer.appendChild(lineElement);
+          } else if (typeof rollData === 'object') {
+              // Recursively process nested objects
+              processRollData(rollData, `${parentKey}${key}.`);
+          } else {
+              console.error(`Invalid roll data for ${parentKey}${key}: `, rollData);
+          }
+      });
+  }
 
-    resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
+  processRollData(result.rolls);
+
+  if (activeConfig.highlightMatches) {
+      recentRollContainer.querySelectorAll('.result-line').forEach(line => {
+          const value = line.getAttribute('data-value');
+          if (rollValues.get(parseInt(value)) > 1) {
+              line.classList.add('match');
+          }
+      });
+  }
+
+  const separator = document.createElement("hr");
+  separator.className = 'roll-separator';
+  recentRollContainer.appendChild(separator);
+
+  if (activeConfig.generateImages) {
+      const visualizationDiv = document.createElement("div");
+      visualizationDiv.className = 'room-visualization';
+      visualizationDiv.textContent = 'Room visualization placeholder';
+      recentRollContainer.appendChild(visualizationDiv);
+  }
+
+  resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
 }
 
 async function rollAllDice() {
