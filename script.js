@@ -137,6 +137,9 @@ function updateResultsDisplay(result) {
   Object.entries(result.rolls).forEach(([section, data]) => {
       Object.entries(data).forEach(([key, rollData]) => {
           if (rollData && rollData.die && rollData.value) {
+              // Validation log for all dice
+              console.log(`Processing ${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}`);
+              
               rollValues.set(rollData.value, (rollValues.get(rollData.value) || 0) + 1);
               
               const lineElement = document.createElement("div");
@@ -149,9 +152,15 @@ function updateResultsDisplay(result) {
               `;
               
               recentRollContainer.appendChild(lineElement);
+          } else {
+              // Log an error if there is an issue with the roll data
+              console.error(`Invalid roll data for ${key}: `, rollData);
           }
       });
   });
+
+  resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
+}
 
     if (activeConfig.highlightMatches) {
         recentRollContainer.querySelectorAll('.result-line').forEach(line => {
