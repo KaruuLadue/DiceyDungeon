@@ -141,14 +141,14 @@
     <script>
         // Define the dice configuration
         const diceConfig = {
-            D20: { sides: 20, description: 'Room Modifier' },
-            D12: { sides: 12, description: 'Room Type' },
-            D10: { sides: 10, description: 'Width of Room' },
-            D8: { sides: 8, description: 'Room Encounter' },
-            D6: { sides: 6, description: 'Additional Exits' },
             D4: { sides: 4, description: 'Hallway Length' },
+            D6: { sides: 6, description: 'Additional Exits' },
+            D8: { sides: 8, description: 'Room Encounter' },
+            D10: { sides: 10, description: 'Width of Room' },
+            D12: { sides: 12, description: 'Room Type' },
+            D20: { sides: 20, description: 'Room Modifier' },
             D100: { sides: 100, description: 'Length of Room' }
-        };
+};
 
         // Create HTML for a dice section
         function createDiceSection(dieType, config) {
