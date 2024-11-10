@@ -176,79 +176,13 @@ function updateResultsDisplay(result) {
     resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
 }
 
-// Room Visualilzation components
-function updateResultsDisplay(result) {
-  const resultsDiv = document.getElementById("results");
-  const vizDiv = document.getElementById("roomVisualization");
-  
-  // Regular roll results
-  let output = '';
-  for (const [die, value] of Object.entries(result)) {
-      if (rollTables[die] && rollTables[die][value - 1]) {
-          output += `${die}: ${value} - ${rollTables[die][value - 1]}<br>`;
-      } else {
-          output += `${die}: ${value}<br>`;
-      }
-  }
-  resultsDiv.innerHTML = output;
-
-  // Only show visualization if enabled in config
-  if (activeConfig.generateImages) {
-      vizDiv.classList.remove('hidden');
-      // Render the room visualization
-      ReactDOM.render(
-          React.createElement(window.RoomVisualization, {
-              diceResults: result,
-              gridColor: '#666666',
-              backgroundColor: '#1a1a1a'
-          }),
-          vizDiv
-      );
-  } else {
-      vizDiv.classList.add('hidden');
-  }
-}
-
 async function rollAllDice() {
-  if (activeConfig.soundEnabled) {
-      await rollSound.play().catch(console.error);
-  }
-  
-  const result = await processRoll();
-  updateResultsDisplay(result);
-}
+    if (activeConfig.soundEnabled) {
+        await rollSound.play().catch(console.error);
+    }
     
     const result = await processRoll();
-    function updateResultsDisplay(result) {
-    const resultsDiv = document.getElementById("results");
-    const vizDiv = document.getElementById("roomVisualization");
-    
-    // Regular roll results
-    let output = '';
-    for (const [die, value] of Object.entries(result)) {
-        if (rollTables[die] && rollTables[die][value - 1]) {
-            output += `${die}: ${value} - ${rollTables[die][value - 1]}<br>`;
-        } else {
-            output += `${die}: ${value}<br>`;
-        }
-    }
-    resultsDiv.innerHTML = output;
-
-    // Only show visualization if enabled in config
-    if (activeConfig.generateImages) {
-        vizDiv.classList.remove('hidden');
-        // Render the room visualization
-        ReactDOM.render(
-            React.createElement(window.RoomVisualization, {
-                diceResults: result,
-                gridColor: '#666666',
-                backgroundColor: '#1a1a1a'
-            }),
-            vizDiv
-        );
-    } else {
-        vizDiv.classList.add('hidden');
-    }
+    updateResultsDisplay(result);
 }
 
 function loadCachedRolls() {
