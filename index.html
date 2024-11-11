@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="style.css">
   
     <!-- Ensure these lines are included in the correct order -->
-    <script src="https://unpkg.com/react/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/react/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom/umd/react-dom.development.js" crossorigin></script>
 </head>
 <body>
     <div class="container">
@@ -97,22 +97,22 @@
             <p id="version" style="color: #ffffff; text-align: center; margin-top: 20px;">Version: Loading...</p>
         </center>
     </footer>
-    
+
     <!-- Room visualization script must come before script.js -->
-    <script src="path/to/RoomVisualization.js"></script>
+    <script src="RoomVisualization.js"></script>
     
     <!-- Main script -->
     <script src="script.js"></script>
     
-    <!-- Render the RoomVisualization component inside the root div -->
+    <!-- Render the RoomVisualization component inside the roomVisualization div -->
     <script>
-        // Ensure the DOM is fully loaded before trying to access React components
+        // Wait until the DOM is fully loaded before rendering React component
         document.addEventListener("DOMContentLoaded", () => {
             const rootElement = document.getElementById('roomVisualization');
             const { createElement } = window.React;
             const { RoomVisualization } = window;
 
-            // Example diceResults for initial rendering, replace this with your data source
+            // Example diceResults for initial rendering, replace with your data source
             const diceResults = { D10: 8, D100: 63, D6: 3 };
             const roomVisualizationElement = createElement(RoomVisualization, { diceResults });
             window.ReactDOM.render(roomVisualizationElement, rootElement);

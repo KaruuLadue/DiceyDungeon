@@ -172,34 +172,35 @@ function updateResultsDisplay(result) {
 
     processRollData(result.rolls);
 
-if (activeConfig.generateImages) {
-    const visualizationDiv = document.createElement("div");
-    visualizationDiv.className = 'room-visualization';
-    recentRollContainer.appendChild(visualizationDiv);
+    if (activeConfig.generateImages) {
+        const visualizationDiv = document.createElement("div");
+        visualizationDiv.className = 'room-visualization';
+        recentRollContainer.appendChild(visualizationDiv);
 
-    try {
-        const roomProps = {
-            diceResults: {
-                D4: result.rolls.hallway.length?.value,
-                D6: result.rolls.hallway.exits?.value,
-                D8: result.rolls.room.encounter?.value,
-                D10: result.rolls.room.dimensions?.width?.value,
-                D12: result.rolls.room.type?.value,
-                D20: result.rolls.room.modifier?.value,
-                D100: result.rolls.room.dimensions?.length?.value
-            }
-        };
+        try {
+            const roomProps = {
+                diceResults: {
+                    D4: result.rolls.hallway.length?.value,
+                    D6: result.rolls.hallway.exits?.value,
+                    D8: result.rolls.room.encounter?.value,
+                    D10: result.rolls.room.dimensions?.width?.value,
+                    D12: result.rolls.room.type?.value,
+                    D20: result.rolls.room.modifier?.value,
+                    D100: result.rolls.room.dimensions?.length?.value
+                }
+            };
 
-        console.log("Room Props for Visualization:", roomProps);
-        
-        const root = ReactDOM.createRoot(visualizationDiv);
-        root.render(React.createElement(RoomVisualization, roomProps));
+            console.log("Room Props for Visualization:", roomProps);
 
-    } catch (error) {
-        console.error('Failed to render room visualization:', error);
-        visualizationDiv.textContent = 'Failed to load room visualization';
+            // Initialize and render RoomVisualization component correctly
+            const root = createRoot(visualizationDiv);
+            root.render(React.createElement(window.RoomVisualization, roomProps));
+
+        } catch (error) {
+            console.error('Failed to render room visualization:', error);
+            visualizationDiv.textContent = 'Failed to load room visualization';
+        }
     }
-}
 
     resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
 }
