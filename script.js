@@ -2,7 +2,6 @@
 let rollHistory = [];
 let rollTables = {};
 const rollSound = new Audio('audio/rollsound.wav');
-// Add React createElement reference
 const { createElement } = React;
 
 // Default configuration
@@ -45,77 +44,77 @@ function rollDice(sides) {
 }
 
 async function processRoll() {
-  const results = {};
-  const descriptions = {};
+    const results = {};
+    const descriptions = {};
 
-  for (const [die, enabled] of Object.entries(activeConfig.enabledDice)) {
-      if (enabled) {
-          results[die] = rollDice(parseInt(die.slice(1)));
-          if (rollTables[die]) {
-              descriptions[die] = rollTables[die][results[die] - 1];
-          }
-          console.log(`Rolled ${die}: ${results[die]} (${descriptions[die]})`); // Debugging log
-      }
-  }
+    for (const [die, enabled] of Object.entries(activeConfig.enabledDice)) {
+        if (enabled) {
+            results[die] = rollDice(parseInt(die.slice(1)));
+            if (rollTables[die]) {
+                descriptions[die] = rollTables[die][results[die] - 1];
+            }
+            console.log(`Rolled ${die}: ${results[die]} (${descriptions[die]})`); // Debugging log
+        }
+    }
 
-  const structuredResult = structureRoomData(results, descriptions);
-  rollHistory.push(structuredResult);
-  saveRollsToCache();
+    const structuredResult = structureRoomData(results, descriptions);
+    rollHistory.push(structuredResult);
+    saveRollsToCache();
 
-  return structuredResult;
+    return structuredResult;
 }
 
 function structureRoomData(results, descriptions) {
-  return {
-      id: Date.now().toString(),
-      timestamp: new Date().toISOString(),
-      rolls: {
-          // Ordered as D4, D6, D8, D10, D100, D12, D20
-          hallway: {
-              length: results.D4 ? {
-                  die: "D4",
-                  value: results.D4,
-                  description: descriptions.D4
-              } : null,
-              exits: results.D6 ? {
-                  die: "D6",
-                  value: results.D6,
-                  description: descriptions.D6
-              } : null
-          },
-          room: {
-              encounter: results.D8 ? {
-                  die: "D8",
-                  value: results.D8,
-                  description: descriptions.D8
-              } : null,
-              dimensions: {
-                  width: results.D10 ? {
-                      die: "D10",
-                      value: results.D10,
-                      description: descriptions.D10
-                  } : null,
-                  length: results.D100 ? {
-                      die: "D100",
-                      value: results.D100,
-                      description: descriptions.D100
-                  } : null
-              },
-              type: results.D12 ? {
-                  die: "D12",
-                  value: results.D12,
-                  description: descriptions.D12
-              } : null,
-              modifier: results.D20 ? {
-                  die: "D20",
-                  value: results.D20,
-                  description: descriptions.D20
-              } : null
-          }
-      },
-      imageGenerated: false,
-      config: { ...activeConfig }
-  };
+    return {
+        id: Date.now().toString(),
+        timestamp: new Date().toISOString(),
+        rolls: {
+            // Ordered as D4, D6, D8, D10, D100, D12, D20
+            hallway: {
+                length: results.D4 ? {
+                    die: "D4",
+                    value: results.D4,
+                    description: descriptions.D4
+                } : null,
+                exits: results.D6 ? {
+                    die: "D6",
+                    value: results.D6,
+                    description: descriptions.D6
+                } : null
+            },
+            room: {
+                encounter: results.D8 ? {
+                    die: "D8",
+                    value: results.D8,
+                    description: descriptions.D8
+                } : null,
+                dimensions: {
+                    width: results.D10 ? {
+                        die: "D10",
+                        value: results.D10,
+                        description: descriptions.D10
+                    } : null,
+                    length: results.D100 ? {
+                        die: "D100",
+                        value: results.D100,
+                        description: descriptions.D100
+                    } : null
+                },
+                type: results.D12 ? {
+                    die: "D12",
+                    value: results.D12,
+                    description: descriptions.D12
+                } : null,
+                modifier: results.D20 ? {
+                    die: "D20",
+                    value: results.D20,
+                    description: descriptions.D20
+                } : null
+            }
+        },
+        imageGenerated: false,
+        config: { ...activeConfig }
+    };
 }
 
 function displayError(message, duration = 5000) {
@@ -127,84 +126,88 @@ function displayError(message, duration = 5000) {
 }
 
 function updateResultsDisplay(result) {
-  const resultsDiv = document.getElementById("results");
-  const recentRollContainer = document.createElement("div");
-  recentRollContainer.className = 'recent-roll-container';
+    const resultsDiv = document.getElementById("results");
+    const recentRollContainer = document.createElement("div");
+    recentRollContainer.className = 'recent-roll-container';
 
-  const rollTitle = document.createElement("h2");
-  rollTitle.className = 'roll-title';
-  rollTitle.textContent = `Roll ${rollHistory.length}:`;
-  recentRollContainer.appendChild(rollTitle);
+    const rollTitle = document.createElement("h2");
+    rollTitle.className = 'roll-title';
+    rollTitle.textContent = `Roll ${rollHistory.length}:`;
+    recentRollContainer.appendChild(rollTitle);
 
-  const rollValues = new Map();
+    const rollValues = new Map();
 
-  // Recursively process roll data
-  function processRollData(data, parentKey = '') {
-      Object.entries(data).forEach(([key, rollData]) => {
-          if (rollData && rollData.die && rollData.value) {
-              console.log(`Processing ${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}`);
-              
-              rollValues.set(rollData.value, (rollValues.get(rollData.value) || 0) + 1);
+    // Recursively process roll data
+    function processRollData(data, parentKey = '') {
+        Object.entries(data).forEach(([key, rollData]) => {
+            if (rollData && rollData.die && rollData.value) {
+                console.log(`Processing ${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}`);
 
-              const lineElement = document.createElement("div");
-              lineElement.className = 'result-line';
-              lineElement.setAttribute('data-value', rollData.value);
+                rollValues.set(rollData.value, (rollValues.get(rollData.value) || 0) + 1);
 
-              lineElement.innerHTML = `
-                  <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
-                  <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
-              `;
+                const lineElement = document.createElement("div");
+                lineElement.className = 'result-line';
+                lineElement.setAttribute('data-value', rollData.value);
 
-              recentRollContainer.appendChild(lineElement);
-          } else if (typeof rollData === 'object') {
-              // Recursively process nested objects
-              processRollData(rollData, `${parentKey}${key}.`);
-          } else {
-              console.error(`Invalid roll data for ${parentKey}${key}: `, rollData);
-          }
-      });
-  }
+                lineElement.innerHTML = `
+                    <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
+                    <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
+                `;
 
-  processRollData(result.rolls);
-
-  if (activeConfig.generateImages) {
-    const visualizationDiv = document.createElement("div");
-    visualizationDiv.className = 'room-visualization';
-    recentRollContainer.appendChild(visualizationDiv);
-    
-    try {
-        // Create room visualization
-        const roomProps = {
-            diceResults: {
-                D4: result.rolls.hallway.length?.value,
-                D6: result.rolls.room.exits?.value,
-                D8: result.rolls.room.encounter?.value,
-                D10: result.rolls.room.dimensions?.width?.value,
-                D12: result.rolls.room.type?.value,
-                D20: result.rolls.room.modifier?.value,
-                D100: result.rolls.room.dimensions?.length?.value
+                recentRollContainer.appendChild(lineElement);
+            } else if (typeof rollData === 'object' && rollData !== null) {
+                // Recursively process nested objects
+                processRollData(rollData, `${parentKey}${key}.`);
+            } else {
+                console.error(`Invalid roll data for ${parentKey}${key}: `, rollData);
             }
-        };
-        
-          // Render the React component using global reference
-          const root = ReactDOM.createRoot(visualizationDiv);
-          root.render(createElement(window.RoomVisualization, roomProps));
-      } catch (error) {
-          console.error('Failed to render room visualization:', error);
-          visualizationDiv.textContent = 'Failed to load room visualization';
-      }
+        });
+    }
+
+    processRollData(result.rolls);
+
+    if (activeConfig.generateImages) {
+        const visualizationDiv = document.createElement("div");
+        visualizationDiv.className = 'room-visualization';
+        recentRollContainer.appendChild(visualizationDiv);
+
+        try {
+            // Create room visualization
+            const roomProps = {
+                diceResults: {
+                    D4: result.rolls.hallway.length?.value,
+                    D6: result.rolls.hallway.exits?.value,
+                    D8: result.rolls.room.encounter?.value,
+                    D10: result.rolls.room.dimensions?.width?.value,
+                    D12: result.rolls.room.type?.value,
+                    D20: result.rolls.room.modifier?.value,
+                    D100: result.rolls.room.dimensions?.length?.value
+                }
+            };
+
+            // Render the React component using global reference
+            const root = ReactDOM.createRoot(visualizationDiv);
+            root.render(createElement(window.RoomVisualization, roomProps));
+        } catch (error) {
+            console.error('Failed to render room visualization:', error);
+            visualizationDiv.textContent = 'Failed to load room visualization';
+        }
+    }
+
+    resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
+}
 
 async function rollAllDice() {
-  if (activeConfig.soundEnabled) {
-      await rollSound.play().catch(console.error);
-  }
+    if (activeConfig.soundEnabled) {
+        await rollSound.play().catch(console.error);
+    }
 
-  const result = await processRoll();
-  
-  // Logging result for debugging
-  console.log("Roll result:", result);
-  
-  updateResultsDisplay(result);
+    const result = await processRoll();
+
+    // Logging result for debugging
+    console.log("Roll result:", result);
+
+    updateResultsDisplay(result);
 }
 
 function loadCachedRolls() {
@@ -266,7 +269,7 @@ function exportRolls() {
 function toggleConfig() {
     const configPanel = document.getElementById('configPanel');
     configPanel.classList.toggle('hidden');
-    
+
     if (!configPanel.classList.contains('hidden')) {
         updateConfigDisplay();
     }
@@ -276,7 +279,7 @@ function updateConfigDisplay() {
     document.getElementById('highlightMatches').checked = activeConfig.highlightMatches;
     document.getElementById('soundEnabled').checked = activeConfig.soundEnabled;
     document.getElementById('generateImages').checked = activeConfig.generateImages;
-    
+
     Object.entries(activeConfig.enabledDice).forEach(([die, enabled]) => {
         const checkbox = document.getElementById(`${die}enabled`);
         if (checkbox) {
@@ -288,7 +291,7 @@ function updateConfigDisplay() {
 function updateConfig(setting, value) {
     activeConfig[setting] = value;
     saveConfig();
-    
+
     switch(setting) {
         case 'highlightMatches':
             updateHighlightStyles();
