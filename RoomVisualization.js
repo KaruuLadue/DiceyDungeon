@@ -1,7 +1,4 @@
-// RoomVisualization.js
-
-// Importing React from window object
-const { createElement, useState, useEffect } = window.React;
+import React, { useState, useEffect } from 'react';
 
 /**
  * RoomVisualization Component
@@ -35,17 +32,17 @@ const RoomVisualization = ({ diceResults = { D10: 5, D100: 50, D6: 2 } }) => {
     for (let y = 0; y < length; y++) {
       for (let x = 0; x < width; x++) {
         cells.push(
-          createElement('div', {
-            key: `cell-${x}-${y}`,
-            className: "border border-gray-800",
-            style: {
+          <div
+            key={`cell-${x}-${y}`}
+            className="border border-gray-800"
+            style={{
               position: 'absolute',
               left: x * cellSize,
               top: y * cellSize,
               width: cellSize,
               height: cellSize
-            }
-          })
+            }}
+          />
         );
       }
     }
@@ -88,74 +85,101 @@ const RoomVisualization = ({ diceResults = { D10: 5, D100: 50, D6: 2 } }) => {
     y: length - 1
   };
 
-  return createElement('div', {
-    className: "flex flex-col items-center gap-4 p-4 bg-black rounded-lg"
-  }, [
-    // Room size display
-    createElement('div', {
-      key: "size",
-      className: "text-amber-600 text-lg font-bold"
-    }, `Room Size: ${width * 5}ft x ${length * 5}ft`),
-    
-    // Room grid
-    createElement('div', {
-      key: "grid",
-      className: "relative bg-gray-900 rounded border-2 border-amber-600",
-      style: {
-        width: width * cellSize + 4,
-        height: length * cellSize + 4,
-        padding: '2px'
-      }
-    }, [
-      ...renderGrid(),
+  return (
+    <div className="flex flex-col items-center gap-4 p-4 bg-black rounded-lg">
+      {/* Room size display */}
+      <div className="text-amber-600 text-lg font-bold">
+        Room Size: {width * 5}ft x {length * 5}ft
+      </div>
       
-      // Entrance
-      createElement('div', {
-        key: "entrance",
-        className: "absolute flex items-center justify-center",
-        style: {
-          left: entrancePosition.x * cellSize,
-          top: entrancePosition.y * cellSize,
-          width: cellSize,
-          height: cellSize
-        }
-      }, createElement('span', {
-        className: "text-amber-600 text-xl"
-      }, '↑')),
-      
-      // Exits
-      ...exitPositions.map((exit, index) =>
-        createElement('div', {
-          key: `exit-${index}`,
-          className: "absolute flex items-center justify-center",
-          style: {
-            left: exit.x * cellSize,
-            top: exit.y * cellSize,
+      {/* Room grid */}
+      <div
+        className="relative bg-gray-900 rounded border-2 border-amber-600"
+        style={{
+          width: width * cellSize + 4,
+          height: length * cellSize + 4,
+          padding: '2px'
+        }}
+      >
+        {renderGrid()}
+        
+        {/* Entrance */}
+        <div
+          className="absolute flex items-center justify-center"
+          style={{
+            left: entrancePosition.x * cellSize,
+            top: (entrancePosition.y * cellSize) + (cellSize/2),
             width: cellSize,
-            height: cellSize
+            height: cellSize/2
+          }}
+        >
+          <span className="text-amber-400 text-3xl font-bold">↑</span>
+        </div>
+        
+        {/* Exits */}
+        {exitPositions.map((exit, index) => {
+          let style = {
+            position: 'absolute',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          };
+          
+          switch (exit.wall) {
+            case 'top':
+              style = {
+                ...style,
+                left: exit.x * cellSize,
+                top: 0,
+                width: cellSize,
+                height: cellSize/2,
+                transform: 'translateY(-50%)'
+              };
+              break;
+            case 'left':
+              style = {
+                ...style,
+                left: 0,
+                top: exit.y * cellSize,
+                width: cellSize/2,
+                height: cellSize,
+                transform: 'translateX(-50%)'
+              };
+              break;
+            case 'right':
+              style = {
+                ...style,
+                left: width * cellSize,
+                top: exit.y * cellSize,
+                width: cellSize/2,
+                height: cellSize,
+                transform: 'translateX(-50%)'
+              };
+              break;
           }
-        }, createElement('span', {
-          className: "text-amber-600 text-xl"
-        }, '□'))
-      )
-    ]),
-    
-    // Legend
-    createElement('div', {
-      key: "legend",
-      className: "flex gap-4 text-sm text-amber-600"
-    }, [
-      createElement('div', {
-        key: "entrance-legend",
-        className: "flex items-center gap-2"
-      }, ['↑', ' Entrance']),
-      createElement('div', {
-        key: "exit-legend",
-        className: "flex items-center gap-2"
-      }, ['□', ' Exit'])
-    ])
-  ]);
+          
+          return (
+            <div
+              key={`exit-${index}`}
+              style={style}
+            >
+              <div className="w-4 h-4 bg-amber-400"></div>
+            </div>
+          );
+        })}
+      </div>
+      
+      {/* Legend */}
+      <div className="flex gap-4 text-sm text-amber-600">
+        <div className="flex items-center gap-2">
+          <span className="text-amber-400">↑</span> Entrance
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-amber-400 inline-block"></div> Exit
+        </div>
+      </div>
+    </div>
+  );
 };
 
-// Make the component available globally
-window.RoomVisualization = RoomVisualization;
+export default RoomVisualization;
