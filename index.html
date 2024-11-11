@@ -94,12 +94,13 @@
         </center>
     </footer>
 
-    <!-- Script Imports -->
+    <!-- Ensure these lines are included in the correct order -->
     <script src="https://unpkg.com/react/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/lucide-react@0.263.1"></script>
-    <script type="text/babel" data-presets="react" src="RoomVisualization.js"></script>
+    <script src="https://unpkg.com/lucide-react/umd/lucide-react.min.js"></script>
+
+    <!-- Room visualization script. This must come before script.js -->
+    <script src="RoomVisualization.js"></script>
 
     <!-- Main script -->
     <script src="script.js"></script>

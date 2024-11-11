@@ -1,5 +1,8 @@
+// Import necessary components if not already available globally
+const { React, ReactDOM } = window;
 const { ArrowRight, Square } = window.lucideReact || {};
 
+// Define the RoomVisualization component
 class RoomVisualization extends React.Component {
     constructor(props) {
         super(props);
@@ -134,6 +137,4 @@ class RoomVisualization extends React.Component {
 }
 
 // Attach RoomVisualization to the window object for global accessibility
-(function(global) {
-    global.RoomVisualization = RoomVisualization;
-})(typeof window !== 'undefined' ? window : this);
+window.RoomVisualization = RoomVisualization;
