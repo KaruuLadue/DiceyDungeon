@@ -17,7 +17,7 @@ const defaultConfig = {
         D20: true,
         D100: true
     },
-    generateImages: true,
+    generateImages: false,
     soundEnabled: true
 };
 
@@ -319,17 +319,25 @@ function updateConfigDisplay() {
 }
 
 function updateConfig(setting, value) {
-    activeConfig[setting] = value;
-    saveConfig();
+  activeConfig[setting] = value;
+  saveConfig();
 
-    switch (setting) {
-        case 'highlightMatches':
-            updateHighlightStyles();
-            break;
-        case 'generateImages':
-            toggleRoomVisualization(value);
-            break;
-    }
+  switch (setting) {
+      case 'highlightMatches':
+          updateHighlightStyles();
+          break;
+      case 'generateImages':
+          // Only affect existing roll visualizations
+          const visualizations = document.querySelectorAll('.room-visualization');
+          visualizations.forEach(viz => {
+              if (value) {
+                  viz.classList.remove('hidden');
+              } else {
+                  viz.classList.add('hidden');
+              }
+          });
+          break;
+  }
 }
 
 function updateDiceConfig(die, enabled) {
