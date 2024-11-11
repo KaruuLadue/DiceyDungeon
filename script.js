@@ -185,6 +185,13 @@ function updateResultsDisplay(result) {
                 }
             };
 
+            // Debugging log for roomProps
+            console.log("Room Props for Visualization:", roomProps);
+            
+            if (!window.RoomVisualization) {
+                throw new Error("RoomVisualization component is not available globally");
+            }
+
             // Render the React component using global reference
             const root = ReactDOM.createRoot(visualizationDiv);
             root.render(createElement(window.RoomVisualization, roomProps));
