@@ -1,14 +1,10 @@
-const { ArrowRight, Square } = window.lucideReact;
+const { ArrowRight, Square } = window.lucideReact || {};
 
 class RoomVisualization extends React.Component {
-
-}
-
-(function(global) {
-    global.RoomVisualization = RoomVisualization;
-
-})
-(typeof window !== 'undefined' ? window : this);
+    constructor(props) {
+        super(props);
+        this.state = { cellSize: 32 };
+    }
 
     componentDidMount() {
         this.calculateCellSize();
@@ -34,7 +30,7 @@ class RoomVisualization extends React.Component {
         const { cellSize } = this.state;
         const width = this.props.diceResults.D10 || 5;
         const length = Math.ceil((this.props.diceResults.D100 || 50) / 10);
-        
+
         for (let y = 0; y < length; y++) {
             for (let x = 0; x < width; x++) {
                 cells.push(
@@ -103,7 +99,7 @@ class RoomVisualization extends React.Component {
                     {/* Entrance Door */}
                     <div className="absolute w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-white"
                         style={{ left: entranceDoor.x, top: entranceDoor.y - cellSize / 2 }}>
-                        <ArrowRight className="w-4 h-4 sm:w-6 sm:h-6 text-amber-600 -rotate-90" />
+                        <ArrowRight className="w-4 h-4 sm:w-6 h-6 text-amber-600 -rotate-90" />
                     </div>
 
                     {/* Additional Exits */}
@@ -138,4 +134,6 @@ class RoomVisualization extends React.Component {
 }
 
 // Attach RoomVisualization to the window object for global accessibility
-window.RoomVisualization = RoomVisualization;
+(function(global) {
+    global.RoomVisualization = RoomVisualization;
+})(typeof window !== 'undefined' ? window : this);

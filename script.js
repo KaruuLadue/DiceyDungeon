@@ -166,40 +166,47 @@ function updateResultsDisplay(result) {
 
     processRollData(result.rolls);
 
-    if (activeConfig.generateImages) {
-        const visualizationDiv = document.createElement("div");
-        visualizationDiv.className = 'room-visualization';
-        recentRollContainer.appendChild(visualizationDiv);
-
-        try {
-            // Create room visualization
-            const roomProps = {
-                diceResults: {
-                    D4: result.rolls.hallway.length?.value,
-                    D6: result.rolls.hallway.exits?.value,
-                    D8: result.rolls.room.encounter?.value,
-                    D10: result.rolls.room.dimensions?.width?.value,
-                    D12: result.rolls.room.type?.value,
-                    D20: result.rolls.room.modifier?.value,
-                    D100: result.rolls.room.dimensions?.length?.value
-                }
-            };
-
-            // Debugging log for roomProps
-            console.log("Room Props for Visualization:", roomProps);
-            
-            if (!window.RoomVisualization) {
-                throw new Error("RoomVisualization component is not available globally");
-            }
-
-            // Render the React component using global reference
-            const root = ReactDOM.createRoot(visualizationDiv);
-            root.render(createElement(window.RoomVisualization, roomProps));
-        } catch (error) {
-            console.error('Failed to render room visualization:', error);
-            visualizationDiv.textContent = 'Failed to load room visualization';
-        }
-    }
+    function updateResultsDisplay(result) {
+      // ... existing code ...
+  
+      if (activeConfig.generateImages) {
+          const visualizationDiv = document.createElement("div");
+          visualizationDiv.className = 'room-visualization';
+          recentRollContainer.appendChild(visualizationDiv);
+  
+          try {
+              // Create room visualization
+              const roomProps = {
+                  diceResults: {
+                      D4: result.rolls.hallway.length?.value,
+                      D6: result.rolls.hallway.exits?.value,
+                      D8: result.rolls.room.encounter?.value,
+                      D10: result.rolls.room.dimensions?.width?.value,
+                      D12: result.rolls.room.type?.value,
+                      D20: result.rolls.room.modifier?.value,
+                      D100: result.rolls.room.dimensions?.length?.value
+                  }
+              };
+  
+              // Debugging log for roomProps
+              console.log("Room Props for Visualization:", roomProps);
+              
+              // Wait for component to be available if needed
+              if (!window.RoomVisualization) {
+                  console.log("Waiting for RoomVisualization to be available...");
+                  window.addEventListener('RoomVisualizationReady', () => {
+                      const root = ReactDOM.createRoot(visualizationDiv);
+                      root.render(createElement(window.RoomVisualization, roomProps));
+                  }, { once: true });
+              } else {
+                  const root = ReactDOM.createRoot(visualizationDiv);
+                  root.render(createElement(window.RoomVisualization, roomProps));
+              }
+          } catch (error) {
+              console.error('Failed to render room visualization:', error);
+              visualizationDiv.textContent = 'Failed to load room visualization';
+          }
+      }
 
     resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
 }
