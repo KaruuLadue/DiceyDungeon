@@ -21,45 +21,7 @@ const defaultConfig = {
     soundEnabled: true
 };
 
-let activeConfig = { ...defaultConfig };
-
-// Initialize the main room visualization if enabled
-function initializeRoomVisualization() {
-  if (activeConfig.generateImages) {
-    const visualizationDiv = document.createElement("div");
-    visualizationDiv.className = 'room-visualization';
-    recentRollContainer.appendChild(visualizationDiv);
-
-    try {
-        const roomProps = {
-            diceResults: {
-                D4: result.rolls.hallway.length?.value,
-                D6: result.rolls.hallway.exits?.value,
-                D8: result.rolls.room.encounter?.value,
-                D10: result.rolls.room.dimensions?.width?.value,
-                D12: result.rolls.room.type?.value,
-                D20: result.rolls.room.modifier?.value,
-                D100: result.rolls.room.dimensions?.length?.value
-            }
-        };
-
-        console.log("Room Props for Visualization:", roomProps);
-        
-        const root = createRoot(visualizationDiv);
-        root.render(React.createElement(window.RoomVisualization, roomProps));
-    } catch (error) {
-        console.error('Failed to render room visualization:', error);
-        visualizationDiv.textContent = 'Failed to load room visualization';
-    }
-}
-
-resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
-
-// Apply highlighting for this roll if enabled
-if (activeConfig.highlightMatches) {
-    updateHighlightStylesForRoll(recentRollContainer);
-}
-}
+let activeConfig = { ...defaultConfig }; 
 
 // Make functions globally accessible for onclick events
 window.rollAllDice = rollAllDice;
@@ -175,46 +137,6 @@ function updateResultsDisplay(result) {
     const resultsDiv = document.getElementById("results");
     const recentRollContainer = document.createElement("div");
     recentRollContainer.className = 'recent-roll-container';
-
-    const rollTitle = document.createElement("h2");
-    rollTitle.className = 'roll-title';
-    rollTitle.textContent = `Roll ${rollHistory.length}:`;
-    recentRollContainer.appendChild(rollTitle);
-
-    const rollValues = new Map();
-
-    function processRollData(data, parentKey = '') {
-        Object.entries(data).forEach(([key, rollData]) => {
-            if (rollData && rollData.die && rollData.value) {
-                console.log(`Processing ${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}`);
-
-                rollValues.set(rollData.value, (rollValues.get(rollData.value) || 0) + 1);
-
-                const lineElement = document.createElement("div");
-                lineElement.className = 'result-line';
-                lineElement.setAttribute('data-value', rollData.value);
-
-                lineElement.innerHTML = `
-                    <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
-                    <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
-                `;
-
-                recentRollContainer.appendChild(lineElement);
-            } else if (typeof rollData === 'object' && rollData !== null) {
-                processRollData(rollData, `${parentKey}${key}.`);
-            }
-        });
-    }
-  
-
-    processRollData(result.rolls);
-}
-
-function updateResultsDisplay(result) {
-    const resultsDiv = document.getElementById("results");
-    const recentRollContainer = document.createElement("div");
-    recentRollContainer.className = 'recent-roll-container';
-    // Add a data attribute to identify this as a single roll container
     recentRollContainer.setAttribute('data-roll-group', Date.now());
 
     const rollTitle = document.createElement("h2");
@@ -245,31 +167,7 @@ function updateResultsDisplay(result) {
 
     // Add visualization if enabled
     if (activeConfig.generateImages) {
-        const visualizationDiv = document.createElement("div");
-        visualizationDiv.className = 'room-visualization';
-        recentRollContainer.appendChild(visualizationDiv);
-
-        try {
-            const roomProps = {
-                diceResults: {
-                    D4: result.rolls.hallway.length?.value,
-                    D6: result.rolls.hallway.exits?.value,
-                    D8: result.rolls.room.encounter?.value,
-                    D10: result.rolls.room.dimensions?.width?.value,
-                    D12: result.rolls.room.type?.value,
-                    D20: result.rolls.room.modifier?.value,
-                    D100: result.rolls.room.dimensions?.length?.value
-                }
-            };
-
-            console.log("Room Props for Visualization:", roomProps);
-            
-            const root = createRoot(visualizationDiv);
-            root.render(React.createElement(window.RoomVisualization, roomProps));
-        } catch (error) {
-            console.error('Failed to render room visualization:', error);
-            visualizationDiv.textContent = 'Failed to load room visualization';
-        }
+        initializeRoomVisualization(result, recentRollContainer);
     }
 
     resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
@@ -277,6 +175,34 @@ function updateResultsDisplay(result) {
     // Apply highlighting for this roll if enabled
     if (activeConfig.highlightMatches) {
         updateHighlightStylesForRoll(recentRollContainer);
+    }
+}
+
+function initializeRoomVisualization(result, recentRollContainer) {
+    const visualizationDiv = document.createElement("div");
+    visualizationDiv.className = 'room-visualization';
+    recentRollContainer.appendChild(visualizationDiv);
+
+    try {
+        const roomProps = {
+            diceResults: {
+                D4: result.rolls.hallway.length?.value,
+                D6: result.rolls.hallway.exits?.value,
+                D8: result.rolls.room.encounter?.value,
+                D10: result.rolls.room.dimensions?.width?.value,
+                D12: result.rolls.room.type?.value,
+                D20: result.rolls.room.modifier?.value,
+                D100: result.rolls.room.dimensions?.length?.value
+            }
+        };
+
+        console.log("Room Props for Visualization:", roomProps);
+        
+        const root = createRoot(visualizationDiv);
+        root.render(React.createElement(window.RoomVisualization, roomProps));
+    } catch (error) {
+        console.error('Failed to render room visualization:', error);
+        visualizationDiv.textContent = 'Failed to load room visualization';
     }
 }
 
@@ -368,17 +294,17 @@ function updateConfigDisplay() {
 }
 
 function updateConfig(setting, value) {
-  activeConfig[setting] = value;
-  saveConfig();
+    activeConfig[setting] = value;
+    saveConfig();
 
-  switch (setting) {
-      case 'highlightMatches':
-          updateHighlightStyles();
-          break;
-      case 'generateImages':
-          toggleRoomVisualization(value);
-          break;
-  }
+    switch (setting) {
+        case 'highlightMatches':
+            updateHighlightStyles();
+            break;
+        case 'generateImages':
+            toggleRoomVisualization(value);
+            break;
+    }
 }
 
 function updateDiceConfig(die, enabled) {
@@ -394,54 +320,39 @@ function toggleRoomVisualization(show) {
 }
 
 function updateHighlightStylesForRoll(rollContainer) {
-  // Get all result lines within this roll container
-  const resultLines = rollContainer.querySelectorAll('.result-line');
-  const valueCount = new Map();
+    // Get all result lines within this roll container
+    const resultLines = rollContainer.querySelectorAll('.result-line');
+    const valueCount = new Map();
 
-  // Count occurrences of each value within this roll
-  resultLines.forEach(line => {
-      const value = line.getAttribute('data-value');
-      if (value) {
-          valueCount.set(value, (valueCount.get(value) || 0) + 1);
-      }
-  });
-
-  // Apply highlighting only to values that appear multiple times
-  resultLines.forEach(line => {
-      const value = line.getAttribute('data-value');
-      if (value && valueCount.get(value) > 1) {
-          line.classList.add('match');
-      } else {
-          line.classList.remove('match');
-      }
-  });
-}
-
-function updateHighlightStyles() {
-  // Apply highlighting to each roll container independently
-  document.querySelectorAll('.recent-roll-container').forEach(container => {
-      if (activeConfig.highlightMatches) {
-          updateHighlightStylesForRoll(container);
-      } else {
-          // Remove all highlighting from this container
-          container.querySelectorAll('.result-line').forEach(line => {
-              line.classList.remove('match');
-          });
-      }
-  });
-}
-
-function updateHighlightStyles() {
-    const resultLines = document.querySelectorAll('.result-line');
+    // Count occurrences of each value within this roll
     resultLines.forEach(line => {
         const value = line.getAttribute('data-value');
         if (value) {
-            const matches = document.querySelectorAll(`[data-value="${value}"]`);
-            if (matches.length > 1 && activeConfig.highlightMatches) {
-                line.classList.add('match');
-            } else {
+            valueCount.set(value, (valueCount.get(value) || 0) + 1);
+        }
+    });
+
+    // Apply highlighting only to values that appear multiple times
+    resultLines.forEach(line => {
+        const value = line.getAttribute('data-value');
+        if (value && valueCount.get(value) > 1) {
+            line.classList.add('match');
+        } else {
+            line.classList.remove('match');
+        }
+    });
+}
+
+function updateHighlightStyles() {
+    // Apply highlighting to each roll container independently
+    document.querySelectorAll('.recent-roll-container').forEach(container => {
+        if (activeConfig.highlightMatches) {
+            updateHighlightStylesForRoll(container);
+        } else {
+            // Remove all highlighting from this container
+            container.querySelectorAll('.result-line').forEach(line => {
                 line.classList.remove('match');
-            }
+            });
         }
     });
 }
@@ -456,19 +367,19 @@ function saveConfig() {
 }
 
 function loadConfig() {
-  try {
-      const savedConfig = localStorage.getItem('diceyDungeonConfig');
-      if (savedConfig) {
-          activeConfig = { ...defaultConfig, ...JSON.parse(savedConfig) };
-      }
-      updateConfigDisplay();
-      // Apply current config settings to existing results
-      updateHighlightStyles();
-  } catch (error) {
-      console.error("Error loading config:", error);
-      activeConfig = { ...defaultConfig };
-      displayError("Failed to load configuration. Using defaults.");
-  }
+    try {
+        const savedConfig = localStorage.getItem('diceyDungeonConfig');
+        if (savedConfig) {
+            activeConfig = { ...defaultConfig, ...JSON.parse(savedConfig) };
+        }
+        updateConfigDisplay();
+        // Apply current config settings to existing results
+        updateHighlightStyles();
+    } catch (error) {
+        console.error("Error loading config:", error);
+        activeConfig = { ...defaultConfig };
+        displayError("Failed to load configuration. Using defaults.");
+    }
 }
 
 // Initialize on page load
@@ -499,9 +410,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateConfigDisplay();
     console.log("Configuration display updated.");
 
-    // Initialize room visualization
-    initializeRoomVisualization();
-    
     try {
         const response = await fetch('version.json');
         if (response.ok) {
