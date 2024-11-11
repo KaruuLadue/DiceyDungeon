@@ -384,3 +384,9 @@ button:active {
 .room-visualization.hidden {
     display: none;
 }
+
+.room-visualization-container {
+    position: relative;
+    width: 100%; /* or a fixed width if necessary */
+    height: auto; /* Adjust to required height */
+  }

@@ -17,7 +17,7 @@ const RoomVisualization = ({ diceResults }) => {
     const calculateCellSize = () => {
       const container = document.querySelector('.room-visualization');
       if (container) {
-        const containerWidth = container.clientWidth - 40;
+        const containerWidth = container.clientWidth - 40; // reduce container width for padding
         const maxWidth = Math.min(800, containerWidth);
         const potentialCellSize = Math.floor(maxWidth / width);
         setCellSize(Math.min(32, potentialCellSize));
@@ -37,7 +37,7 @@ const RoomVisualization = ({ diceResults }) => {
         cells.push(
           React.createElement('div', {
             key: `cell-${x}-${y}`,
-            className: "border border-gray-600",
+            className: "border border-gray-600 grid-cell",
             style: {
               position: 'absolute',
               left: x * cellSize,
@@ -94,7 +94,7 @@ const RoomVisualization = ({ diceResults }) => {
   };
 
   return React.createElement('div', {
-    className: "flex flex-col items-center gap-4 p-4 bg-black rounded-lg"
+    className: "flex flex-col items-center gap-4 p-4 bg-black rounded-lg relative room-visualization-container"
   }, [
     // Room size display
     React.createElement('div', {
@@ -180,7 +180,7 @@ const RoomVisualization = ({ diceResults }) => {
         }));
       })
     ]),
-    
+
     // Legend
     React.createElement('div', {
       key: "legend",
