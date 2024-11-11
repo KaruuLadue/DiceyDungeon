@@ -1,11 +1,12 @@
 // Access React from window object
-const { useState, useEffect } = window.React;
+const { createElement, useState, useEffect } = window.React;
 
 /**
  * RoomVisualization Component
  * Renders a grid-based visualization of a dungeon room with entrance and exits
  */
-const RoomVisualization = ({ diceResults }) => {
+function RoomVisualization(props) {
+    const { diceResults } = props;
     const [cellSize, setCellSize] = useState(32);
 
     useEffect(() => {
@@ -32,7 +33,7 @@ const RoomVisualization = ({ diceResults }) => {
         for (let y = 0; y < length; y++) {
             for (let x = 0; x < width; x++) {
                 cells.push(
-                    window.React.createElement('div', {
+                    createElement('div', {
                         key: `${x}-${y}`,
                         className: "absolute border border-amber-600",
                         style: { 
@@ -88,12 +89,12 @@ const RoomVisualization = ({ diceResults }) => {
     };
     const exitPositions = generateExits();
 
-    return window.React.createElement(
+    return createElement(
         'div',
         { className: "flex flex-col items-center gap-2 p-2 sm:gap-4 sm:p-4 bg-black rounded-lg" },
         [
             // Room size display
-            window.React.createElement(
+            createElement(
                 'div',
                 { 
                     key: "size",
@@ -102,7 +103,7 @@ const RoomVisualization = ({ diceResults }) => {
                 `Room Size: ${width * 5}ft x ${length * 5}ft`
             ),
             // Room grid
-            window.React.createElement(
+            createElement(
                 'div',
                 {
                     key: "grid",
@@ -115,7 +116,7 @@ const RoomVisualization = ({ diceResults }) => {
                 [
                     ...renderGrid(),
                     // Entrance door
-                    window.React.createElement(
+                    createElement(
                         'div',
                         {
                             key: "entrance",
@@ -127,13 +128,13 @@ const RoomVisualization = ({ diceResults }) => {
                                 height: cellSize
                             }
                         },
-                        window.React.createElement('span', { 
+                        createElement('span', { 
                             className: "w-4 h-4 sm:w-6 sm:h-6 text-amber-600 rotate-180" 
                         }, '↑')
                     ),
                     // Additional exits
                     ...exitPositions.map((exit, index) => 
-                        window.React.createElement(
+                        createElement(
                             'div',
                             {
                                 key: `exit-${index}`,
@@ -149,7 +150,7 @@ const RoomVisualization = ({ diceResults }) => {
                                     height: cellSize
                                 }
                             },
-                            window.React.createElement('span', { 
+                            createElement('span', { 
                                 className: "w-4 h-4 sm:w-6 sm:h-6 text-amber-600" 
                             }, '□')
                         )
@@ -157,19 +158,19 @@ const RoomVisualization = ({ diceResults }) => {
                 ]
             ),
             // Legend
-            window.React.createElement(
+            createElement(
                 'div',
                 {
                     key: "legend",
                     className: "flex gap-2 sm:gap-4 text-xs sm:text-sm text-amber-600"
                 },
                 [
-                    window.React.createElement(
+                    createElement(
                         'div',
                         { key: "entrance-legend", className: "flex items-center gap-1 sm:gap-2" },
                         ['↑', ' Entrance']
                     ),
-                    window.React.createElement(
+                    createElement(
                         'div',
                         { key: "exit-legend", className: "flex items-center gap-1 sm:gap-2" },
                         ['□', ' Exit']
@@ -178,8 +179,7 @@ const RoomVisualization = ({ diceResults }) => {
             )
         ]
     );
-};
+}
 
-// Export the component
-export default RoomVisualization;
+// Make the component available globally
 window.RoomVisualization = RoomVisualization;
