@@ -4,6 +4,9 @@ let rollTables = {};
 const rollSound = new Audio('audio/rollsound.wav');
 const { createElement } = React;
 
+// Add React destructuring
+const { createElement } = React;
+
 // Default configuration
 const defaultConfig = {
     highlightMatches: true,
