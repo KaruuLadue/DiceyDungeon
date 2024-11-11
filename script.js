@@ -1,4 +1,3 @@
-// Use window.React and ReactDOM instead of imports
 const { createRoot } = window.ReactDOM;
 
 // Global state
