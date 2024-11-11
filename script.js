@@ -186,22 +186,13 @@ function updateResultsDisplay(result) {
             }
         };
         
-        // Render the React component
-        const root = ReactDOM.createRoot(visualizationDiv);
-        root.render(createElement(RoomVisualization, roomProps));
-    } catch (error) {
-        console.error('Failed to render room visualization:', error);
-        visualizationDiv.textContent = 'Failed to load room visualization';
-    }
-}
-    
-    // Render the React component
-    const root = ReactDOM.createRoot(visualizationDiv);
-    root.render(React.createElement(RoomVisualization, roomProps));
-}
-
-  resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
-}
+          // Render the React component using global reference
+          const root = ReactDOM.createRoot(visualizationDiv);
+          root.render(createElement(window.RoomVisualization, roomProps));
+      } catch (error) {
+          console.error('Failed to render room visualization:', error);
+          visualizationDiv.textContent = 'Failed to load room visualization';
+      }
 
 async function rollAllDice() {
   if (activeConfig.soundEnabled) {

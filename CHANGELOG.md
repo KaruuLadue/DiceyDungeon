@@ -11,12 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Additional export formats
 
 ## [1.1.0] - 2024-11-10
+
 ### Added
 - Top navigation bar in customize page
 - "Save All" functionality for roll tables
 - Export/Import feature for custom roll tables
 - Global success/error messaging system
 - Structured form inputs for roll table customization
+- Room visualization using React framework
 
 ### Changed
 - Reordered dice sections from D4 to D20 (then D100)
