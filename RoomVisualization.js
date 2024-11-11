@@ -1,10 +1,14 @@
 const { ArrowRight, Square } = window.lucideReact;
 
 class RoomVisualization extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { cellSize: 32 };
-    }
+
+}
+
+(function(global) {
+    global.RoomVisualization = RoomVisualization;
+
+})
+(typeof window !== 'undefined' ? window : this);
 
     componentDidMount() {
         this.calculateCellSize();
