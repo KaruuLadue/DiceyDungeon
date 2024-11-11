@@ -12,7 +12,6 @@
     <!-- Ensure these lines are included in the correct order -->
     <script src="https://unpkg.com/react/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
-
 </head>
 <body>
     <div class="container">
@@ -99,15 +98,28 @@
         </center>
     </footer>
     
-    <!-- React Dependencies -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-    
     <!-- Room visualization script must come before script.js -->
-    <script src="RoomVisualization.js"></script>
+    <script src="path/to/RoomVisualization.js"></script>
     
     <!-- Main script -->
     <script src="script.js"></script>
     
-    </body>
-    </html>
+    <!-- Render the RoomVisualization component inside the root div -->
+    <script>
+        // Ensure the DOM is fully loaded before trying to access React components
+        document.addEventListener("DOMContentLoaded", () => {
+            const rootElement = document.getElementById('roomVisualization');
+            const { createElement } = window.React;
+            const { RoomVisualization } = window;
+
+            // Example diceResults for initial rendering, replace this with your data source
+            const diceResults = { D10: 8, D100: 63, D6: 3 };
+            const roomVisualizationElement = createElement(RoomVisualization, { diceResults });
+            window.ReactDOM.render(roomVisualizationElement, rootElement);
+
+            // Remove the hidden class once rendered
+            rootElement.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>

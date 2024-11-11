@@ -1,3 +1,5 @@
+// roomvisualization.js
+
 // Importing React from window object
 const { createElement, useState, useEffect } = window.React;
 
