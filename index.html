@@ -8,16 +8,18 @@
     <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
     <link rel="stylesheet" href="style.css">
-    <!-- Add React and ReactDOM before other scripts -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  
+    <!-- Ensure these lines are included in the correct order -->
+    <script src="https://unpkg.com/react/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
+
 </head>
 <body>
     <div class="container">
         <p align="center">
             <img src="images/logo.png" alt="Dicey Dungeon Logo" class="logo">
         </p>
-        
+
         <!-- Main Controls -->
         <div class="controls-container">
             <div class="primary-controls">
@@ -30,7 +32,56 @@
 
             <!-- Configuration Panel -->
             <div id="configPanel" class="config-panel hidden">
-                <!-- ... rest of the config panel ... -->
+                <h3>Settings</h3>
+                <div class="config-section">
+                    <h4>Features</h4>
+                    <label>
+                        <input type="checkbox" id="highlightMatches" onchange="updateConfig('highlightMatches', this.checked)">
+                        Highlight Matching Rolls
+                    </label>
+                    <label>
+                        <input type="checkbox" id="soundEnabled" onchange="updateConfig('soundEnabled', this.checked)">
+                        Enable Sound
+                    </label>
+                    <label>
+                        <input type="checkbox" id="generateImages" onchange="updateConfig('generateImages', this.checked)">
+                        Generate Room Images
+                    </label>
+                </div>
+
+                <div class="config-section">
+                    <h4>Active Dice</h4>
+                    <div class="dice-toggles">
+                        <label>
+                            <input type="checkbox" id="D4enabled" onchange="updateDiceConfig('D4', this.checked)">
+                            D4 (Hallway Length)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="D6enabled" onchange="updateDiceConfig('D6', this.checked)">
+                            D6 (Additional Exits)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="D8enabled" onchange="updateDiceConfig('D8', this.checked)">
+                            D8 (Room Encounter)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="D10enabled" onchange="updateDiceConfig('D10', this.checked)">
+                            D10 (Room Width)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="D12enabled" onchange="updateDiceConfig('D12', this.checked)">
+                            D12 (Room Type)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="D20enabled" onchange="updateDiceConfig('D20', this.checked)">
+                            D20 (Room Modifier)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="D100enabled" onchange="updateDiceConfig('D100', this.checked)">
+                            D100 (Room Length)
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -47,9 +98,16 @@
             <p id="version" style="color: #ffffff; text-align: center; margin-top: 20px;">Version: Loading...</p>
         </center>
     </footer>
-
-    <!-- Load React component before main script -->
-    <script src="RoomVisualization.js" type="module"></script>
+    
+    <!-- React Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    
+    <!-- Room visualization script must come before script.js -->
+    <script src="RoomVisualization.js"></script>
+    
+    <!-- Main script -->
     <script src="script.js"></script>
-</body>
-</html>
+    
+    </body>
+    </html>
