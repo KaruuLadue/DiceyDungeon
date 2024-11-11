@@ -25,29 +25,25 @@ function RoomVisualization(props) {
         }
     };
 
-    const renderGrid = () => {
-        const cells = [];
-        const width = diceResults?.D10 || 5;
-        const length = Math.ceil((diceResults?.D100 || 50) / 10);
-
-        for (let y = 0; y < length; y++) {
-            for (let x = 0; x < width; x++) {
-                cells.push(
-                    createElement('div', {
-                        key: `${x}-${y}`,
-                        className: "absolute border border-amber-600",
-                        style: { 
-                            width: cellSize, 
-                            height: cellSize, 
-                            left: x * cellSize, 
-                            top: y * cellSize 
-                        }
-                    })
-                );
-            }
+// Room grid container
+window.React.createElement(
+    'div',
+    {
+        key: "grid",
+        className: "relative bg-gray-900 rounded border-2 border-amber-600",
+        style: { 
+            width: `${width * cellSize + 4}px`, 
+            height: `${length * cellSize + 4}px`,
+            position: 'relative',
+            margin: '1rem auto',
+            padding: '2px'
         }
-        return cells;
-    };
+    },
+    [
+        ...renderGrid(),
+        // ... rest of the code
+    ]
+)
 
     const generateExits = () => {
         const positions = [];
