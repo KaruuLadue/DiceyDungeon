@@ -4,7 +4,7 @@ const { createRoot } = window.ReactDOM;
 
 // Import RoomVisualization component
 import RoomVisualization from './RoomVisualization.js';
-
+window.rollAllDice = rollAllDice;
 // Global state
 let rollHistory = [];
 let rollTables = {};
@@ -27,6 +27,14 @@ const defaultConfig = {
 };
 
 let activeConfig = { ...defaultConfig };
+
+// Make functions globally accessible for onclick events
+window.rollAllDice = rollAllDice;
+window.confirmReset = confirmReset;
+window.exportRolls = exportRolls;
+window.toggleConfig = toggleConfig;
+window.updateConfig = updateConfig;
+window.updateDiceConfig = updateDiceConfig;
 
 async function loadRollTables() {
     try {

@@ -181,4 +181,5 @@ const RoomVisualization = ({ diceResults }) => {
 };
 
 // Export the component
+export default RoomVisualization;
 window.RoomVisualization = RoomVisualization;
