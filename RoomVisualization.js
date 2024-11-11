@@ -102,7 +102,7 @@ class RoomVisualization extends React.Component {
                     {/* Entrance Door */}
                     <div className="absolute w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-white"
                          style={{ left: entranceDoor.x, top: entranceDoor.y - cellSize / 2 }}>
-                        <ArrowRight className="w-4 h-4 sm:w-6 h-6 text-amber-600 -rotate-90" />
+                        <ArrowRight className="w-4 h-4 sm:w-6 h-6 text-amber-600 -rotate-90"/>
                     </div>
 
                     {/* Additional Exits */}
@@ -111,13 +111,13 @@ class RoomVisualization extends React.Component {
                              className="absolute w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center"
                              style={{
                                  left: exit.wall === 'right' ? exit.x - cellSize / 2 :
-                                     exit.wall === 'left' ? exit.x - cellSize / 2 :
-                                         exit.x,
+                                       exit.wall === 'left' ? exit.x - cellSize / 2 :
+                                       exit.x,
                                  top: exit.wall === 'top' ? exit.y - cellSize / 2 :
-                                     exit.wall === 'bottom' ? exit.y - cellSize / 2 :
-                                         exit.y
+                                      exit.wall === 'bottom' ? exit.y - cellSize / 2 :
+                                      exit.y
                              }}>
-                            <Square className="w-4 h-4 sm:w-6 sm:h-6 text-amber-600" />
+                            <Square className="w-4 h-4 sm:w-6 sm:h-6 text-amber-600"/>
                         </div>
                     ))}
                 </div>
@@ -125,10 +125,10 @@ class RoomVisualization extends React.Component {
                 {/* Legend */}
                 <div className="flex gap-2 sm:gap-4 text-xs sm:text-sm text-amber-600">
                     <div className="flex items-center gap-1 sm:gap-2">
-                        <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 -rotate-90" /> Entrance
+                        <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 -rotate-90"/> Entrance
                     </div>
                     <div className="flex items-center gap-1 sm:gap-2">
-                        <Square className="w-3 h-3 sm:w-4 sm:h-4" /> Exit
+                        <Square className="w-3 h-3 sm:w-4 sm:h-4"/> Exit
                     </div>
                 </div>
             </div>
