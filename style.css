@@ -366,3 +366,21 @@ button:active {
     background: #ffffff;
     opacity: 0.5;
 }
+
+.room-visualization {
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 1px solid #d4af37;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 800px;
+    min-height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.room-visualization.hidden {
+    display: none;
+}

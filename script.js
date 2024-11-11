@@ -2,6 +2,8 @@
 let rollHistory = [];
 let rollTables = {};
 const rollSound = new Audio('audio/rollsound.wav');
+// Add React createElement reference
+const { createElement } = React;
 
 // Default configuration
 const defaultConfig = {
@@ -165,25 +167,38 @@ function updateResultsDisplay(result) {
 
   processRollData(result.rolls);
 
-  if (activeConfig.highlightMatches) {
-      recentRollContainer.querySelectorAll('.result-line').forEach(line => {
-          const value = line.getAttribute('data-value');
-          if (rollValues.get(parseInt(value)) > 1) {
-              line.classList.add('match');
-          }
-      });
-  }
-
-  const separator = document.createElement("hr");
-  separator.className = 'roll-separator';
-  recentRollContainer.appendChild(separator);
-
   if (activeConfig.generateImages) {
-      const visualizationDiv = document.createElement("div");
-      visualizationDiv.className = 'room-visualization';
-      visualizationDiv.textContent = 'Room visualization placeholder';
-      recentRollContainer.appendChild(visualizationDiv);
-  }
+    const visualizationDiv = document.createElement("div");
+    visualizationDiv.className = 'room-visualization';
+    recentRollContainer.appendChild(visualizationDiv);
+    
+    try {
+        // Create room visualization
+        const roomProps = {
+            diceResults: {
+                D4: result.rolls.hallway.length?.value,
+                D6: result.rolls.room.exits?.value,
+                D8: result.rolls.room.encounter?.value,
+                D10: result.rolls.room.dimensions?.width?.value,
+                D12: result.rolls.room.type?.value,
+                D20: result.rolls.room.modifier?.value,
+                D100: result.rolls.room.dimensions?.length?.value
+            }
+        };
+        
+        // Render the React component
+        const root = ReactDOM.createRoot(visualizationDiv);
+        root.render(createElement(RoomVisualization, roomProps));
+    } catch (error) {
+        console.error('Failed to render room visualization:', error);
+        visualizationDiv.textContent = 'Failed to load room visualization';
+    }
+}
+    
+    // Render the React component
+    const root = ReactDOM.createRoot(visualizationDiv);
+    root.render(React.createElement(RoomVisualization, roomProps));
+}
 
   resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
 }
