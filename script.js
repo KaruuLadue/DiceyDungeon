@@ -1,5 +1,4 @@
 // Use window.React and ReactDOM instead of imports
-const { createElement } = window.React;
 const { createRoot } = window.ReactDOM;
 
 // Global state
