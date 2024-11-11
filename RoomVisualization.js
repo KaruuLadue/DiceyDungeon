@@ -37,13 +37,18 @@ const RoomVisualization = ({ diceResults }) => {
         cells.push(
           React.createElement('div', {
             key: `cell-${x}-${y}`,
-            className: "border border-gray-800",
+            className: "border border-gray-600",
             style: {
               position: 'absolute',
               left: x * cellSize,
               top: y * cellSize,
               width: cellSize,
-              height: cellSize
+              height: cellSize,
+              boxSizing: 'border-box',
+              backgroundColor: 'transparent',
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              borderColor: '#4a5568'  // this is equivalent to Tailwind's gray-600
             }
           })
         );
