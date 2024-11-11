@@ -17,32 +17,32 @@ const defaultConfig = {
         D20: true,
         D100: true
     },
-    generateImages: false,
+    generateImages: true,
     soundEnabled: true
 };
 
+let activeConfig = { ...defaultConfig };
+
 // Initialize the main room visualization if enabled
 function initializeRoomVisualization() {
-  if (activeConfig.generateImages) {
-      const mainVisualizationDiv = document.getElementById('roomVisualization');
-      if (mainVisualizationDiv && !window.roomVisualizationRoot) {
-          try {
-              window.roomVisualizationRoot = ReactDOM.createRoot(mainVisualizationDiv);
-              // Render initial empty state or example
-              window.roomVisualizationRoot.render(
-                  React.createElement(window.RoomVisualization, {
-                      diceResults: { D10: 5, D100: 50, D6: 2 }
-                  })
-              );
-          } catch (error) {
-              console.error('Failed to initialize main room visualization:', error);
-              mainVisualizationDiv.textContent = 'Failed to initialize room visualization';
-          }
-      }
-  }
+    if (activeConfig.generateImages) {
+        const mainVisualizationDiv = document.getElementById('roomVisualization');
+        if (mainVisualizationDiv && !window.roomVisualizationRoot) {
+            try {
+                window.roomVisualizationRoot = ReactDOM.createRoot(mainVisualizationDiv);
+                // Render initial empty state or example
+                window.roomVisualizationRoot.render(
+                    React.createElement(window.RoomVisualization, {
+                        diceResults: { D10: 5, D100: 50, D6: 2 }
+                    })
+                );
+            } catch (error) {
+                console.error('Failed to initialize main room visualization:', error);
+                mainVisualizationDiv.textContent = 'Failed to initialize room visualization';
+            }
+        }
+    }
 }
-
-let activeConfig = { ...defaultConfig };
 
 // Make functions globally accessible for onclick events
 window.rollAllDice = rollAllDice;
@@ -155,81 +155,41 @@ function displayError(message, duration = 5000) {
 }
 
 function updateResultsDisplay(result) {
-  const resultsDiv = document.getElementById("results");
-  const recentRollContainer = document.createElement("div");
-  recentRollContainer.className = 'recent-roll-container';
+    const resultsDiv = document.getElementById("results");
+    const recentRollContainer = document.createElement("div");
+    recentRollContainer.className = 'recent-roll-container';
 
-  const rollTitle = document.createElement("h2");
-  rollTitle.className = 'roll-title';
-  rollTitle.textContent = `Roll ${rollHistory.length}:`;
-  recentRollContainer.appendChild(rollTitle);
+    const rollTitle = document.createElement("h2");
+    rollTitle.className = 'roll-title';
+    rollTitle.textContent = `Roll ${rollHistory.length}:`;
+    recentRollContainer.appendChild(rollTitle);
 
-  const rollValues = new Map();
+    const rollValues = new Map();
 
-  function processRollData(data, parentKey = '') {
-      Object.entries(data).forEach(([key, rollData]) => {
-          if (rollData && rollData.die && rollData.value) {
-              console.log(`Processing ${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}`);
+    function processRollData(data, parentKey = '') {
+        Object.entries(data).forEach(([key, rollData]) => {
+            if (rollData && rollData.die && rollData.value) {
+                console.log(`Processing ${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}`);
 
-              rollValues.set(rollData.value, (rollValues.get(rollData.value) || 0) + 1);
+                rollValues.set(rollData.value, (rollValues.get(rollData.value) || 0) + 1);
 
-              const lineElement = document.createElement("div");
-              lineElement.className = 'result-line';
-              lineElement.setAttribute('data-value', rollData.value);
+                const lineElement = document.createElement("div");
+                lineElement.className = 'result-line';
+                lineElement.setAttribute('data-value', rollData.value);
 
-              lineElement.innerHTML = `
-                  <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
-                  <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
-              `;
+                lineElement.innerHTML = `
+                    <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
+                    <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
+                `;
 
-              recentRollContainer.appendChild(lineElement);
-          } else if (typeof rollData === 'object' && rollData !== null) {
-              processRollData(rollData, `${parentKey}${key}.`);
-          }
-      });
-  }
+                recentRollContainer.appendChild(lineElement);
+            } else if (typeof rollData === 'object' && rollData !== null) {
+                processRollData(rollData, `${parentKey}${key}.`);
+            }
+        });
+    }
 
-  processRollData(result.rolls);
-
-  if (activeConfig.generateImages) {
-      const visualizationDiv = document.createElement("div");
-      visualizationDiv.className = 'room-visualization';
-      recentRollContainer.appendChild(visualizationDiv);
-
-      try {
-          const roomProps = {
-              diceResults: {
-                  D4: result.rolls.hallway.length?.value,
-                  D6: result.rolls.hallway.exits?.value,
-                  D8: result.rolls.room.encounter?.value,
-                  D10: result.rolls.room.dimensions?.width?.value,
-                  D12: result.rolls.room.type?.value,
-                  D20: result.rolls.room.modifier?.value,
-                  D100: result.rolls.room.dimensions?.length?.value
-              }
-          };
-
-          console.log("Room Props for Visualization:", roomProps);
-          
-          // Create a new root for this visualization
-          const root = ReactDOM.createRoot(visualizationDiv);
-          root.render(React.createElement(window.RoomVisualization, roomProps));
-
-          // Also update the main visualization if it exists
-          if (window.roomVisualizationRoot) {
-              window.roomVisualizationRoot.render(
-                  React.createElement(window.RoomVisualization, roomProps)
-              );
-          }
-
-      } catch (error) {
-          console.error('Failed to render room visualization:', error);
-          visualizationDiv.textContent = 'Failed to load room visualization';
-      }
-  }
-
-  resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
-}
+    processRollData(result.rolls);
 
     if (activeConfig.generateImages) {
         const visualizationDiv = document.createElement("div");
@@ -258,8 +218,8 @@ function updateResultsDisplay(result) {
             // Also update the main visualization if it exists
             if (window.roomVisualizationRoot) {
                 window.roomVisualizationRoot.render(
-                  React.createElement(window.RoomVisualization, roomProps)
-              );
+                    React.createElement(window.RoomVisualization, roomProps)
+                );
             }
 
         } catch (error) {
@@ -269,7 +229,7 @@ function updateResultsDisplay(result) {
     }
 
     resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
-
+}
 
 async function rollAllDice() {
     if (activeConfig.soundEnabled) {
@@ -450,6 +410,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateConfigDisplay();
     console.log("Configuration display updated.");
 
+    // Initialize room visualization
+    initializeRoomVisualization();
+    
     try {
         const response = await fetch('version.json');
         if (response.ok) {

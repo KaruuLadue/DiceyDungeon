@@ -47,12 +47,34 @@
                 <div class="config-section">
                     <h4>Active Dice</h4>
                     <div class="dice-toggles">
-                        <!-- Dice configuration options remain the same -->
                         <label>
                             <input type="checkbox" id="D4enabled" onchange="updateDiceConfig('D4', this.checked)">
                             D4 (Hallway Length)
                         </label>
-                        <!-- ... other dice options ... -->
+                        <label>
+                            <input type="checkbox" id="D6enabled" onchange="updateDiceConfig('D6', this.checked)">
+                            D6 (Additional Exits)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="D8enabled" onchange="updateDiceConfig('D8', this.checked)">
+                            D8 (Room Encounter)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="D10enabled" onchange="updateDiceConfig('D10', this.checked)">
+                            D10 (Room Width)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="D12enabled" onchange="updateDiceConfig('D12', this.checked)">
+                            D12 (Room Type)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="D20enabled" onchange="updateDiceConfig('D20', this.checked)">
+                            D20 (Room Modifier)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="D100enabled" onchange="updateDiceConfig('D100', this.checked)">
+                            D100 (Room Length)
+                        </label>
                     </div>
                 </div>
             </div>
@@ -72,37 +94,12 @@
         </center>
     </footer>
 
-    <!-- Load React and ReactDOM first -->
+    <!-- Load dependencies -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 
-    <!-- Room visualization component -->
+    <!-- Application scripts -->
     <script src="RoomVisualization.js"></script>
-    
-    <!-- Main application script -->
     <script src="script.js"></script>
-    
-    <!-- Initialize React component -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const rootElement = document.getElementById('roomVisualization');
-            if (!rootElement) return;
-
-            try {
-                // Create root using React 18's createRoot API
-                const root = ReactDOM.createRoot(rootElement);
-                
-                // Initial render with example data
-                const diceResults = { D10: 8, D100: 63, D6: 3 };
-                root.render(React.createElement(RoomVisualization, { diceResults }));
-                
-                // Store the root instance for later use in script.js
-                window.roomVisualizationRoot = root;
-            } catch (error) {
-                console.error('Failed to initialize room visualization:', error);
-                rootElement.textContent = 'Failed to initialize room visualization';
-            }
-        });
-    </script>
 </body>
 </html>
