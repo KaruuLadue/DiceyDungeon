@@ -1,10 +1,7 @@
-// Define your component
 class RoomVisualization extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            cellSize: 32
-        };
+        this.state = { cellSize: 32 };
     }
 
     componentDidMount() {
