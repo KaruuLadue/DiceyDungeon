@@ -2,9 +2,6 @@
 const { createElement } = window.React;
 const { createRoot } = window.ReactDOM;
 
-// Import RoomVisualization component
-import RoomVisualization from './RoomVisualization.js';
-window.rollAllDice = rollAllDice;
 // Global state
 let rollHistory = [];
 let rollTables = {};
@@ -198,7 +195,7 @@ function updateResultsDisplay(result) {
             console.log("Room Props for Visualization:", roomProps);
             
             const root = createRoot(visualizationDiv);
-            root.render(createElement(RoomVisualization, roomProps));
+            root.render(createElement(window.RoomVisualization, roomProps));
 
         } catch (error) {
             console.error('Failed to render room visualization:', error);
