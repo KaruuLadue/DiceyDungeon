@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from 'react';
+// Access React from window object
+const { useState, useEffect } = React;
 
-// Create the component
+/**
+ * RoomVisualization Component
+ * Renders a grid-based visualization of a dungeon room with entrance and exits
+ */
 const RoomVisualization = ({ diceResults }) => {
   const [cellSize, setCellSize] = useState(32);
   
@@ -31,17 +35,17 @@ const RoomVisualization = ({ diceResults }) => {
     for (let y = 0; y < length; y++) {
       for (let x = 0; x < width; x++) {
         cells.push(
-          <div
-            key={`cell-${x}-${y}`}
-            className="border border-gray-800"
-            style={{
+          React.createElement('div', {
+            key: `cell-${x}-${y}`,
+            className: "border border-gray-800",
+            style: {
               position: 'absolute',
               left: x * cellSize,
               top: y * cellSize,
               width: cellSize,
               height: cellSize
-            }}
-          />
+            }
+          })
         );
       }
     }
@@ -84,104 +88,121 @@ const RoomVisualization = ({ diceResults }) => {
     y: length - 1
   };
 
-  return (
-    <div className="flex flex-col items-center gap-4 p-4 bg-black rounded-lg">
-      {/* Room size display */}
-      <div className="text-amber-600 text-lg font-bold">
-        Room Size: {width * 5}ft x {length * 5}ft
-      </div>
+  return React.createElement('div', {
+    className: "flex flex-col items-center gap-4 p-4 bg-black rounded-lg"
+  }, [
+    // Room size display
+    React.createElement('div', {
+      key: "size",
+      className: "text-amber-600 text-lg font-bold"
+    }, `Room Size: ${width * 5}ft x ${length * 5}ft`),
+    
+    // Room grid
+    React.createElement('div', {
+      key: "grid",
+      className: "relative bg-gray-900 rounded border-2 border-amber-600",
+      style: {
+        width: width * cellSize + 4,
+        height: length * cellSize + 4,
+        padding: '2px'
+      }
+    }, [
+      ...renderGrid(),
       
-      {/* Room grid */}
-      <div
-        className="relative bg-gray-900 rounded border-2 border-amber-600"
-        style={{
-          width: width * cellSize + 4,
-          height: length * cellSize + 4,
-          padding: '2px'
-        }}
-      >
-        {renderGrid()}
-        
-        {/* Entrance */}
-        <div
-          className="absolute flex items-center justify-center"
-          style={{
-            left: entrancePosition.x * cellSize,
-            top: (entrancePosition.y * cellSize) + (cellSize/2),
-            width: cellSize,
-            height: cellSize/2
-          }}
-        >
-          <span className="text-3xl font-bold" style={{ color: '#d4af37' }}>↑</span>
-        </div>
-        
-        {/* Exits */}
-        {exitPositions.map((exit, index) => {
-          let style = {
-            position: 'absolute',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          };
-          
-          switch (exit.wall) {
-            case 'top':
-              style = {
-                ...style,
-                left: exit.x * cellSize,
-                top: 0,
-                width: cellSize,
-                height: cellSize/2,
-                transform: 'translateY(-50%)'
-              };
-              break;
-            case 'left':
-              style = {
-                ...style,
-                left: 0,
-                top: exit.y * cellSize,
-                width: cellSize/2,
-                height: cellSize,
-                transform: 'translateX(-50%)'
-              };
-              break;
-            case 'right':
-              style = {
-                ...style,
-                left: width * cellSize,
-                top: exit.y * cellSize,
-                width: cellSize/2,
-                height: cellSize,
-                transform: 'translateX(-50%)'
-              };
-              break;
-          }
-          
-          return (
-            <div
-              key={`exit-${index}`}
-              style={style}
-            >
-              <div className="w-4 h-4" style={{ backgroundColor: '#d4af37' }}></div>
-            </div>
-          );
-        })}
-      </div>
+      // Entrance
+      React.createElement('div', {
+        key: "entrance",
+        className: "absolute flex items-center justify-center",
+        style: {
+          left: entrancePosition.x * cellSize,
+          top: (entrancePosition.y * cellSize) + (cellSize/2),
+          width: cellSize,
+          height: cellSize/2
+        }
+      }, React.createElement('span', {
+        className: "text-3xl font-bold",
+        style: { color: '#d4af37' }
+      }, '↑')),
       
-      {/* Legend */}
-      <div className="flex gap-4 text-sm text-amber-600">
-        <div className="flex items-center gap-2">
-          <span style={{ color: '#d4af37' }}>↑</span> Entrance
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 inline-block" style={{ backgroundColor: '#d4af37' }}></div> Exit
-        </div>
-      </div>
-    </div>
-  );
+      // Exits
+      ...exitPositions.map((exit, index) => {
+        let style = {
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        };
+        
+        switch (exit.wall) {
+          case 'top':
+            style = {
+              ...style,
+              left: exit.x * cellSize,
+              top: 0,
+              width: cellSize,
+              height: cellSize/2,
+              transform: 'translateY(-50%)'
+            };
+            break;
+          case 'left':
+            style = {
+              ...style,
+              left: 0,
+              top: exit.y * cellSize,
+              width: cellSize/2,
+              height: cellSize,
+              transform: 'translateX(-50%)'
+            };
+            break;
+          case 'right':
+            style = {
+              ...style,
+              left: width * cellSize,
+              top: exit.y * cellSize,
+              width: cellSize/2,
+              height: cellSize,
+              transform: 'translateX(-50%)'
+            };
+            break;
+        }
+        
+        return React.createElement('div', {
+          key: `exit-${index}`,
+          style: style
+        }, React.createElement('div', {
+          className: "w-4 h-4",
+          style: { backgroundColor: '#d4af37' }
+        }));
+      })
+    ]),
+    
+    // Legend
+    React.createElement('div', {
+      key: "legend",
+      className: "flex gap-4 text-sm text-amber-600"
+    }, [
+      React.createElement('div', {
+        key: "entrance-legend",
+        className: "flex items-center gap-2"
+      }, [
+        React.createElement('span', {
+          style: { color: '#d4af37' }
+        }, '↑'),
+        ' Entrance'
+      ]),
+      React.createElement('div', {
+        key: "exit-legend",
+        className: "flex items-center gap-2"
+      }, [
+        React.createElement('div', {
+          className: "w-4 h-4 inline-block",
+          style: { backgroundColor: '#d4af37' }
+        }),
+        ' Exit'
+      ])
+    ])
+  ]);
 };
 
-// Make the component available globally and export it
+// Make the component available globally
 window.RoomVisualization = RoomVisualization;
-
-export default RoomVisualization;
