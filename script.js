@@ -205,9 +205,10 @@ function updateResultsDisplay(result) {
             }
         });
     }
-  }
   
+
     processRollData(result.rolls);
+}
 
 function updateResultsDisplay(result) {
     const resultsDiv = document.getElementById("results");
