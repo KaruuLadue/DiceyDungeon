@@ -1,3 +1,7 @@
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import RoomVisualization from './RoomVisualization';
+
 // Global state
 let rollHistory = [];
 let rollTables = {};
@@ -126,87 +130,79 @@ function displayError(message, duration = 5000) {
 }
 
 function updateResultsDisplay(result) {
-    const resultsDiv = document.getElementById("results");
-    const recentRollContainer = document.createElement("div");
-    recentRollContainer.className = 'recent-roll-container';
+  const resultsDiv = document.getElementById("results");
+  const recentRollContainer = document.createElement("div");
+  recentRollContainer.className = 'recent-roll-container';
 
-    const rollTitle = document.createElement("h2");
-    rollTitle.className = 'roll-title';
-    rollTitle.textContent = `Roll ${rollHistory.length}:`;
-    recentRollContainer.appendChild(rollTitle);
+  const rollTitle = document.createElement("h2");
+  rollTitle.className = 'roll-title';
+  rollTitle.textContent = `Roll ${rollHistory.length}:`;
+  recentRollContainer.appendChild(rollTitle);
 
-    const rollValues = new Map();
+  const rollValues = new Map();
 
-    // Recursively process roll data
-    function processRollData(data, parentKey = '') {
-        Object.entries(data).forEach(([key, rollData]) => {
-            if (rollData && rollData.die && rollData.value) {
-                console.log(`Processing ${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}`);
+     // Recursively process roll data
+     function processRollData(data, parentKey = '') {
+      Object.entries(data).forEach(([key, rollData]) => {
+          if (rollData && rollData.die && rollData.value) {
+              console.log(`Processing ${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}`);
 
-                rollValues.set(rollData.value, (rollValues.get(rollData.value) || 0) + 1);
+              rollValues.set(rollData.value, (rollValues.get(rollData.value) || 0) + 1);
 
-                const lineElement = document.createElement("div");
-                lineElement.className = 'result-line';
-                lineElement.setAttribute('data-value', rollData.value);
+              const lineElement = document.createElement("div");
+              lineElement.className = 'result-line';
+              lineElement.setAttribute('data-value', rollData.value);
 
-                lineElement.innerHTML = `
-                    <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
-                    <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
-                `;
+              lineElement.innerHTML = `
+                  <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
+                  <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
+              `;
 
-                recentRollContainer.appendChild(lineElement);
-            } else if (typeof rollData === 'object' && rollData !== null) {
-                // Recursively process nested objects
-                processRollData(rollData, `${parentKey}${key}.`);
-            } else {
-                console.error(`Invalid roll data for ${parentKey}${key}: `, rollData);
-            }
-        });
-    }
+              recentRollContainer.appendChild(lineElement);
+          } else if (typeof rollData === 'object' && rollData !== null) {
+              // Recursively process nested objects
+              processRollData(rollData, `${parentKey}${key}.`);
+          } else {
+              console.error(`Invalid roll data for ${parentKey}${key}: `, rollData);
+          }
+      });
+  }
 
-    processRollData(result.rolls);
+  processRollData(result.rolls);
 
-    if (activeConfig.generateImages) {
-        const visualizationDiv = document.createElement("div");
-        visualizationDiv.className = 'room-visualization';
-        recentRollContainer.appendChild(visualizationDiv);
+  if (activeConfig.generateImages) {
+      const visualizationDiv = document.createElement("div");
+      visualizationDiv.className = 'room-visualization';
+      recentRollContainer.appendChild(visualizationDiv);
 
-        try {
+      try {
             // Create room visualization
             const roomProps = {
-                diceResults: {
-                    D4: result.rolls.hallway.length?.value,
-                    D6: result.rolls.hallway.exits?.value,
-                    D8: result.rolls.room.encounter?.value,
-                    D10: result.rolls.room.dimensions?.width?.value,
-                    D12: result.rolls.room.type?.value,
-                    D20: result.rolls.room.modifier?.value,
-                    D100: result.rolls.room.dimensions?.length?.value
-                }
-            };
+              diceResults: {
+                  D4: result.rolls.hallway.length?.value,
+                  D6: result.rolls.hallway.exits?.value,
+                  D8: result.rolls.room.encounter?.value,
+                  D10: result.rolls.room.dimensions?.width?.value,
+                  D12: result.rolls.room.type?.value,
+                  D20: result.rolls.room.modifier?.value,
+                  D100: result.rolls.room.dimensions?.length?.value
+              }
+          };
 
-            // Debugging log for roomProps
-            console.log("Room Props for Visualization:", roomProps);
+          // Debugging log for roomProps
+          console.log("Room Props for Visualization:", roomProps);
 
-            const renderVisualization = () => {
-                const root = ReactDOM.createRoot(visualizationDiv);
-                root.render(createElement(window.RoomVisualization, roomProps));
-            };
+          // Create and render the React component using createRoot
+          const root = createRoot(visualizationDiv);
+          root.render(React.createElement(RoomVisualization, roomProps));
 
-            // Wait for component to be available if needed
-            if (!window.RoomVisualization) {
-                console.log("Waiting for RoomVisualization to be available...");
-                window.addEventListener('RoomVisualizationReady', renderVisualization, { once: true });
-            } else {
-                renderVisualization();
-            }
-        } catch (error) {
-            console.error('Failed to render room visualization:', error);
-            visualizationDiv.textContent = 'Failed to load room visualization';
-        }
-    }
+      } catch (error) {
+          console.error('Failed to render room visualization:', error);
+          visualizationDiv.textContent = 'Failed to load room visualization';
+      }
+  }
 
-    resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
+  resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
 }
 
 async function rollAllDice() {
