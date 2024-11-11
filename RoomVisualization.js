@@ -96,27 +96,27 @@ class RoomVisualization extends React.Component {
                 </div>
 
                 <div className="relative bg-gray-900 rounded border-2 border-amber-600"
-                    style={{ width: width * cellSize + 2 * 2, height: length * cellSize + 2 * 2 }}>
+                     style={{ width: width * cellSize + 2 * 2, height: length * cellSize + 2 * 2 }}>
                     {this.renderGrid()}
 
                     {/* Entrance Door */}
                     <div className="absolute w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center text-white"
-                        style={{ left: entranceDoor.x, top: entranceDoor.y - cellSize / 2 }}>
+                         style={{ left: entranceDoor.x, top: entranceDoor.y - cellSize / 2 }}>
                         <ArrowRight className="w-4 h-4 sm:w-6 h-6 text-amber-600 -rotate-90" />
                     </div>
 
                     {/* Additional Exits */}
                     {exitPositions.map((exit, index) => (
                         <div key={index}
-                            className="absolute w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center"
-                            style={{
-                                left: exit.wall === 'right' ? exit.x - cellSize / 2 :
-                                    exit.wall === 'left' ? exit.x - cellSize / 2 :
-                                        exit.x,
-                                top: exit.wall === 'top' ? exit.y - cellSize / 2 :
-                                    exit.wall === 'bottom' ? exit.y - cellSize / 2 :
-                                        exit.y
-                            }}>
+                             className="absolute w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center"
+                             style={{
+                                 left: exit.wall === 'right' ? exit.x - cellSize / 2 :
+                                     exit.wall === 'left' ? exit.x - cellSize / 2 :
+                                         exit.x,
+                                 top: exit.wall === 'top' ? exit.y - cellSize / 2 :
+                                     exit.wall === 'bottom' ? exit.y - cellSize / 2 :
+                                         exit.y
+                             }}>
                             <Square className="w-4 h-4 sm:w-6 sm:h-6 text-amber-600" />
                         </div>
                     ))}
