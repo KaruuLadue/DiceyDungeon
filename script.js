@@ -2,8 +2,6 @@
 let rollHistory = [];
 let rollTables = {};
 const rollSound = new Audio('audio/rollsound.wav');
-
-// Add React destructuring
 const { createElement } = React;
 
 // Default configuration

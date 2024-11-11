@@ -1,3 +1,5 @@
+const { ArrowRight, Square } = window.lucideReact;
+
 class RoomVisualization extends React.Component {
     constructor(props) {
         super(props);
