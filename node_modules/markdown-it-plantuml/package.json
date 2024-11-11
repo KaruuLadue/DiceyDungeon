@@ -1,0 +1,39 @@
+{
+  "author": {
+    "name": "Gerardo Munguia",
+    "email": "<gerardomunguiahoyo@gmail.com>",
+    "url": "gmunguia.com"
+  },
+  "name": "markdown-it-plantuml",
+  "version": "1.4.1",
+  "description": "Plugin to create block-level uml diagrams for markdown-it markdown parser",
+  "repository": "gmunguia/markdown-it-plantuml",
+  "license": "MIT",
+  "scripts": {
+    "test": "mocha test/*.js",
+    "test:report": "npm test -- --reporter mocha-junit-reporter",
+    "coverage": "nyc npm test",
+    "coverage:report": "npm run coverage && nyc report --reporter=lcovonly"
+  },
+  "keywords": [
+    "markdown-it-plugin",
+    "markdown-it",
+    "markdown",
+    "uml",
+    "plantuml"
+  ],
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "markdown-it": "8.4.0",
+    "markdown-it-testgen": "^0.1.5",
+    "mocha": "4.0.1",
+    "mocha-junit-reporter": "1.17.0",
+    "nyc": "^14.1.1"
+  },
+  "nyc": {
+    "exclude": [
+      "lib",
+      "test"
+    ]
+  }
+}

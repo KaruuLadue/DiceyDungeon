@@ -34,6 +34,7 @@
         "fs-file-tree": "^1.1.1",
         "glob": "^10.2.1",
         "gray-matter": "^4.0.3",
+        "lucide-react-native": "^0.456.0",
         "markdown-it": "^14.1.0",
         "markdown-it-anchor": "^9.0.1",
         "markdown-it-attrs": "^4.1.6",
