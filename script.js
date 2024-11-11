@@ -25,23 +25,40 @@ let activeConfig = { ...defaultConfig };
 
 // Initialize the main room visualization if enabled
 function initializeRoomVisualization() {
-    if (activeConfig.generateImages) {
-        const mainVisualizationDiv = document.getElementById('roomVisualization');
-        if (mainVisualizationDiv && !window.roomVisualizationRoot) {
-            try {
-                window.roomVisualizationRoot = ReactDOM.createRoot(mainVisualizationDiv);
-                // Render initial empty state or example
-                window.roomVisualizationRoot.render(
-                    React.createElement(window.RoomVisualization, {
-                        diceResults: { D10: 5, D100: 50, D6: 2 }
-                    })
-                );
-            } catch (error) {
-                console.error('Failed to initialize main room visualization:', error);
-                mainVisualizationDiv.textContent = 'Failed to initialize room visualization';
+  if (activeConfig.generateImages) {
+    const visualizationDiv = document.createElement("div");
+    visualizationDiv.className = 'room-visualization';
+    recentRollContainer.appendChild(visualizationDiv);
+
+    try {
+        const roomProps = {
+            diceResults: {
+                D4: result.rolls.hallway.length?.value,
+                D6: result.rolls.hallway.exits?.value,
+                D8: result.rolls.room.encounter?.value,
+                D10: result.rolls.room.dimensions?.width?.value,
+                D12: result.rolls.room.type?.value,
+                D20: result.rolls.room.modifier?.value,
+                D100: result.rolls.room.dimensions?.length?.value
             }
-        }
+        };
+
+        console.log("Room Props for Visualization:", roomProps);
+        
+        const root = createRoot(visualizationDiv);
+        root.render(React.createElement(window.RoomVisualization, roomProps));
+    } catch (error) {
+        console.error('Failed to render room visualization:', error);
+        visualizationDiv.textContent = 'Failed to load room visualization';
     }
+}
+
+resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
+
+// Apply highlighting for this roll if enabled
+if (activeConfig.highlightMatches) {
+    updateHighlightStylesForRoll(recentRollContainer);
+}
 }
 
 // Make functions globally accessible for onclick events
@@ -188,9 +205,44 @@ function updateResultsDisplay(result) {
             }
         });
     }
+  }
+  
+    processRollData(result.rolls);
+
+function updateResultsDisplay(result) {
+    const resultsDiv = document.getElementById("results");
+    const recentRollContainer = document.createElement("div");
+    recentRollContainer.className = 'recent-roll-container';
+    // Add a data attribute to identify this as a single roll container
+    recentRollContainer.setAttribute('data-roll-group', Date.now());
+
+    const rollTitle = document.createElement("h2");
+    rollTitle.className = 'roll-title';
+    rollTitle.textContent = `Roll ${rollHistory.length}:`;
+    recentRollContainer.appendChild(rollTitle);
+
+    function processRollData(data, parentKey = '') {
+        Object.entries(data).forEach(([key, rollData]) => {
+            if (rollData && rollData.die && rollData.value) {
+                const lineElement = document.createElement("div");
+                lineElement.className = 'result-line';
+                lineElement.setAttribute('data-value', rollData.value);
+
+                lineElement.innerHTML = `
+                    <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
+                    <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
+                `;
+
+                recentRollContainer.appendChild(lineElement);
+            } else if (typeof rollData === 'object' && rollData !== null) {
+                processRollData(rollData, `${parentKey}${key}.`);
+            }
+        });
+    }
 
     processRollData(result.rolls);
 
+    // Add visualization if enabled
     if (activeConfig.generateImages) {
         const visualizationDiv = document.createElement("div");
         visualizationDiv.className = 'room-visualization';
@@ -210,18 +262,9 @@ function updateResultsDisplay(result) {
             };
 
             console.log("Room Props for Visualization:", roomProps);
-
-            // Initialize and render RoomVisualization component correctly
+            
             const root = createRoot(visualizationDiv);
             root.render(React.createElement(window.RoomVisualization, roomProps));
-
-            // Also update the main visualization if it exists
-            if (window.roomVisualizationRoot) {
-                window.roomVisualizationRoot.render(
-                    React.createElement(window.RoomVisualization, roomProps)
-                );
-            }
-
         } catch (error) {
             console.error('Failed to render room visualization:', error);
             visualizationDiv.textContent = 'Failed to load room visualization';
@@ -229,6 +272,11 @@ function updateResultsDisplay(result) {
     }
 
     resultsDiv.insertBefore(recentRollContainer, resultsDiv.firstChild);
+    
+    // Apply highlighting for this roll if enabled
+    if (activeConfig.highlightMatches) {
+        updateHighlightStylesForRoll(recentRollContainer);
+    }
 }
 
 async function rollAllDice() {
@@ -327,15 +375,7 @@ function updateConfig(setting, value) {
           updateHighlightStyles();
           break;
       case 'generateImages':
-          // Only affect existing roll visualizations
-          const visualizations = document.querySelectorAll('.room-visualization');
-          visualizations.forEach(viz => {
-              if (value) {
-                  viz.classList.remove('hidden');
-              } else {
-                  viz.classList.add('hidden');
-              }
-          });
+          toggleRoomVisualization(value);
           break;
   }
 }
@@ -350,6 +390,44 @@ function toggleRoomVisualization(show) {
     if (visualizationDiv) {
         visualizationDiv.classList.toggle('hidden', !show);
     }
+}
+
+function updateHighlightStylesForRoll(rollContainer) {
+  // Get all result lines within this roll container
+  const resultLines = rollContainer.querySelectorAll('.result-line');
+  const valueCount = new Map();
+
+  // Count occurrences of each value within this roll
+  resultLines.forEach(line => {
+      const value = line.getAttribute('data-value');
+      if (value) {
+          valueCount.set(value, (valueCount.get(value) || 0) + 1);
+      }
+  });
+
+  // Apply highlighting only to values that appear multiple times
+  resultLines.forEach(line => {
+      const value = line.getAttribute('data-value');
+      if (value && valueCount.get(value) > 1) {
+          line.classList.add('match');
+      } else {
+          line.classList.remove('match');
+      }
+  });
+}
+
+function updateHighlightStyles() {
+  // Apply highlighting to each roll container independently
+  document.querySelectorAll('.recent-roll-container').forEach(container => {
+      if (activeConfig.highlightMatches) {
+          updateHighlightStylesForRoll(container);
+      } else {
+          // Remove all highlighting from this container
+          container.querySelectorAll('.result-line').forEach(line => {
+              line.classList.remove('match');
+          });
+      }
+  });
 }
 
 function updateHighlightStyles() {
@@ -377,17 +455,19 @@ function saveConfig() {
 }
 
 function loadConfig() {
-    try {
-        const savedConfig = localStorage.getItem('diceyDungeonConfig');
-        if (savedConfig) {
-            activeConfig = { ...defaultConfig, ...JSON.parse(savedConfig) };
-        }
-        updateConfigDisplay();
-    } catch (error) {
-        console.error("Error loading config:", error);
-        activeConfig = { ...defaultConfig };
-        displayError("Failed to load configuration. Using defaults.");
-    }
+  try {
+      const savedConfig = localStorage.getItem('diceyDungeonConfig');
+      if (savedConfig) {
+          activeConfig = { ...defaultConfig, ...JSON.parse(savedConfig) };
+      }
+      updateConfigDisplay();
+      // Apply current config settings to existing results
+      updateHighlightStyles();
+  } catch (error) {
+      console.error("Error loading config:", error);
+      activeConfig = { ...defaultConfig };
+      displayError("Failed to load configuration. Using defaults.");
+  }
 }
 
 // Initialize on page load
