@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
  * RoomVisualization Component
  * Renders a grid-based visualization of a dungeon room with entrance and exits
  */
-const RoomVisualization = ({ diceResults = { D10: 5, D100: 50, D6: 2 } }) => {
+const RoomVisualization = ({ diceResults }) => {
   const [cellSize, setCellSize] = useState(32);
   
   // Calculate room dimensions
@@ -14,17 +14,19 @@ const RoomVisualization = ({ diceResults = { D10: 5, D100: 50, D6: 2 } }) => {
 
   useEffect(() => {
     const calculateCellSize = () => {
-      const maxWidth = 800;
-      const maxHeight = 600;
-      const widthCellSize = Math.floor(maxWidth / width);
-      const heightCellSize = Math.floor(maxHeight / length);
-      setCellSize(Math.min(32, widthCellSize, heightCellSize));
+      const container = document.querySelector('.room-visualization');
+      if (container) {
+        const containerWidth = container.clientWidth - 40;
+        const maxWidth = Math.min(800, containerWidth);
+        const potentialCellSize = Math.floor(maxWidth / width);
+        setCellSize(Math.min(32, potentialCellSize));
+      }
     };
 
     calculateCellSize();
     window.addEventListener('resize', calculateCellSize);
     return () => window.removeEventListener('resize', calculateCellSize);
-  }, [width, length]);
+  }, [width]);
 
   // Generate grid cells
   const renderGrid = () => {
@@ -113,7 +115,7 @@ const RoomVisualization = ({ diceResults = { D10: 5, D100: 50, D6: 2 } }) => {
             height: cellSize/2
           }}
         >
-          <span className="text-amber-400 text-3xl font-bold">↑</span>
+          <span className="text-3xl font-bold" style={{ color: '#d4af37' }}>↑</span>
         </div>
         
         {/* Exits */}
@@ -163,7 +165,7 @@ const RoomVisualization = ({ diceResults = { D10: 5, D100: 50, D6: 2 } }) => {
               key={`exit-${index}`}
               style={style}
             >
-              <div className="w-4 h-4 bg-amber-400"></div>
+              <div className="w-4 h-4" style={{ backgroundColor: '#d4af37' }}></div>
             </div>
           );
         })}
@@ -172,10 +174,10 @@ const RoomVisualization = ({ diceResults = { D10: 5, D100: 50, D6: 2 } }) => {
       {/* Legend */}
       <div className="flex gap-4 text-sm text-amber-600">
         <div className="flex items-center gap-2">
-          <span className="text-amber-400">↑</span> Entrance
+          <span style={{ color: '#d4af37' }}>↑</span> Entrance
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-amber-400 inline-block"></div> Exit
+          <div className="w-4 h-4 inline-block" style={{ backgroundColor: '#d4af37' }}></div> Exit
         </div>
       </div>
     </div>
