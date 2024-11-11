@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-/**
- * RoomVisualization Component
- * Renders a grid-based visualization of a dungeon room with entrance and exits
- */
+// Create the component
 const RoomVisualization = ({ diceResults }) => {
   const [cellSize, setCellSize] = useState(32);
   
@@ -183,5 +180,8 @@ const RoomVisualization = ({ diceResults }) => {
     </div>
   );
 };
+
+// Make the component available globally and export it
+window.RoomVisualization = RoomVisualization;
 
 export default RoomVisualization;
