@@ -13,7 +13,7 @@ const defaultTheme = {
         backgroundColor: '#1f1f1f', // Background color of grid area
         border: {
             color: '#d4af37',  // Same as entrance/exits
-            width: 4           // Thicker border
+            width: 6           // Thicker border
         }
     },
     container: {
@@ -26,7 +26,7 @@ const defaultTheme = {
     elements: {
         entrance: {
             color: '#d4af37',  // Color of entrance arrow
-            size: 24          // Size of the arrow
+            sizeRatio: 0.8     // Size relative to cell size (80% of cell)
         },
         exits: {
             color: '#d4af37',  // Color of exit squares
@@ -238,12 +238,12 @@ const RoomVisualization = {
         ctx.fillStyle = entrance.color;
         ctx.font = `${entrance.size}px Arial`;
         ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
+        ctx.textBaseline = 'bottom';  // Change from 'middle' to 'bottom'
         
-        // Draw the triangle centered in the cell
+        // Draw the triangle at bottom center of the cell
         ctx.fillText('▲', 
-            entranceX + (cellSize / 2),
-            entranceY + (cellSize / 2)
+            entranceX + (cellSize / 2),            // center horizontally
+            entranceY + cellSize - 2               // align to bottom with small offset
         );
     },
 
@@ -302,11 +302,10 @@ const RoomVisualization = {
         
         // Calculate legend layout
         const entranceText = '▲ Entrance';
-        const exitText = 'Exit';
-        const exitSquareWidth = this.currentTheme.elements.exits.width;
+        const exitText = '▬ Exit';  // Changed to use the symbol
         const totalWidth = ctx.measureText(entranceText).width + 
                           ctx.measureText(exitText).width + 
-                          exitSquareWidth + legend.spacing;
+                          legend.spacing;
         
         // Draw legend items
         let startX = (canvasWidth - totalWidth) / 2;
@@ -316,8 +315,6 @@ const RoomVisualization = {
         startX += ctx.measureText(entranceText).width + legend.spacing;
         
         // Exit legend
-        ctx.fillRect(startX, legendY - 10, exitSquareWidth, exitSquareWidth);
-        startX += exitSquareWidth + 8;
         ctx.fillText(exitText, startX, legendY);
     }
 };
