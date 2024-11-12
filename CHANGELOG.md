@@ -6,11 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- Room visualization feature
 - Enhanced randomization options
 - Additional export formats
+- Chrome 
 
-## [1.1.0] - 2024-11-10
+## 2024-11-11
+- Added room visualization using HTLM Canvas
+- Included download option for properly named room images
+
+## 2024-11-10
 
 ### Added
 - Top navigation bar in customize page
@@ -50,6 +54,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Export roll history to text file
 - Reset functionality
 - Animated roll results
+
+### Known Issues
+- Roll results dice icons are black when viewed from Chrome browser. 
 
 [Unreleased]: https://github.com/yourusername/DiceyDungeon/compare/v1.1.0...HEAD
 [1.1.0]: https://github.com/yourusername/DiceyDungeon/compare/v1.0.0...v1.1.0

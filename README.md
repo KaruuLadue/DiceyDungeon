@@ -9,12 +9,13 @@ Dicey Dungeon is a web-based tool designed to generate randomized dungeon scenar
 </p>
 
 ## Features
-- Roll all standard DnD dice to generate dungeon layouts and room features.
+- Simple interface for an easy dungeon-building with the ability to disable features.
+- Roll up to 7 dice to generate dungeon layouts and room features.
 - Customize roll tables for each die to suit your own adventure.
 - Export roll history to a text file for easy session record-keeping.
 - Save custom roll tables to local storage for personalized play.
 - Animated dice results with an optional matching number highlight.
-- Simple and user-friendly interface for an easy dungeon-building experience.
+- Room diagram generation with option to download.
 
 ## Installation
 Clone this repository to your local machine:
