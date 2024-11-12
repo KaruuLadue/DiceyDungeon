@@ -300,7 +300,7 @@ const RoomVisualization = {
         
         // Exit legend
         ctx.fillRect(startX, legendY - 10, exitSquareWidth, exitSquareWidth);
-        startX += exitSquareWidth + 8;
+        startX += exitSquareWidth + 10;
         ctx.fillText(exitText, startX, legendY);
     }
 };
