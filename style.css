@@ -178,24 +178,6 @@ body {
     width: 60%;
 }
 
-/* Room Visualization */
-.room-visualization {
-    background-color: rgba(0, 0, 0, 0.8);
-    border: 1px solid #d4af37;
-    border-radius: 5px;
-    padding: 20px;
-    margin: 20px auto;
-    width: 80%;
-    max-width: 800px;
-    aspect-ratio: 4/3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.room-visualization.hidden {
-    display: none;
-}
 
 /* Button Styling */
 button {
@@ -290,6 +272,7 @@ button:active {
 
     .room-visualization {
         width: 95%;
+        padding: 10px; /* Reduced padding for mobile */
     }
 
     button {
@@ -367,7 +350,9 @@ button:active {
     opacity: 0.5;
 }
 
+/* Visualization with HTML Canvas */
 .room-visualization {
+    /* Container for the canvas */
     background-color: rgba(0, 0, 0, 0.8);
     border: 1px solid #d4af37;
     border-radius: 5px;
@@ -375,18 +360,17 @@ button:active {
     margin: 20px auto;
     width: 80%;
     max-width: 800px;
-    min-height: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
 }
+
 
 .room-visualization.hidden {
     display: none;
 }
 
-.room-visualization-container {
-    position: relative;
-    width: 100%; /* or a fixed width if necessary */
-    height: auto; /* Adjust to required height */
-  }
+.room-visualization-canvas {
+    /* The canvas element itself */
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+}

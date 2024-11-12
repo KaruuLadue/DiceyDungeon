@@ -1,5 +1,3 @@
-const { createRoot } = window.ReactDOM;
-
 // Global state
 let rollHistory = [];
 let rollTables = {};
@@ -134,35 +132,37 @@ function displayError(message, duration = 5000) {
 }
 
 function initializeRoomVisualization(result, recentRollContainer) {
-    const visualizationDiv = document.createElement("div");
-    visualizationDiv.className = 'room-visualization';
-    recentRollContainer.appendChild(visualizationDiv);
+  const visualizationDiv = document.createElement("div");
+  visualizationDiv.className = 'room-visualization';
+  recentRollContainer.appendChild(visualizationDiv);
 
-    try {
-        const roomProps = {
-            diceResults: {
-                D4: result.rolls.hallway.length?.value,
-                D6: result.rolls.hallway.exits?.value,
-                D8: result.rolls.room.encounter?.value,
-                D10: result.rolls.room.dimensions?.width?.value,
-                D12: result.rolls.room.type?.value,
-                D20: result.rolls.room.modifier?.value,
-                D100: result.rolls.room.dimensions?.length?.value
-            }
-        };
-        
-        console.log("Creating root for visualization");
-        console.log("Room props:", roomProps);
-        
-        const root = createRoot(visualizationDiv);
-        root.render(React.createElement(window.RoomVisualization, roomProps));
-        
-        console.log("Visualization rendered");
-    } catch (error) {
-        console.error('Failed to render room visualization:', error);
-        console.error('Error details:', error.message);
-        visualizationDiv.textContent = 'Failed to load room visualization';
-    }
+  try {
+      const roomProps = {
+          diceResults: {
+              D4: result.rolls.hallway.length?.value,
+              D6: result.rolls.hallway.exits?.value,
+              D8: result.rolls.room.encounter?.value,
+              D10: result.rolls.room.dimensions?.width?.value,
+              D12: result.rolls.room.type?.value,
+              D20: result.rolls.room.modifier?.value,
+              D100: result.rolls.room.dimensions?.length?.value
+          }
+      };
+      
+      console.log("Room props:", roomProps);
+      
+      // Initialize visualization and store cleanup function
+      const cleanup = window.RoomVisualization.initialize(roomProps.diceResults, visualizationDiv);
+      
+      // Store cleanup function on the container for later use
+      visualizationDiv.cleanup = cleanup;
+      
+      console.log("Visualization rendered");
+  } catch (error) {
+      console.error('Failed to render room visualization:', error);
+      console.error('Error details:', error.message);
+      visualizationDiv.textContent = 'Failed to load room visualization';
+  }
 }
 
 function updateResultsDisplay(result) {
@@ -249,9 +249,15 @@ function confirmReset() {
 }
 
 function resetRolls() {
-    rollHistory = [];
-    localStorage.removeItem('diceyDungeonRolls');
-    document.getElementById("results").innerHTML = '';
+  document.querySelectorAll('.room-visualization').forEach(div => {
+      if (div.cleanup) {
+          div.cleanup();
+      }
+  });
+  
+  rollHistory = [];
+  localStorage.removeItem('diceyDungeonRolls');
+  document.getElementById("results").innerHTML = '';
 }
 
 function exportRolls() {
@@ -316,13 +322,6 @@ function updateDiceConfig(die, enabled) {
     saveConfig();
 }
 
-function toggleRoomVisualization(show) {
-    const visualizationDiv = document.getElementById('roomVisualization');
-    if (visualizationDiv) {
-        visualizationDiv.classList.toggle('hidden', !show);
-    }
-}
-
 function updateHighlightStylesForRoll(rollContainer) {
     const resultLines = rollContainer.querySelectorAll('.result-line');
     const valueCount = new Map();
@@ -380,9 +379,27 @@ function loadConfig() {
     }
 }
 
+
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', async () => {
     console.log("DOMContentLoaded event fired.");
+
+    window.addEventListener('resize', () => {
+      if (activeConfig.generateImages) {
+          document.querySelectorAll('.room-visualization').forEach(div => {
+              const canvas = div.querySelector('canvas');
+              if (canvas) {
+                  const diceResults = rollHistory.find(roll => 
+                      roll.id === div.closest('.recent-roll-container')?.getAttribute('data-roll-group')
+                  )?.rolls;
+                  if (diceResults) {
+                      window.RoomVisualization.drawRoom(diceResults, canvas);
+                  }
+              }
+          });
+      }
+  });
 
     try {
         await loadRollTables();
