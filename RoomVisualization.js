@@ -209,8 +209,18 @@ const RoomVisualization = {
             ctx.lineTo(gridX + (width * grid.cellSize), gridY + (y * grid.cellSize));
             ctx.stroke();
         }
-    },
-
+       
+        // Draw border last with accent color
+        ctx.strokeStyle = entrance.color;  // Use same gold color as other elements
+        ctx.lineWidth = grid.border.width; // Use the border width from theme
+        ctx.strokeRect(
+            gridX - (ctx.lineWidth / 2),
+            gridY - (ctx.lineWidth / 2),
+            width * grid.cellSize + ctx.lineWidth,
+            length * grid.cellSize + ctx.lineWidth
+        );
+    },        
+    
     /**
      * Draw the entrance triangle
      */
