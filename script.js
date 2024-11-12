@@ -133,6 +133,38 @@ function displayError(message, duration = 5000) {
     setTimeout(() => errorDiv.remove(), duration);
 }
 
+function initializeRoomVisualization(result, recentRollContainer) {
+    const visualizationDiv = document.createElement("div");
+    visualizationDiv.className = 'room-visualization';
+    recentRollContainer.appendChild(visualizationDiv);
+
+    try {
+        const roomProps = {
+            diceResults: {
+                D4: result.rolls.hallway.length?.value,
+                D6: result.rolls.hallway.exits?.value,
+                D8: result.rolls.room.encounter?.value,
+                D10: result.rolls.room.dimensions?.width?.value,
+                D12: result.rolls.room.type?.value,
+                D20: result.rolls.room.modifier?.value,
+                D100: result.rolls.room.dimensions?.length?.value
+            }
+        };
+        
+        console.log("Creating root for visualization");
+        console.log("Room props:", roomProps);
+        
+        const root = createRoot(visualizationDiv);
+        root.render(React.createElement(window.RoomVisualization, roomProps));
+        
+        console.log("Visualization rendered");
+    } catch (error) {
+        console.error('Failed to render room visualization:', error);
+        console.error('Error details:', error.message);
+        visualizationDiv.textContent = 'Failed to load room visualization';
+    }
+}
+
 function updateResultsDisplay(result) {
     const resultsDiv = document.getElementById("results");
     const recentRollContainer = document.createElement("div");
@@ -175,34 +207,6 @@ function updateResultsDisplay(result) {
     // Apply highlighting for this roll if enabled
     if (activeConfig.highlightMatches) {
         updateHighlightStylesForRoll(recentRollContainer);
-    }
-}
-
-function initializeRoomVisualization(result, recentRollContainer) {
-    const visualizationDiv = document.createElement("div");
-    visualizationDiv.className = 'room-visualization';
-    recentRollContainer.appendChild(visualizationDiv);
-
-    try {
-        const roomProps = {
-            diceResults: {
-                D4: result.rolls.hallway.length?.value,
-                D6: result.rolls.hallway.exits?.value,
-                D8: result.rolls.room.encounter?.value,
-                D10: result.rolls.room.dimensions?.width?.value,
-                D12: result.rolls.room.type?.value,
-                D20: result.rolls.room.modifier?.value,
-                D100: result.rolls.room.dimensions?.length?.value
-            }
-        };
-
-        console.log("Room Props for Visualization:", roomProps);
-        
-        const root = createRoot(visualizationDiv);
-        root.render(React.createElement(window.RoomVisualization, roomProps));
-    } catch (error) {
-        console.error('Failed to render room visualization:', error);
-        visualizationDiv.textContent = 'Failed to load room visualization';
     }
 }
 
@@ -320,11 +324,9 @@ function toggleRoomVisualization(show) {
 }
 
 function updateHighlightStylesForRoll(rollContainer) {
-    // Get all result lines within this roll container
     const resultLines = rollContainer.querySelectorAll('.result-line');
     const valueCount = new Map();
 
-    // Count occurrences of each value within this roll
     resultLines.forEach(line => {
         const value = line.getAttribute('data-value');
         if (value) {
@@ -332,7 +334,6 @@ function updateHighlightStylesForRoll(rollContainer) {
         }
     });
 
-    // Apply highlighting only to values that appear multiple times
     resultLines.forEach(line => {
         const value = line.getAttribute('data-value');
         if (value && valueCount.get(value) > 1) {
@@ -344,12 +345,10 @@ function updateHighlightStylesForRoll(rollContainer) {
 }
 
 function updateHighlightStyles() {
-    // Apply highlighting to each roll container independently
     document.querySelectorAll('.recent-roll-container').forEach(container => {
         if (activeConfig.highlightMatches) {
             updateHighlightStylesForRoll(container);
         } else {
-            // Remove all highlighting from this container
             container.querySelectorAll('.result-line').forEach(line => {
                 line.classList.remove('match');
             });
@@ -373,7 +372,6 @@ function loadConfig() {
             activeConfig = { ...defaultConfig, ...JSON.parse(savedConfig) };
         }
         updateConfigDisplay();
-        // Apply current config settings to existing results
         updateHighlightStyles();
     } catch (error) {
         console.error("Error loading config:", error);
