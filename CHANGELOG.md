@@ -6,15 +6,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- Room visualization feature
 - Enhanced randomization options
 - Additional export formats
-- Chrome 
 
-## 2024-11-11
-- Added room visualization using HTLM Canvas
-- Included download option for properly named room images
+## [1.2.0] - 2024-11-12
 
-## 2024-11-10
+### Added
+- Dynamic sizing for entrance triangle
+- Thicker border around room grid in accent color
+- Configurable theme system for room visualization
+
+### Changed
+- Replaced entrance arrow with triangle symbol (▲)
+- Updated exit legend to use text symbol (▬) instead of square
+- Improved exit door alignment on grid borders
+- Enhanced room visualization styling and layout
+- Centralized room visualization theming configuration
+- Updated grid cell border styling
+
+### Fixed
+- Exit door alignment on grid borders
+- Grid border consistency
+- Room visualization spacing and scaling
+- Entrance marker positioning
+
+## [1.1.0] - 2024-11-10
 
 ### Added
 - Top navigation bar in customize page
@@ -55,10 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reset functionality
 - Animated roll results
 
-### Known Issues
-- Roll results dice icons are black when viewed from Chrome browser.
-- Room images do not depict proper length when the d100 dice roll is less than 10.
-
-[Unreleased]: https://github.com/yourusername/DiceyDungeon/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/yourusername/DiceyDungeon/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/yourusername/DiceyDungeon/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/yourusername/DiceyDungeon/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/yourusername/DiceyDungeon/releases/tag/v1.0.0
