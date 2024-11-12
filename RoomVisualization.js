@@ -11,7 +11,10 @@ const defaultTheme = {
         lineWidth: 1.5,        // Thickness of grid lines
         lineColor: '#333333',  // Color of grid lines
         backgroundColor: '#1f1f1f', // Background color of grid area
-        borderColor: '#d4af37' // Color of grid border
+        border: {              // Add these new properties
+            color: '#d4af37',  // Same as entrance/exits
+            width: 20          // Thicker than internal lines
+        }
     },
     container: {
         padding: 50,           // Padding around the grid
@@ -22,10 +25,10 @@ const defaultTheme = {
     },
     elements: {
         entrance: {
-            color: '#d4af37',  // Color of entrance arrow
-            font: {
-                family: 'Arial',
-                sizeRatio: 0.8  // Size relative to cell size
+            color: '#d4af37',  // Color of entrance triangle
+            size: {            // Size of entrance triangle relative to cell
+                width: 0.8,    // 80% of cell width
+                height: 0.8    // 80% of cell height
             }
         },
         exits: {
@@ -38,21 +41,21 @@ const defaultTheme = {
         title: {
             font: {
                 family: 'Arial',
-                size: 16,
+                size: 18,
                 weight: 'bold'
             },
             color: '#d4af37',
-            marginBottom: 20
+            marginBottom: 15
         },
         legend: {
             font: {
                 family: 'Arial',
-                size: 14,
+                size: 18,
                 weight: 'bold'
             },
             color: '#d4af37',
-            spacing: 40,
-            iconSize: 12
+            spacing: 20,
+            iconSize: 16
         }
     }
 };
@@ -206,15 +209,10 @@ const RoomVisualization = {
             ctx.lineTo(gridX + (width * grid.cellSize), gridY + (y * grid.cellSize));
             ctx.stroke();
         }
-
-        // Draw border last (so it appears on top)
-        ctx.strokeStyle = grid.border.color;
-        ctx.lineWidth = grid.border.width;
-        ctx.strokeRect(gridX, gridY, width * grid.cellSize, length * grid.cellSize);
     },
 
     /**
-     * Draw the entrance arrow
+     * Draw the entrance triangle
      */
     drawEntrance(ctx, width, length, gridX, gridY) {
         const { entrance } = this.currentTheme.elements;
@@ -224,14 +222,12 @@ const RoomVisualization = {
         const entranceY = gridY + ((length - 1) * cellSize);
         
         ctx.fillStyle = entrance.color;
-        ctx.font = `${Math.floor(cellSize * entrance.font.sizeRatio)}px ${entrance.font.family}`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        
-        // Draw the arrow character centered in the cell
-        const cellCenterX = entranceX + (cellSize / 2);
-        const cellCenterY = entranceY + (cellSize / 2);
-        ctx.fillText('↑', cellCenterX, cellCenterY);
+        ctx.beginPath();
+        ctx.moveTo(entranceX + (cellSize/2), entranceY + 5);
+        ctx.lineTo(entranceX + 5, entranceY + cellSize - 5);
+        ctx.lineTo(entranceX + cellSize - 5, entranceY + cellSize - 5);
+        ctx.closePath();
+        ctx.fill();
     },
 
     /**
@@ -304,7 +300,7 @@ const RoomVisualization = {
         
         // Exit legend
         ctx.fillRect(startX, legendY - 10, exitSquareWidth, exitSquareWidth);
-        startX += exitSquareWidth + 8;
+        startX += exitSquareWidth + 10;
         ctx.fillText(exitText, startX, legendY);
     }
 };
