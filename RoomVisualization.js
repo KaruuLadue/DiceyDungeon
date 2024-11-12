@@ -26,7 +26,7 @@ const defaultTheme = {
     elements: {
         entrance: {
             color: '#d4af37',  // Color of entrance arrow
-            sizeRatio: 0.9     // Size relative to cell size (80% of cell)
+            sizeRatio: 1.0     // Size relative to cell size (100% of cell)
         },
         exits: {
             color: '#d4af37',  // Color of exit squares
