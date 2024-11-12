@@ -22,10 +22,10 @@ const defaultTheme = {
     },
     elements: {
         entrance: {
-            color: '#d4af37',  // Color of entrance triangle
-            size: {            // Size of entrance triangle relative to cell
-                width: 0.8,    // 80% of cell width
-                height: 0.8    // 80% of cell height
+            color: '#d4af37',  // Color of entrance arrow
+            font: {
+                family: 'Arial',
+                sizeRatio: 0.8  // Size relative to cell size
             }
         },
         exits: {
@@ -224,7 +224,7 @@ const RoomVisualization = {
         const entranceY = gridY + ((length - 1) * cellSize);
         
         ctx.fillStyle = entrance.color;
-        ctx.font = `${cellSize * 0.8}px Arial`; // Size the arrow relative to cell size
+        ctx.font = `${Math.floor(cellSize * entrance.font.sizeRatio)}px ${entrance.font.family}`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         
