@@ -7,7 +7,7 @@
  */
 const defaultTheme = {
     grid: {
-        cellSize: 30,          // Size of each grid cell in pixels
+        cellSize: 40,          // Size of each grid cell in pixels
         lineWidth: 1.5,        // Thickness of grid lines
         lineColor: '#333333',  // Color of grid lines
         backgroundColor: '#1f1f1f', // Background color of grid area
@@ -26,7 +26,7 @@ const defaultTheme = {
     elements: {
         entrance: {
             color: '#d4af37',  // Color of entrance arrow
-            sizeRatio: 1.0     // Size relative to cell size (100% of cell)
+            sizeRatio: 2.0     // Size relative to cell size (100% of cell)
         },
         exits: {
             color: '#d4af37',  // Color of exit squares
