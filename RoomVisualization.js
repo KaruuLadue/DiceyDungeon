@@ -36,14 +36,23 @@ const defaultTheme = {
     },
     text: {
         title: {
-            font: 'bold 16px Arial',
+            font: {
+                family: 'Arial',
+                size: 16,
+                weight: 'bold'
+            },
             color: '#d4af37',
-            marginBottom: 15   // Space between title and grid
+            marginBottom: 20
         },
         legend: {
-            font: 'bold 16px Arial',
+            font: {
+                family: 'Arial',
+                size: 14,
+                weight: 'bold'
+            },
             color: '#d4af37',
-            spacing: 30        // Space between legend items
+            spacing: 40,
+            iconSize: 12
         }
     }
 };
@@ -161,7 +170,7 @@ const RoomVisualization = {
     drawTitle(ctx, width, length, canvasWidth, topPadding) {
         const { title } = this.currentTheme.text;
         ctx.fillStyle = title.color;
-        ctx.font = title.font;
+        ctx.font = `${title.font.weight} ${title.font.size}px ${title.font.family}`;
         const text = `Room Size: ${width * 5}ft x ${length * 5}ft`;
         const textWidth = ctx.measureText(text).width;
         const x = (canvasWidth - textWidth) / 2;
@@ -268,7 +277,7 @@ const RoomVisualization = {
         const { legend } = this.currentTheme.text;
         const legendY = canvasHeight - (this.currentTheme.container.legendPadding/2);
         
-        ctx.font = legend.font;
+        ctx.font = `${legend.font.weight} ${legend.font.size}px ${legend.font.family}`;
         ctx.fillStyle = legend.color;
         
         // Calculate legend layout
@@ -293,9 +302,11 @@ const RoomVisualization = {
     }
 };
 
-// Example of how to update theme properties:
+// Example usage:
+// RoomVisualization.theme.update('text.title.font.size', 20);
+// RoomVisualization.theme.update('text.legend.font.size', 16);
+// RoomVisualization.theme.update('text.title.font.family', 'Uncial Antiqua');
 // RoomVisualization.theme.update('grid.lineColor', '#444444');
-// RoomVisualization.theme.update('text.title.color', '#ffffff');
 
 // Make the visualization tool available globally
 window.RoomVisualization = RoomVisualization;
