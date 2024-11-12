@@ -26,7 +26,7 @@ const defaultTheme = {
     elements: {
         entrance: {
             color: '#d4af37',  // Color of entrance arrow
-            size: 24          // Size of the arrow
+            size: 32          // Size of the arrow
         },
         exits: {
             color: '#d4af37',  // Color of exit squares
@@ -238,7 +238,7 @@ const RoomVisualization = {
         ctx.fillStyle = entrance.color;
         ctx.font = `${entrance.size}px Arial`;
         ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
+        ctx.textBaseline = 'bottom';
         
         // Draw the triangle centered in the cell
         ctx.fillText('▲', 
