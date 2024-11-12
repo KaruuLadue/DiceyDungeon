@@ -13,7 +13,7 @@ const defaultTheme = {
         backgroundColor: '#1f1f1f', // Background color of grid area
         border: {              // Add these new properties
             color: '#d4af37',  // Same as entrance/exits
-            width: 20          // Thicker than internal lines
+            width: 3          // Thicker than internal lines
         }
     },
     container: {
@@ -300,7 +300,7 @@ const RoomVisualization = {
         
         // Exit legend
         ctx.fillRect(startX, legendY - 10, exitSquareWidth, exitSquareWidth);
-        startX += exitSquareWidth + 10;
+        startX += exitSquareWidth + 8;
         ctx.fillText(exitText, startX, legendY);
     }
 };
