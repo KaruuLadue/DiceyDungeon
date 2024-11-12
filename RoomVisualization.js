@@ -193,11 +193,6 @@ const RoomVisualization = {
         // Draw grid lines
         ctx.strokeStyle = grid.lineColor;
         ctx.lineWidth = grid.lineWidth;
-    
-        // Clip to grid area to prevent lines extending beyond border
-        ctx.beginPath();
-        ctx.rect(gridX, gridY, width * grid.cellSize, length * grid.cellSize);
-        ctx.clip();
         
         // Draw vertical lines
         for (let x = 0; x <= width; x++) {
@@ -214,17 +209,6 @@ const RoomVisualization = {
             ctx.lineTo(gridX + (width * grid.cellSize), gridY + (y * grid.cellSize));
             ctx.stroke();
         }
-
-        // Draw border with accent color last
-        ctx.beginPath();
-        ctx.strokeStyle = this.currentTheme.elements.entrance.color; // Use accent color
-        ctx.lineWidth = 3; // Thicker border
-        ctx.strokeRect(
-            gridX - (ctx.lineWidth / 2),
-            gridY - (ctx.lineWidth / 2),
-            width * grid.cellSize + ctx.lineWidth,
-            length * grid.cellSize + ctx.lineWidth
-        );
     },
 
     /**
