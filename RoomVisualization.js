@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+// RoomVisualization.js
+// Get React and hooks from global scope
+const { useState, useEffect } = React;
 
 const RoomVisualization = ({ diceResults }) => {
   const [cellSize, setCellSize] = useState(32);
@@ -12,9 +14,9 @@ const RoomVisualization = ({ diceResults }) => {
     const calculateCellSize = () => {
       const container = document.querySelector('.room-visualization');
       if (container) {
-        const containerWidth = container.clientWidth - 80;
+        const containerWidth = container.clientWidth - 40;
         const maxWidth = Math.min(800, containerWidth);
-        const potentialCellSize = Math.floor(maxWidth / Math.max(width, length));
+        const potentialCellSize = Math.floor(maxWidth / width);
         setCellSize(Math.min(32, potentialCellSize));
       }
     };
@@ -22,39 +24,37 @@ const RoomVisualization = ({ diceResults }) => {
     calculateCellSize();
     window.addEventListener('resize', calculateCellSize);
     return () => window.removeEventListener('resize', calculateCellSize);
-  }, [width, length]);
+  }, [width]);
 
   // Generate grid cells
   const renderGrid = () => {
     const cells = [];
-    const gridStyle = {
-      display: 'grid',
-      gridTemplateColumns: `repeat(${width}, ${cellSize}px)`,
-      gridTemplateRows: `repeat(${length}, ${cellSize}px)`,
-      gap: '1px',
-      padding: '1px',
-      backgroundColor: '#4a5568'
-    };
-
     for (let y = 0; y < length; y++) {
       for (let x = 0; x < width; x++) {
         cells.push(
           React.createElement('div', {
             key: `cell-${x}-${y}`,
+            className: "border border-gray-600",
             style: {
+              position: 'absolute',
+              left: x * cellSize,
+              top: y * cellSize,
               width: cellSize,
               height: cellSize,
-              backgroundColor: '#1a202c',
-              border: '1px solid #4a5568'
+              boxSizing: 'border-box',
+              backgroundColor: 'transparent',
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              borderColor: '#4a5568'
             }
           })
         );
       }
     }
-
-    return React.createElement('div', { style: gridStyle }, cells);
+    return cells;
   };
 
+  // Generate exits
   const generateExits = () => {
     const positions = [];
     const walls = ['top', 'left', 'right'];
@@ -90,120 +90,121 @@ const RoomVisualization = ({ diceResults }) => {
     y: length - 1
   };
 
-  // Main container styles
-  const containerStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: '20px',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    borderRadius: '5px',
-    margin: '20px auto',
-    gap: '20px'
-  };
-
-  // Grid container styles
-  const gridContainerStyle = {
-    border: '2px solid #d4af37',
-    padding: '10px',
-    borderRadius: '5px',
-    backgroundColor: '#1a202c'
-  };
-
-  return React.createElement('div', { style: containerStyle }, [
-    // Title
+  return React.createElement('div', {
+    className: "flex flex-col items-center gap-4 p-4 bg-black rounded-lg"
+  }, [
+    // Room size display
     React.createElement('div', {
-      key: 'title',
-      style: {
-        color: '#d4af37',
-        fontSize: '1.2rem',
-        fontWeight: 'bold',
-        marginBottom: '10px'
-      }
+      key: "size",
+      className: "text-amber-600 text-lg font-bold"
     }, `Room Size: ${width * 5}ft x ${length * 5}ft`),
-
-    // Grid and markers container
-    React.createElement('div', { 
-      key: 'grid-container',
-      style: gridContainerStyle
+    
+    // Room grid
+    React.createElement('div', {
+      key: "grid",
+      className: "relative bg-gray-900 rounded border-2 border-amber-600",
+      style: {
+        width: width * cellSize + 4,
+        height: length * cellSize + 4,
+        padding: '2px'
+      }
     }, [
-      renderGrid(),
+      ...renderGrid(),
       
-      // Entrance marker
+      // Entrance
       React.createElement('div', {
-        key: 'entrance-marker',
+        key: "entrance",
+        className: "absolute flex items-center justify-center",
         style: {
-          position: 'absolute',
-          bottom: '0',
-          left: `${entrancePosition.x * cellSize}px`,
-          color: '#d4af37',
-          fontSize: '24px',
-          transform: 'translateX(-50%)'
+          left: entrancePosition.x * cellSize,
+          top: (entrancePosition.y * cellSize) + (cellSize/2),
+          width: cellSize,
+          height: cellSize/2
         }
-      }, '↑'),
-
-      // Exit markers
-      ...exitPositions.map((exit, index) => 
-        React.createElement('div', {
-          key: `exit-${index}`,
-          style: {
-            position: 'absolute',
-            width: '12px',
-            height: '12px',
-            backgroundColor: '#d4af37',
-            borderRadius: '50%',
-            ...(exit.wall === 'top' ? {
-              top: '-6px',
-              left: `${(exit.x + 0.5) * cellSize}px`,
+      }, React.createElement('span', {
+        className: "text-3xl font-bold",
+        style: { color: '#d4af37' }
+      }, '↑')),
+      
+      // Exits
+      ...exitPositions.map((exit, index) => {
+        let style = {
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        };
+        
+        switch (exit.wall) {
+          case 'top':
+            style = {
+              ...style,
+              left: exit.x * cellSize,
+              top: 0,
+              width: cellSize,
+              height: cellSize/2,
+              transform: 'translateY(-50%)'
+            };
+            break;
+          case 'left':
+            style = {
+              ...style,
+              left: 0,
+              top: exit.y * cellSize,
+              width: cellSize/2,
+              height: cellSize,
               transform: 'translateX(-50%)'
-            } : exit.wall === 'left' ? {
-              left: '-6px',
-              top: `${(exit.y + 0.5) * cellSize}px`,
-              transform: 'translateY(-50%)'
-            } : {
-              right: '-6px',
-              top: `${(exit.y + 0.5) * cellSize}px`,
-              transform: 'translateY(-50%)'
-            })
-          }
-        })
-      )
+            };
+            break;
+          case 'right':
+            style = {
+              ...style,
+              left: width * cellSize,
+              top: exit.y * cellSize,
+              width: cellSize/2,
+              height: cellSize,
+              transform: 'translateX(-50%)'
+            };
+            break;
+        }
+        
+        return React.createElement('div', {
+          key: `exit-${index}`,
+          style: style
+        }, React.createElement('div', {
+          className: "w-4 h-4",
+          style: { backgroundColor: '#d4af37' }
+        }));
+      })
     ]),
-
+    
     // Legend
     React.createElement('div', {
-      key: 'legend',
-      style: {
-        display: 'flex',
-        gap: '20px',
-        color: '#d4af37',
-        fontSize: '0.9rem',
-        marginTop: '10px'
-      }
+      key: "legend",
+      className: "flex gap-4 text-sm text-amber-600"
     }, [
       React.createElement('div', {
-        key: 'entrance-legend',
-        style: { display: 'flex', alignItems: 'center', gap: '5px' }
+        key: "entrance-legend",
+        className: "flex items-center gap-2"
       }, [
-        React.createElement('span', { style: { fontSize: '1.2rem' } }, '↑'),
-        'Entrance'
+        React.createElement('span', {
+          style: { color: '#d4af37' }
+        }, '↑'),
+        ' Entrance'
       ]),
       React.createElement('div', {
-        key: 'exit-legend',
-        style: { display: 'flex', alignItems: 'center', gap: '5px' }
+        key: "exit-legend",
+        className: "flex items-center gap-2"
       }, [
         React.createElement('div', {
-          style: {
-            width: '12px',
-            height: '12px',
-            backgroundColor: '#d4af37',
-            borderRadius: '50%'
-          }
+          className: "w-4 h-4 inline-block",
+          style: { backgroundColor: '#d4af37' }
         }),
-        'Exit'
+        ' Exit'
       ])
     ])
   ]);
 };
 
-export default RoomVisualization;
+// Make the component available globally
+window.RoomVisualization = RoomVisualization;
