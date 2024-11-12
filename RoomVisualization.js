@@ -38,21 +38,21 @@ const defaultTheme = {
         title: {
             font: {
                 family: 'Arial',
-                size: 16,
+                size: 18,
                 weight: 'bold'
             },
             color: '#d4af37',
-            marginBottom: 20
+            marginBottom: 15
         },
         legend: {
             font: {
                 family: 'Arial',
-                size: 14,
+                size: 18,
                 weight: 'bold'
             },
             color: '#d4af37',
-            spacing: 40,
-            iconSize: 12
+            spacing: 20,
+            iconSize: 14
         }
     }
 };
