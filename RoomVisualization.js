@@ -26,7 +26,7 @@ const defaultTheme = {
     elements: {
         entrance: {
             color: '#d4af37',  // Color of entrance arrow
-            size: 32          // Size of the arrow
+            size: 26          // Size of the arrow
         },
         exits: {
             color: '#d4af37',  // Color of exit squares
