@@ -38,12 +38,12 @@ const defaultTheme = {
         title: {
             font: 'bold 16px Arial',
             color: '#d4af37',
-            marginBottom: 20   // Space between title and grid
+            marginBottom: 15   // Space between title and grid
         },
         legend: {
             font: 'bold 16px Arial',
             color: '#d4af37',
-            spacing: 40        // Space between legend items
+            spacing: 30        // Space between legend items
         }
     }
 };
