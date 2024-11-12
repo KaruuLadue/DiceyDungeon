@@ -7,13 +7,13 @@
  */
 const defaultTheme = {
     grid: {
-        cellSize: 40,          // Size of each grid cell in pixels
+        cellSize: 45,          // Size of each grid cell in pixels
         lineWidth: 1.5,        // Thickness of grid lines
         lineColor: '#333333',  // Color of grid lines
         backgroundColor: '#1f1f1f', // Background color of grid area
         border: {
             color: '#d4af37',  // Same as entrance/exits
-            width: 4           // Thicker border
+            width: 3           // Thicker border
         }
     },
     container: {
