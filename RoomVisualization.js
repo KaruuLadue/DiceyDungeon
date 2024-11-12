@@ -7,7 +7,7 @@
  */
 const defaultTheme = {
     grid: {
-        cellSize: 45,          // Size of each grid cell in pixels
+        cellSize: 85,          // Size of each grid cell in pixels
         lineWidth: 1.5,        // Thickness of grid lines
         lineColor: '#333333',  // Color of grid lines
         backgroundColor: '#1f1f1f', // Background color of grid area
