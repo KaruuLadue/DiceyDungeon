@@ -11,7 +11,10 @@ const defaultTheme = {
         lineWidth: 1.5,        // Thickness of grid lines
         lineColor: '#333333',  // Color of grid lines
         backgroundColor: '#1f1f1f', // Background color of grid area
-        borderColor: '#d4af37' // Color of grid border
+        border: {              // Add these new properties
+            color: '#d4af37',  // Same as entrance/exits
+            width: 3          // Thicker than internal lines
+        }
     },
     container: {
         padding: 50,           // Padding around the grid
@@ -52,7 +55,7 @@ const defaultTheme = {
             },
             color: '#d4af37',
             spacing: 20,
-            iconSize: 14
+            iconSize: 16
         }
     }
 };
