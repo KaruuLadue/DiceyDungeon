@@ -13,7 +13,7 @@ const defaultTheme = {
         backgroundColor: '#1f1f1f', // Background color of grid area
         border: {              // Add these new properties
             color: '#d4af37',  // Same as entrance/exits
-            width: 6          // Thicker than internal lines
+            width: 20          // Thicker than internal lines
         }
     },
     container: {
