@@ -10,11 +10,7 @@ const defaultTheme = {
         cellSize: 40,          // Size of each grid cell in pixels
         lineWidth: 1.5,        // Thickness of grid lines
         lineColor: '#333333',  // Color of grid lines
-        backgroundColor: '#1f1f1f', // Background color of grid area
-        border: {              // Add these new properties
-            color: '#d4af37',  // Same as entrance/exits
-            width: 6          // Thicker than internal lines
-        }
+        backgroundColor: '#1f1f1f' // Background color of grid area
     },
     container: {
         padding: 50,           // Padding around the grid
@@ -25,11 +21,8 @@ const defaultTheme = {
     },
     elements: {
         entrance: {
-            color: '#d4af37',  // Color of entrance triangle
-            size: {            // Size of entrance triangle relative to cell
-                width: 0.8,    // 80% of cell width
-                height: 0.8    // 80% of cell height
-            }
+            color: '#d4af37',  // Color of entrance arrow
+            size: 24           // Size of the arrow text
         },
         exits: {
             color: '#d4af37',  // Color of exit squares
@@ -190,9 +183,17 @@ const RoomVisualization = {
         ctx.fillStyle = grid.backgroundColor;
         ctx.fillRect(gridX, gridY, width * grid.cellSize, length * grid.cellSize);
         
-        // Draw grid lines
+        // Save current context state
+        ctx.save();
+        
+        // Draw inner grid lines
         ctx.strokeStyle = grid.lineColor;
         ctx.lineWidth = grid.lineWidth;
+        
+        // Clip to grid area to prevent lines extending beyond border
+        ctx.beginPath();
+        ctx.rect(gridX, gridY, width * grid.cellSize, length * grid.cellSize);
+        ctx.clip();
         
         // Draw vertical lines
         for (let x = 0; x <= width; x++) {
@@ -209,10 +210,24 @@ const RoomVisualization = {
             ctx.lineTo(gridX + (width * grid.cellSize), gridY + (y * grid.cellSize));
             ctx.stroke();
         }
+        
+        // Restore context state
+        ctx.restore();
+        
+        // Draw border with accent color last
+        ctx.beginPath();
+        ctx.strokeStyle = this.currentTheme.elements.entrance.color; // Use accent color
+        ctx.lineWidth = 3; // Thicker border
+        ctx.strokeRect(
+            gridX - (ctx.lineWidth / 2),
+            gridY - (ctx.lineWidth / 2),
+            width * grid.cellSize + ctx.lineWidth,
+            length * grid.cellSize + ctx.lineWidth
+        );
     },
 
     /**
-     * Draw the entrance triangle
+     * Draw the entrance arrow
      */
     drawEntrance(ctx, width, length, gridX, gridY) {
         const { entrance } = this.currentTheme.elements;
@@ -222,12 +237,15 @@ const RoomVisualization = {
         const entranceY = gridY + ((length - 1) * cellSize);
         
         ctx.fillStyle = entrance.color;
-        ctx.beginPath();
-        ctx.moveTo(entranceX + (cellSize/2), entranceY + 5);
-        ctx.lineTo(entranceX + 5, entranceY + cellSize - 5);
-        ctx.lineTo(entranceX + cellSize - 5, entranceY + cellSize - 5);
-        ctx.closePath();
-        ctx.fill();
+        ctx.font = `${entrance.size}px Arial`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        // Draw the triangle centered in the cell
+        ctx.fillText('▲', 
+            entranceX + (cellSize / 2), 
+            entranceY + (cellSize / 2)
+        );
     },
 
     /**
@@ -304,12 +322,6 @@ const RoomVisualization = {
         ctx.fillText(exitText, startX, legendY);
     }
 };
-
-// Example usage:
-// RoomVisualization.theme.update('text.title.font.size', 20);
-// RoomVisualization.theme.update('text.legend.font.size', 16);
-// RoomVisualization.theme.update('text.title.font.family', 'Uncial Antiqua');
-// RoomVisualization.theme.update('grid.lineColor', '#444444');
 
 // Make the visualization tool available globally
 window.RoomVisualization = RoomVisualization;
