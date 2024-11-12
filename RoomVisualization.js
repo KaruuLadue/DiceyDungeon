@@ -284,7 +284,7 @@ const RoomVisualization = {
         ctx.fillStyle = legend.color;
         
         // Calculate legend layout
-        const entranceText = '↑ Entrance';
+        const entranceText = '▲ Entrance';
         const exitText = 'Exit';
         const exitSquareWidth = this.currentTheme.elements.exits.width;
         const totalWidth = ctx.measureText(entranceText).width + 
