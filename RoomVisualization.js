@@ -7,13 +7,13 @@
  */
 const defaultTheme = {
     grid: {
-        cellSize: 45,          // Size of each grid cell in pixels
+        cellSize: 40,          // Size of each grid cell in pixels
         lineWidth: 1.5,        // Thickness of grid lines
         lineColor: '#333333',  // Color of grid lines
         backgroundColor: '#1f1f1f', // Background color of grid area
         border: {
             color: '#d4af37',  // Same as entrance/exits
-            width: 3           // Thicker border
+            width: 6           // Thicker border
         }
     },
     container: {
@@ -26,7 +26,7 @@ const defaultTheme = {
     elements: {
         entrance: {
             color: '#d4af37',  // Color of entrance arrow
-            sizeRatio: 0.5     // Size relative to cell size (100% of cell)
+            sizeRatio: 0.8     // Size relative to cell size (80% of cell)
         },
         exits: {
             color: '#d4af37',  // Color of exit squares
@@ -265,26 +265,33 @@ const RoomVisualization = {
                 case 'top':
                     exitX = gridX + (Math.floor(width/2) * cellSize);
                     exitY = gridY;
-                    ctx.fillRect(exitX + exitTheme.padding, 
-                                exitY - (exitTheme.width / 2), 
-                               cellSize - (exitTheme.padding * 2), 
-                               exitTheme.width);
+                    ctx.fillRect(
+                        exitX + exitTheme.padding, 
+                        exitY - (exitTheme.width / 2), 
+                        cellSize - (exitTheme.padding * 2), 
+                        exitTheme.width
+                    );
                     break;
                 case 'left':
                     exitX = gridX;
                     exitY = gridY + (Math.floor(length/2) * cellSize);
-                    ctx.fillRect(exitX - (exitTheme.width / 2), 
-                               exitY + exitTheme.padding, 
-                               exitTheme.width, 
-                               cellSize - (exitTheme.padding * 2));
+                    ctx.fillRect(
+                        exitX - (exitTheme.width / 2), 
+                        exitY + exitTheme.padding, 
+                        exitTheme.width, 
+                        cellSize - (exitTheme.padding * 2)
+                    );
                     break;
                 case 'right':
                     exitX = gridX + (width * cellSize);
                     exitY = gridY + (Math.floor(length/2) * cellSize);
-                    ctx.fillRect(exitX, 
-                               exitY + exitTheme.padding, 
-                               exitTheme.width, 
-                               cellSize - (exitTheme.padding * 2));
+                    // Shift the rectangle to center on the right border
+                    ctx.fillRect(
+                        exitX - (exitTheme.width / 2), 
+                        exitY + exitTheme.padding, 
+                        exitTheme.width, 
+                        cellSize - (exitTheme.padding * 2)
+                    );
                     break;
             }
         }
