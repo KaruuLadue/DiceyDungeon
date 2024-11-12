@@ -1,22 +1,17 @@
 // RoomVisualization.js
-// Handles the canvas-based rendering of dungeon rooms
-
-/**
- * Creates and manages a room visualization using Canvas
- * @param {Object} diceResults - The results from dice rolls
- * @param {string} containerId - The ID of the container element for the canvas
- */
 const RoomVisualization = {
     // Configuration
     config: {
-        cellSize: 32,
-        padding: 40,
-        legendPadding: 40,
+        cellSize: 40,  // Increased cell size
+        padding: 50,   // Increased padding
+        legendPadding: 60,  // Increased legend padding
+        minContainerWidth: 400,  // Increased minimum width
+        minContainerHeight: 300, // Increased minimum height
         colors: {
-            background: '#111111',
-            grid: '#4a5568',
-            accent: '#d4af37',  // The gold color used throughout the project
-            border: '#d4af37'
+            background: '#1a1a1a',     // Slightly lighter background
+            grid: '#333333',           // Lighter grid lines
+            accent: '#d4af37',         // Kept the same gold color
+            border: '#d4af37'          // Kept the same gold color
         }
     },
 
@@ -50,52 +45,67 @@ const RoomVisualization = {
      */
     drawRoom(diceResults, canvas) {
         const ctx = canvas.getContext('2d');
-        const { cellSize, padding, legendPadding, colors } = this.config;
+        const { cellSize, padding, legendPadding, colors, minContainerWidth, minContainerHeight } = this.config;
         
         // Calculate room dimensions
         const width = diceResults?.D10 || 5;
         const length = Math.ceil((diceResults?.D100 || 50) / 10);
         const exits = Math.ceil((diceResults?.D6 || 0) / 2);
         
-        // Set up canvas size
-        canvas.width = (width * cellSize) + (padding * 2);
-        canvas.height = (length * cellSize) + (padding * 2) + legendPadding;
+        // Calculate grid size
+        const gridWidth = width * cellSize;
+        const gridHeight = length * cellSize;
         
-        // Clear canvas
+        // Calculate required container size
+        const requiredWidth = Math.max(minContainerWidth, gridWidth + (padding * 2));
+        const requiredHeight = Math.max(minContainerHeight, gridHeight + (padding * 2) + legendPadding);
+        
+        // Set canvas size
+        canvas.width = requiredWidth;
+        canvas.height = requiredHeight;
+        
+        // Clear canvas with background
         ctx.fillStyle = colors.background;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
+        // Calculate grid position to center it
+        const gridX = (requiredWidth - gridWidth) / 2;
+        const gridY = (requiredHeight - legendPadding - gridHeight) / 2;
+        
         // Draw title
-        this.drawTitle(ctx, width, length);
+        this.drawTitle(ctx, width, length, requiredWidth);
         
         // Draw grid
-        this.drawGrid(ctx, width, length);
+        this.drawGrid(ctx, width, length, gridX, gridY);
         
         // Draw entrance
-        this.drawEntrance(ctx, width, length);
+        this.drawEntrance(ctx, width, length, gridX, gridY);
         
         // Draw exits
-        this.drawExits(ctx, width, length, exits);
+        this.drawExits(ctx, width, length, exits, gridX, gridY);
         
         // Draw legend
-        this.drawLegend(ctx, canvas.height);
+        this.drawLegend(ctx, requiredWidth, requiredHeight);
     },
 
     /**
      * Draw the room title showing dimensions
      */
-    drawTitle(ctx, width, length) {
-        const { padding, colors } = this.config;
+    drawTitle(ctx, width, length, canvasWidth) {
+        const { colors } = this.config;
         ctx.fillStyle = colors.accent;
         ctx.font = '16px Arial';
-        ctx.fillText(`Room Size: ${width * 5}ft x ${length * 5}ft`, padding, 25);
+        const text = `Room Size: ${width * 5}ft x ${length * 5}ft`;
+        const textWidth = ctx.measureText(text).width;
+        const x = (canvasWidth - textWidth) / 2;  // Center the text
+        ctx.fillText(text, x, 25);
     },
 
     /**
      * Draw the room grid
      */
-    drawGrid(ctx, width, length) {
-        const { cellSize, padding, colors } = this.config;
+    drawGrid(ctx, width, length, gridX, gridY) {
+        const { cellSize, colors } = this.config;
         
         ctx.strokeStyle = colors.grid;
         ctx.lineWidth = 1;
@@ -103,16 +113,16 @@ const RoomVisualization = {
         // Draw vertical lines
         for (let x = 0; x <= width; x++) {
             ctx.beginPath();
-            ctx.moveTo(padding + (x * cellSize), padding);
-            ctx.lineTo(padding + (x * cellSize), padding + (length * cellSize));
+            ctx.moveTo(gridX + (x * cellSize), gridY);
+            ctx.lineTo(gridX + (x * cellSize), gridY + (length * cellSize));
             ctx.stroke();
         }
         
         // Draw horizontal lines
         for (let y = 0; y <= length; y++) {
             ctx.beginPath();
-            ctx.moveTo(padding, padding + (y * cellSize));
-            ctx.lineTo(padding + (width * cellSize), padding + (y * cellSize));
+            ctx.moveTo(gridX, gridY + (y * cellSize));
+            ctx.lineTo(gridX + (width * cellSize), gridY + (y * cellSize));
             ctx.stroke();
         }
     },
@@ -120,10 +130,10 @@ const RoomVisualization = {
     /**
      * Draw the entrance arrow
      */
-    drawEntrance(ctx, width, length) {
-        const { cellSize, padding, colors } = this.config;
-        const entranceX = padding + (Math.floor(width/2) * cellSize);
-        const entranceY = padding + ((length - 1) * cellSize);
+    drawEntrance(ctx, width, length, gridX, gridY) {
+        const { cellSize, colors } = this.config;
+        const entranceX = gridX + (Math.floor(width/2) * cellSize);
+        const entranceY = gridY + ((length - 1) * cellSize);
         
         ctx.fillStyle = colors.accent;
         ctx.beginPath();
@@ -137,8 +147,8 @@ const RoomVisualization = {
     /**
      * Draw the exit squares
      */
-    drawExits(ctx, width, length, exits) {
-        const { cellSize, padding, colors } = this.config;
+    drawExits(ctx, width, length, exits, gridX, gridY) {
+        const { cellSize, colors } = this.config;
         const walls = ['top', 'left', 'right'];
         
         ctx.fillStyle = colors.accent;
@@ -148,18 +158,18 @@ const RoomVisualization = {
             
             switch(wall) {
                 case 'top':
-                    exitX = padding + (Math.floor(width/2) * cellSize);
-                    exitY = padding;
+                    exitX = gridX + (Math.floor(width/2) * cellSize);
+                    exitY = gridY;
                     ctx.fillRect(exitX + 4, exitY - 12, cellSize - 8, 12);
                     break;
                 case 'left':
-                    exitX = padding;
-                    exitY = padding + (Math.floor(length/2) * cellSize);
+                    exitX = gridX;
+                    exitY = gridY + (Math.floor(length/2) * cellSize);
                     ctx.fillRect(exitX - 12, exitY + 4, 12, cellSize - 8);
                     break;
                 case 'right':
-                    exitX = padding + (width * cellSize);
-                    exitY = padding + (Math.floor(length/2) * cellSize);
+                    exitX = gridX + (width * cellSize);
+                    exitY = gridY + (Math.floor(length/2) * cellSize);
                     ctx.fillRect(exitX, exitY + 4, 12, cellSize - 8);
                     break;
             }
@@ -169,19 +179,34 @@ const RoomVisualization = {
     /**
      * Draw the legend
      */
-    drawLegend(ctx, canvasHeight) {
-        const { padding, legendPadding, colors } = this.config;
+    drawLegend(ctx, canvasWidth, canvasHeight) {
+        const { legendPadding, colors } = this.config;
         const legendY = canvasHeight - (legendPadding/2);
         
-        ctx.font = '14px Arial';
+        ctx.font = 'bold 16px Arial';  // Slightly larger, bold font
         ctx.fillStyle = colors.accent;
         
+        // Calculate total width of legend items to center them
+        const entranceText = '↑ Entrance';
+        const exitText = 'Exit';
+        const spacing = 40; // Space between legend items
+        const exitSquareWidth = 12;
+        const exitSquareSpacing = 8;
+        
+        const totalWidth = ctx.measureText(entranceText).width + 
+                          ctx.measureText(exitText).width + 
+                          exitSquareWidth + exitSquareSpacing + spacing;
+        
+        let startX = (canvasWidth - totalWidth) / 2;
+        
         // Entrance legend
-        ctx.fillText('↑ Entrance', padding, legendY);
+        ctx.fillText(entranceText, startX, legendY);
+        startX += ctx.measureText(entranceText).width + spacing;
         
         // Exit legend
-        ctx.fillRect(padding + 100, legendY - 10, 12, 12);
-        ctx.fillText('Exit', padding + 120, legendY);
+        ctx.fillRect(startX, legendY - 10, exitSquareWidth, exitSquareWidth);
+        startX += exitSquareWidth + exitSquareSpacing;
+        ctx.fillText(exitText, startX, legendY);
     }
 };
 
