@@ -59,9 +59,12 @@ const RoomVisualization = {
         const gridWidth = width * cellSize;
         const gridHeight = length * cellSize;
         
+        // Add extra padding for title spacing
+        const topPadding = padding * 1.5;  // Increased top padding
+        
         // Calculate required container size
         const requiredWidth = Math.max(minContainerWidth, gridWidth + (padding * 2));
-        const requiredHeight = Math.max(minContainerHeight, gridHeight + (padding * 2) + legendPadding);
+        const requiredHeight = Math.max(minContainerHeight, gridHeight + topPadding + padding + legendPadding);
         
         // Set canvas size
         canvas.width = requiredWidth;
@@ -73,7 +76,7 @@ const RoomVisualization = {
         
         // Calculate grid position to center it
         const gridX = (requiredWidth - gridWidth) / 2;
-        const gridY = (requiredHeight - legendPadding - gridHeight) / 2;
+        const gridY = topPadding + (requiredHeight - legendPadding - gridHeight - topPadding) / 2;
         
         // Draw title
         this.drawTitle(ctx, width, length, requiredWidth);
@@ -95,13 +98,15 @@ const RoomVisualization = {
      * Draw the room title showing dimensions
      */
     drawTitle(ctx, width, length, canvasWidth) {
-        const { colors } = this.config;
+        const { colors, padding } = this.config;
         ctx.fillStyle = colors.accent;
-        ctx.font = '16px Arial';
+        ctx.font = 'bold 16px Arial';
         const text = `Room Size: ${width * 5}ft x ${length * 5}ft`;
         const textWidth = ctx.measureText(text).width;
-        const x = (canvasWidth - textWidth) / 2;  // Center the text
-        ctx.fillText(text, x, 25);
+        const x = (canvasWidth - textWidth) / 2;
+        // Move title down from top edge to match bottom legend spacing
+        const titleY = padding / 2;  // This will position it more evenly
+        ctx.fillText(text, x, titleY);
     },
 
     /**
