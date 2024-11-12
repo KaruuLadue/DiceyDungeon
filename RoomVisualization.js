@@ -26,7 +26,7 @@ const defaultTheme = {
     elements: {
         entrance: {
             color: '#d4af37',  // Color of entrance arrow
-            sizeRatio: 0.9     // Size relative to cell size (100% of cell)
+            sizeRatio: 0.5     // Size relative to cell size (100% of cell)
         },
         exits: {
             color: '#d4af37',  // Color of exit squares
@@ -266,14 +266,14 @@ const RoomVisualization = {
                     exitX = gridX + (Math.floor(width/2) * cellSize);
                     exitY = gridY;
                     ctx.fillRect(exitX + exitTheme.padding, 
-                               exitY - exitTheme.width, 
+                                exitY - (exitTheme.width / 2), 
                                cellSize - (exitTheme.padding * 2), 
                                exitTheme.width);
                     break;
                 case 'left':
                     exitX = gridX;
                     exitY = gridY + (Math.floor(length/2) * cellSize);
-                    ctx.fillRect(exitX - exitTheme.width, 
+                    ctx.fillRect(exitX - (exitTheme.width / 2), 
                                exitY + exitTheme.padding, 
                                exitTheme.width, 
                                cellSize - (exitTheme.padding * 2));
