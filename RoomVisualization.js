@@ -30,6 +30,9 @@ const RoomVisualization = {
         // Draw the room
         this.drawRoom(diceResults, canvas);
 
+        // Add download button
+        this.addDownloadButton(diceResults, container, canvas);
+
         // Handle window resize
         const handleResize = () => this.drawRoom(diceResults, canvas);
         window.addEventListener('resize', handleResize);
@@ -177,8 +180,39 @@ const RoomVisualization = {
     },
 
     /**
-     * Draw the legend
+     * Download the room visualization as PNG
+     * @param {Object} diceResults - The dice roll results for filename
+     * @param {HTMLCanvasElement} canvas - The canvas element to download from
      */
+    downloadVisualization(diceResults, canvas) {
+        try {
+            // Create filename from room details
+            const roomType = diceResults?.D12 || 'Room';
+            const width = diceResults?.D10 || 5;
+            const length = Math.ceil((diceResults?.D100 || 50) / 10);
+            const exits = Math.ceil((diceResults?.D6 || 0) / 2);
+            
+            // Format the filename
+            const filename = `DiceyDungeon_${roomType}_${width*5}x${length*5}_${exits}exits.png`;
+            
+            // Create download link
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        } catch (error) {
+            console.error('Failed to download visualization:', error);
+        }
+    },
+
+    // Add download button to the canvas container
+    addDownloadButton(diceResults, container, canvas) {
+        const downloadBtn = document.createElement('button');
+        downloadBtn.className = 'download-button';
+        downloadBtn.textContent = 'Download Room';
+        downloadBtn.onclick = () => this.downloadVisualization(diceResults, canvas);
+        container.appendChild(downloadBtn);
+    },
     drawLegend(ctx, canvasWidth, canvasHeight) {
         const { legendPadding, colors } = this.config;
         const legendY = canvasHeight - (legendPadding/2);
