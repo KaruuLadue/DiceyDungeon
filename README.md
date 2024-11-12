@@ -54,8 +54,8 @@ The **Customize** feature allows users to modify the default roll tables for dif
 - [x] Add more sound effects for rolling specific dice.
 - [x] Add Settings panel and toggles (sound,highlight,dice rolls)
 - [x] Implement additional room types and random events for even more variety.
+- [x] Implement visuals to represent each rooms details.
 - [ ] Add proper versioning and Changelog updates
-- [ ] Implement visuals to represent each rooms details.
 
 ## Contributing
 Contributions are welcome! Feel free to submit a pull request or open an issue with ideas, improvements, or bug reports.

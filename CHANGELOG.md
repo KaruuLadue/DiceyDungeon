@@ -56,7 +56,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Animated roll results
 
 ### Known Issues
-- Roll results dice icons are black when viewed from Chrome browser. 
+- Roll results dice icons are black when viewed from Chrome browser.
+- Room images do not depict proper length when the d100 dice roll is less than 10.
 
 [Unreleased]: https://github.com/yourusername/DiceyDungeon/compare/v1.1.0...HEAD
 [1.1.0]: https://github.com/yourusername/DiceyDungeon/compare/v1.0.0...v1.1.0
