@@ -19,11 +19,8 @@ The resulting tool, Dicey Dungeon, is a web-based application that generates ran
 - Animated dice results with an optional matching number highlight.
 - Advanced room visualization system with:
   - Dynamic grid rendering
-  - Customizable themes and styling
   - Automatic sizing and scaling
   - Clear entrance and exit markers
-  - Configurable border and grid styles
-- Export individual room diagrams or batch download multiple rooms.
 
 ## Installation
 Clone this repository to your local machine:
