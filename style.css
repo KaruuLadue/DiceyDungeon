@@ -11,8 +11,8 @@ body {
     background-size: cover;
     color: #ffffff;
     margin: 0;
-    padding: 20px;
-    min-height: 100vh;
+    padding: 10px;
+    min-height: 90vh;
 }
 
 /* Container Styling */
