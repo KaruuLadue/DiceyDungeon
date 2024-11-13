@@ -29,7 +29,7 @@ const defaultTheme = {
             sizeRatio: 0.8     // Size relative to cell size (80% of cell)
         },
         exits: {
-            color: '#fffffff',  // Color of exit squares
+            color: '#ffffff',  // Color of exit squares
             width: 12,         // Width of exit markers
             padding: 4         // Padding around exit markers
         }
