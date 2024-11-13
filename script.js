@@ -429,7 +429,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch('version.json');
         if (response.ok) {
             const data = await response.json();
-            document.getElementById('version').textContent = `Version: ${data.version}`;
+            document.getElementById('version').textContent = `${data.version}`;
         }
     } catch (error) {
         console.error('Error fetching version:', error);
