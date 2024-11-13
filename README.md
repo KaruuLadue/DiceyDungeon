@@ -1,6 +1,9 @@
 <p align="center">
   <img src="./images/logo.png" alt="Dicey Dungeon" width="50%" max-width="300"/>
 </p>
+<div class="button-container">
+  <a href="https://karuuladue.github.io/DiceyDungeon/index.html" class="button">Try Here</a>
+</div>
 <p>Dicey Dungeon started as an experiment to explore the capabilities of generative AI in programming, aiming to create a full web app with minimal human intervention. By providing design requirements and iterating based on feedback, the coding was entirely accomplished using Claude 3.5, Sonnet, and ChatGPT 4.0.
 </p>
 <p>
