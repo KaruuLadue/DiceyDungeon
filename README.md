@@ -2,15 +2,14 @@
   <img src="./images/logo.png" alt="Dicey Dungeon" width="50%" max-width="300"/>
 </p>
 
-**[Try Here](https://karuuladue.github.io/DiceyDungeon/index.html)**
-
 <p>Dicey Dungeon started as an experiment to explore the capabilities of generative AI in programming, aiming to create a full web app with minimal human intervention. By providing design requirements and iterating based on feedback, the coding was entirely accomplished using Claude 3.5, Sonnet, and ChatGPT 4.0.
 </p>
 <p>
 The resulting tool, Dicey Dungeon, is a web-based application that generates randomized dungeon room scenarios using a full polyhedral dice set. It features customizable roll tables, dynamic room diagrams, and save/load functionality and more. Dicey Dungeon caters to Dungeon Masters looking for quick dungeon setups or players seeking unique solo dungeons to delve.
 </p>
-
-<center>### <a href="https://karuuladue.github.io/DiceyDungeon/index.html" target="_blank">Try Here</a></center>
+<div align="center">
+  <h3><a href="https://karuuladue.github.io/DiceyDungeon/index.html" target="_blank">Try it Here</a></h3>
+</div>
 
 ## Features
 - Simple interface for easy dungeon-building with the ability to disable features.
