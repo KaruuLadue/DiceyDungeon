@@ -7,7 +7,7 @@
 The resulting tool, Dicey Dungeon, is a web-based application that generates randomized dungeon room scenarios using a full polyhedral dice set. It features customizable roll tables, dynamic room diagrams, and save/load functionality and more. Dicey Dungeon caters to Dungeon Masters looking for quick dungeon setups or players seeking unique solo dungeons to delve.
 </p>
 <div align="center">
-  <h2><a href="https://karuuladue.github.io/DiceyDungeon/index.html" target="blank" style="color: gold;">Try Here</a></h2>
+  <h2><a href="https://karuuladue.github.io/DiceyDungeon/index.html" target="blank">Try it Here</a></h2>
 </div>
 
 ## Features
