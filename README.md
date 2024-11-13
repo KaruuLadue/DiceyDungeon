@@ -1,8 +1,9 @@
 <p align="center">
   <img src="./images/logo.png" alt="Dicey Dungeon" width="50%" max-width="400"/>
 </p>
+Dicey Dungeon started as an experiment to explore the capabilities of generative AI in programming, aiming to create a full web app with minimal human intervention. By providing design requirements and iterating based on feedback, the coding was entirely accomplished using Claude 3.5, Sonnet, and ChatGPT 4.0.
 
-Dicey Dungeon is a web-based tool designed to generate randomized dungeon scenarios using the full set of Dungeons & Dragons dice. Players can roll dice to determine hallway lengths, room encounters, modifiers, and more, allowing for a dynamic and unpredictable dungeon-crawling experience. The tool now includes advanced room visualization with customizable themes and styling.
+The resulting tool, Dicey Dungeon, is a web-based application that generates randomized dungeon room scenarios using a full polyhedral dice set. It features customizable roll tables, dynamic room diagrams, and save/load functionality and more. Dicey Dungeon caters to Dungeon Masters looking for quick dungeon setups or players seeking unique solo dungeons to delve.
 
 <p align="center">
   <img src="./images/example.png" alt="Dicey Dungeon" width="60%" max-width="500"/>
