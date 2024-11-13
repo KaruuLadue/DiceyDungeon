@@ -295,7 +295,7 @@ button:active {
 .logo {
     width: 400px;
     height: auto;
-    margin: 20px 0;
+    margin: 5px 0;
 }
 
 @media screen and (max-width: 768px) {
