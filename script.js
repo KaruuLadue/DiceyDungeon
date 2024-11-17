@@ -47,6 +47,12 @@ async function loadRollTables() {
 }
 
 function rollDice(sides) {
+    if (sides === 100) {
+        // Generate values in increments of 10 (0, 10, 20, ..., 90)
+        const roll = Math.floor(Math.random() * 10) * 10;
+        // Return 0 as is (represents 00 on the die)
+        return roll;
+    }
     return Math.floor(Math.random() * sides) + 1;
 }
 
