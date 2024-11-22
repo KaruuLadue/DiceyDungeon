@@ -162,12 +162,12 @@ const RoomVisualization = {
  */
 drawHallway(ctx, width, length, gridX, gridY, diceResults) {
     const { grid } = this.currentTheme;
+    const { exits: exitTheme } = this.currentTheme.elements;
     const hallwayLength = Math.ceil((diceResults?.D4 || 0) / 2); // D4 ÷ 2 for hallway length
     
     // Start from the entrance point
     const startX = gridX + (Math.floor(width/2) * grid.cellSize);
-    // Adjust startY to be exactly at the bottom edge of the room
-    const startY = gridY + (length * grid.cellSize) + (grid.lineWidth * 2); // Added more spacing
+    const startY = gridY + (length * grid.cellSize) + (grid.lineWidth * 2);
     
     // Draw hallway
     ctx.fillStyle = grid.backgroundColor;
@@ -201,6 +201,23 @@ drawHallway(ctx, width, length, gridX, gridY, diceResults) {
         ctx.lineTo(startX + grid.cellSize, startY + (y * grid.cellSize));
         ctx.stroke();
     }
+
+    // Draw door at top of hallway (connection to room)
+    ctx.fillStyle = exitTheme.color;
+    ctx.fillRect(
+        startX + exitTheme.padding,
+        startY - (exitTheme.width / 2),
+        grid.cellSize - (exitTheme.padding * 2),
+        exitTheme.width
+    );
+
+    // Draw door at bottom of hallway (entrance from previous room)
+    ctx.fillRect(
+        startX + exitTheme.padding,
+        startY + (hallwayLength * grid.cellSize) - (exitTheme.width / 2),
+        grid.cellSize - (exitTheme.padding * 2),
+        exitTheme.width
+    );
 },
 
     /**
