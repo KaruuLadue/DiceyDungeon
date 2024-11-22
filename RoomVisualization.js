@@ -166,8 +166,8 @@ drawHallway(ctx, width, length, gridX, gridY, diceResults) {
     
     // Start from the entrance point
     const startX = gridX + (Math.floor(width/2) * grid.cellSize);
-    // Move starting point to just below the room grid
-    const startY = gridY + (length * grid.cellSize) + grid.lineWidth;
+    // Adjust startY to be exactly at the bottom edge of the room
+    const startY = gridY + (length * grid.cellSize) + (grid.lineWidth * 2); // Added more spacing
     
     // Draw hallway
     ctx.fillStyle = grid.backgroundColor;
