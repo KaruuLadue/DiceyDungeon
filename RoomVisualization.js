@@ -163,7 +163,7 @@ const RoomVisualization = {
 drawHallway(ctx, width, length, gridX, gridY, diceResults) {
     const { grid } = this.currentTheme;
     const { exits: exitTheme } = this.currentTheme.elements;
-    const hallwayLength = Math.ceil((diceResults?.D4 || 0) / 2); // D4 ÷ 2 for hallway length
+    const hallwayLength = diceResults?.D4 || 1; // Direct D4 result for length
     
     // Start from the entrance point
     const startX = gridX + (Math.floor(width/2) * grid.cellSize);
