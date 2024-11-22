@@ -164,8 +164,8 @@ drawHallway(ctx, width, length, gridX, gridY, diceResults) {
     const { grid } = this.currentTheme;
     const hallwayLength = Math.ceil((diceResults?.D4 || 0) / 2); // D4 ÷ 2 for hallway length
     
-    // Start from the entrance point
-    const startX = gridX + (Math.floor(width/2) * grid.cellSize);
+    // Start from the entrance point, aligned with room edge
+    const startX = gridX + (Math.floor(width/2) * grid.cellSize) - (grid.cellSize / 2);; // Center on grid
     const startY = gridY + (length * grid.cellSize);
     
     // Draw hallway
