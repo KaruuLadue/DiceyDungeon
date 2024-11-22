@@ -34,7 +34,6 @@ This tool generates randomized dungeon room scenarios using a complete set of po
   - Mobile-responsive design
 
 ## 🎮 Quick Start
-
 1. Visit the [live demo](https://karuuladue.github.io/DiceyDungeon/index.html)
 2. Click **Roll** to generate a dungeon room
 3. Use the **Settings** button to customize your experience
@@ -42,7 +41,6 @@ This tool generates randomized dungeon room scenarios using a complete set of po
 5. Export your history or custom tables as needed
 
 ## 🛠️ Installation
-
 For local development:
 
 ```bash
