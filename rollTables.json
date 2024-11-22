@@ -72,15 +72,15 @@
     "Chaotic Event - Roll D8 and D12 again for a twist."
   ],
     "D100": [
-    "Length of room, first digit only",
-    "Length of room, first digit only",
-    "Length of room, first digit only",
-    "Length of room, first digit only",
-    "Length of room, first digit only",
-    "Length of room, first digit only",
-    "Length of room, first digit only",
-    "Length of room, first digit only",
-    "Length of room, first digit only",
-    "Length of room, first digit only"
-    ]
+    "Very short room (0 indicates 5ft)",
+    "Short room (10ft)",
+    "Modest room (20ft)", 
+    "Medium room (30ft)",
+    "Standard room (40ft)",
+    "Large room (50ft)",
+    "Extended room (60ft)",
+    "Grand room (70ft)",
+    "Great hall (80ft)",
+    "Massive chamber (90ft)"
+]
 }
