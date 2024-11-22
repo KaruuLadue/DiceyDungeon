@@ -129,17 +129,17 @@ const RoomVisualization = {
         const width = diceResults?.D10 || 5;
         const length = diceResults?.D100 || 1;
         const exits = Math.ceil((diceResults?.D6 || 0) / 2);
-        const hallwayLength = Math.ceil((diceResults?.D4 || 0) / 2);
+        const hallwayLength = diceResults?.D4 || 1;
         
         // Calculate sizes including hallway
         const gridWidth = width * theme.grid.cellSize;
         const gridHeight = (length + hallwayLength) * theme.grid.cellSize;
         const topPadding = theme.container.padding * 1.5;
         
-        // Set canvas size
+        // Set canvas size - increase the height to account for hallway and legend
         canvas.width = Math.max(theme.container.minWidth, gridWidth + (theme.container.padding * 2));
         canvas.height = Math.max(theme.container.minHeight, 
-            gridHeight + topPadding + theme.container.padding + theme.container.legendPadding);
+            gridHeight + topPadding + (theme.container.padding * 2) + theme.container.legendPadding);
         
         // Draw background
         this.drawBackground(ctx, canvas.width, canvas.height);
