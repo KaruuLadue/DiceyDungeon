@@ -374,31 +374,32 @@ drawHallway(ctx, width, length, gridX, gridY, diceResults) {
         
         // Calculate legend layout
         const entranceSymbol = '▲';
-        const entranceLabel = ' Entrance';
+        const entranceLabel = ' Entrance'; // Added space before text
         const exitSymbol = '▬';
-        const exitLabel = ' Exit';
+        const exitLabel = ' Exit'; // Added space before text
         
-        const entranceFullWidth = ctx.measureText(entranceSymbol + entranceLabel).width;
-        const exitFullWidth = ctx.measureText(exitSymbol + exitLabel).width;
+        const symbolSpacing = 5; // Add extra spacing between symbol and text
+        const entranceFullWidth = ctx.measureText(entranceSymbol).width + symbolSpacing + ctx.measureText(entranceLabel).width;
+        const exitFullWidth = ctx.measureText(exitSymbol).width + symbolSpacing + ctx.measureText(exitLabel).width;
         const totalWidth = entranceFullWidth + exitFullWidth + legend.spacing;
         
         // Draw legend items
         let startX = (canvasWidth - totalWidth) / 2;
         
-        // Draw entrance legend (gold symbol + text)
+        // Draw entrance legend
         ctx.fillStyle = legend.color;
         ctx.fillText(entranceSymbol, startX, legendY);
-        startX += ctx.measureText(entranceSymbol).width;
+        startX += ctx.measureText(entranceSymbol).width + symbolSpacing; // Add spacing after symbol
         ctx.fillText(entranceLabel, startX, legendY);
         
         // Move to exit text position
         startX += ctx.measureText(entranceLabel).width + legend.spacing;
         
-        // Draw exit legend (white symbol + gold text)
-        ctx.fillStyle = exits.color; // White color for symbol
+        // Draw exit legend
+        ctx.fillStyle = exits.color;
         ctx.fillText(exitSymbol, startX, legendY);
-        startX += ctx.measureText(exitSymbol).width;
-        ctx.fillStyle = legend.color; // Back to gold for text
+        startX += ctx.measureText(exitSymbol).width + symbolSpacing; // Add spacing after symbol
+        ctx.fillStyle = legend.color;
         ctx.fillText(exitLabel, startX, legendY);
     }
 };
