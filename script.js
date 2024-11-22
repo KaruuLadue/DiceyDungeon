@@ -47,11 +47,6 @@ async function loadRollTables() {
 }
 
 function rollDice(sides) {
-    if (sides === 100) {
-        // Treat D100 as D10 and return result for room length
-        const roll = Math.floor(Math.random() * 10) + 1;
-        return roll * 10 - 10; // This will give us 0,10,20,...90
-    }
     return Math.floor(Math.random() * sides) + 1;
 }
 
@@ -61,7 +56,8 @@ async function processRoll() {
 
     for (const [die, enabled] of Object.entries(activeConfig.enabledDice)) {
         if (enabled) {
-            results[die] = rollDice(parseInt(die.slice(1)));
+            const sides = die === 'D100' ? 10 : parseInt(die.slice(1));
+results[die] = rollDice(sides);
             if (rollTables[die]) {
                 descriptions[die] = rollTables[die][results[die] - 1];
             }
