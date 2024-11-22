@@ -367,27 +367,39 @@ drawHallway(ctx, width, length, gridX, gridY, diceResults) {
      */
     drawLegend(ctx, canvasWidth, canvasHeight) {
         const { legend } = this.currentTheme.text;
+        const { exits } = this.currentTheme.elements;
         const legendY = canvasHeight - (this.currentTheme.container.legendPadding/2);
         
         ctx.font = `${legend.font.weight} ${legend.font.size}px ${legend.font.family}`;
-        ctx.fillStyle = legend.color;
         
         // Calculate legend layout
-        const entranceText = '▲ Entrance';
-        const exitText = '▬ Exit';  // Changed to use the symbol
-        const totalWidth = ctx.measureText(entranceText).width + 
-                          ctx.measureText(exitText).width + 
-                          legend.spacing;
+        const entranceSymbol = '▲';
+        const entranceLabel = ' Entrance';
+        const exitSymbol = '▬';
+        const exitLabel = ' Exit';
+        
+        const entranceFullWidth = ctx.measureText(entranceSymbol + entranceLabel).width;
+        const exitFullWidth = ctx.measureText(exitSymbol + exitLabel).width;
+        const totalWidth = entranceFullWidth + exitFullWidth + legend.spacing;
         
         // Draw legend items
         let startX = (canvasWidth - totalWidth) / 2;
         
-        // Entrance legend
-        ctx.fillText(entranceText, startX, legendY);
-        startX += ctx.measureText(entranceText).width + legend.spacing;
+        // Draw entrance legend (gold symbol + text)
+        ctx.fillStyle = legend.color;
+        ctx.fillText(entranceSymbol, startX, legendY);
+        startX += ctx.measureText(entranceSymbol).width;
+        ctx.fillText(entranceLabel, startX, legendY);
         
-        // Exit legend
-        ctx.fillText(exitText, startX, legendY);
+        // Move to exit text position
+        startX += ctx.measureText(entranceLabel).width + legend.spacing;
+        
+        // Draw exit legend (white symbol + gold text)
+        ctx.fillStyle = exits.color; // White color for symbol
+        ctx.fillText(exitSymbol, startX, legendY);
+        startX += ctx.measureText(exitSymbol).width;
+        ctx.fillStyle = legend.color; // Back to gold for text
+        ctx.fillText(exitLabel, startX, legendY);
     }
 };
 
