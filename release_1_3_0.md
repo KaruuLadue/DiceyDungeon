@@ -94,6 +94,16 @@ This approach demonstrates the potential of AI as a collaborative tool in softwa
 
 ## 🔄 Version History
 
+Current Version: 1.3.0
+- Complete dice rolling system
+- Customizable roll tables
+- Enhanced room visualization with hallways
+- Mobile-responsive design
+- Local storage support
+- Export/Import functionality
+- Door indicators system
+- Grid measurement system
+
 Current Version: 1.0.0
 - Complete dice rolling system
 - Customizable roll tables
