@@ -128,13 +128,12 @@ const RoomVisualization = {
         // Calculate dimensions
         const width = diceResults?.D10 || 5;
         const length = diceResults?.D100 || 1;
+        const exits = Math.ceil((diceResults?.D6 || 0) / 2);
+        const hallwayLength = Math.ceil((diceResults?.D4 || 0) / 2);
         
-        // Calculate number of exits from D6
-        const exits = Math.ceil((diceResults?.D6 || 0) / 2); // D6 ÷ 2 for exits
-        
-        // Calculate sizes
+        // Calculate sizes including hallway
         const gridWidth = width * theme.grid.cellSize;
-        const gridHeight = length * theme.grid.cellSize;
+        const gridHeight = (length + hallwayLength) * theme.grid.cellSize;
         const topPadding = theme.container.padding * 1.5;
         
         // Set canvas size
@@ -152,10 +151,56 @@ const RoomVisualization = {
         // Draw components
         this.drawTitle(ctx, width, length, canvas.width, topPadding);
         this.drawGrid(ctx, width, length, gridX, gridY);
+        this.drawHallway(ctx, width, length, gridX, gridY); // Add hallway
         this.drawEntrance(ctx, width, length, gridX, gridY);
         this.drawExits(ctx, width, length, exits, gridX, gridY);
         this.drawLegend(ctx, canvas.width, canvas.height);
     },
+
+/**
+ * Draw the hallway
+ */
+drawHallway(ctx, width, length, gridX, gridY) {
+    const { grid } = this.currentTheme;
+    const hallwayLength = Math.ceil((diceResults?.D4 || 0) / 2); // D4 ÷ 2 for hallway length
+    
+    // Start from the entrance point
+    const startX = gridX + (Math.floor(width/2) * grid.cellSize);
+    const startY = gridY + (length * grid.cellSize);
+    
+    // Draw hallway
+    ctx.fillStyle = grid.backgroundColor;
+    ctx.strokeStyle = grid.border.color;
+    ctx.lineWidth = grid.border.width;
+    
+    // Draw hallway body
+    ctx.fillRect(
+        startX,
+        startY,
+        grid.cellSize,
+        hallwayLength * grid.cellSize
+    );
+    
+    // Draw hallway border
+    ctx.strokeRect(
+        startX - (ctx.lineWidth / 2),
+        startY - (ctx.lineWidth / 2),
+        grid.cellSize + ctx.lineWidth,
+        (hallwayLength * grid.cellSize) + ctx.lineWidth
+    );
+    
+    // Draw grid lines for hallway
+    ctx.strokeStyle = grid.lineColor;
+    ctx.lineWidth = grid.lineWidth;
+    
+    // Draw horizontal grid lines
+    for (let y = 1; y <= hallwayLength; y++) {
+        ctx.beginPath();
+        ctx.moveTo(startX, startY + (y * grid.cellSize));
+        ctx.lineTo(startX + grid.cellSize, startY + (y * grid.cellSize));
+        ctx.stroke();
+    }
+},
 
     /**
      * Draw the background
