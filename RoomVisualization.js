@@ -373,12 +373,12 @@ drawHallway(ctx, width, length, gridX, gridY, diceResults) {
         ctx.font = `${legend.font.weight} ${legend.font.size}px ${legend.font.family}`;
         
         // Calculate legend layout
-        const entranceSymbol = '▲';
+        const entranceSymbol = '▲ ';
         const entranceLabel = ' Entrance'; // Added space before text
         const exitSymbol = '▬';
         const exitLabel = ' Exit'; // Added space before text
         
-        const symbolSpacing = 40; // Add extra spacing between symbol and text
+        const symbolSpacing = 30; // Add extra spacing between symbol and text
         const entranceFullWidth = ctx.measureText(entranceSymbol).width + symbolSpacing + ctx.measureText(entranceLabel).width;
         const exitFullWidth = ctx.measureText(exitSymbol).width + symbolSpacing + ctx.measureText(exitLabel).width;
         const totalWidth = entranceFullWidth + exitFullWidth + legend.spacing;
