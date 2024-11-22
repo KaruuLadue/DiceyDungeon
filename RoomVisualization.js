@@ -127,7 +127,8 @@ const RoomVisualization = {
         
         // Calculate dimensions
         const width = diceResults?.D10 || 5;
-        const length = diceResults?.D100 ? (diceResults.D100 - 1) * 10 + 5 : 5;
+        const length = diceResults?.D100 ? 
+        (diceResults.D100 === 1 ? 1 : diceResults.D100 * 2) : 1;
         const exits = Math.ceil((diceResults?.D6 || 0) / 2);
         
         // Calculate sizes
