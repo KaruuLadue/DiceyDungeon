@@ -378,7 +378,7 @@ drawHallway(ctx, width, length, gridX, gridY, diceResults) {
         const exitSymbol = '▬';
         const exitLabel = ' Exit'; // Added space before text
         
-        const symbolSpacing = 5; // Add extra spacing between symbol and text
+        const symbolSpacing = 10; // Add extra spacing between symbol and text
         const entranceFullWidth = ctx.measureText(entranceSymbol).width + symbolSpacing + ctx.measureText(entranceLabel).width;
         const exitFullWidth = ctx.measureText(exitSymbol).width + symbolSpacing + ctx.measureText(exitLabel).width;
         const totalWidth = entranceFullWidth + exitFullWidth + legend.spacing;
