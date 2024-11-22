@@ -47,6 +47,11 @@ async function loadRollTables() {
 }
 
 function rollDice(sides) {
+    if (sides === 100) {
+        // Treat D100 as D10 and return result for room length
+        const roll = Math.floor(Math.random() * 10) + 1;
+        return roll * 10 - 10; // This will give us 0,10,20,...90
+    }
     return Math.floor(Math.random() * sides) + 1;
 }
 
