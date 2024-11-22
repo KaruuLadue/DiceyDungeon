@@ -54,6 +54,8 @@ The **Customize** feature allows users to modify the default roll tables for dif
 The room visualization system supports customizable themes including:
 - Grid cell size and border styles
 - Room entrance and exit markers
+- Connected hallway visualization
+- Door placement indicators
 - Background and accent colors
 - Text styling and positioning
 - Border thickness and colors

@@ -5,10 +5,26 @@ All notable changes to Dicey Dungeon will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-- Room visualization feature
-- Enhanced randomization options
-- Additional export formats
+
+## [1.3.0] - 2024-11-22
+
+### Added
+- Hallway visualization attached to room grid
+- Door markers at hallway entry and exit points
+- Direct D4 roll value determines hallway length
+
+### Changed
+- Modified D100 implementation to work as D10 for room length (5-90ft)
+- Updated roll table customization to show 10 entries for D100 instead of 100
+- Aligned legend colors with visualization (white doors, gold text)
+- Added measurement clarifications to dice descriptions
+- Improved spacing in visualization legend
+
+### Fixed
+- Room grid and hallway alignment
+- Legend symbol and text overlap
+- D100 roll table descriptions to match actual room lengths
+- Canvas sizing to prevent visualization overlap with legend
 
 ## [1.2.0] - 2024-11-12
 
