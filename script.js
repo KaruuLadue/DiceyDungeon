@@ -50,10 +50,18 @@ function rollDice(sides) {
     if (sides === 100) {
         // Generate values in increments of 10 (0, 10, 20, ..., 90)
         const roll = Math.floor(Math.random() * 10) * 10;
-        // Return 0 as is (represents 00 on the die)
         return roll;
     }
     return Math.floor(Math.random() * sides) + 1;
+}
+
+// In processRoll function, update the description lookup for D100:
+if (die === 'D100') {
+    // Convert the roll value to an index (0-9) for the description table
+    const descIndex = Math.floor(results[die] / 10);
+    descriptions[die] = rollTables[die][descIndex];
+} else if (rollTables[die]) {
+    descriptions[die] = rollTables[die][results[die] - 1];
 }
 
 async function processRoll() {
