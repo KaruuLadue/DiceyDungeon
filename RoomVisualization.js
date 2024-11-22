@@ -127,7 +127,10 @@ const RoomVisualization = {
         
         // Calculate dimensions
         const width = diceResults?.D10 || 5;
-        const length = diceResults?.D100 === 0 ? 10 : diceResults?.D100 / 10;
+        const length = diceResults?.D100 || 1;
+        
+        // Calculate number of exits from D6
+        const exits = Math.ceil((diceResults?.D6 || 0) / 2); // D6 ÷ 2 for exits
         
         // Calculate sizes
         const gridWidth = width * theme.grid.cellSize;
