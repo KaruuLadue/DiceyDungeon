@@ -24,16 +24,16 @@
     "Elite Threat - Dangerous entity, possibly guarding something."
   ],
   "D10": [
-    "Width of room",
-    "Width of room",
-    "Width of room",
-    "Width of room",
-    "Width of room",
-    "Width of room",
-    "Width of room",
-    "Width of room",
-    "Width of room",
-    "Width of room"
+      "5ft width",
+      "10ft width",
+      "15ft width",
+      "20ft width",
+      "25ft width",
+      "30ft width",
+      "35ft width", 
+      "40ft width",
+      "45ft width",
+      "50ft width"
   ],
   "D12": [
     "Empty Room - No notable features.",
@@ -72,15 +72,15 @@
     "Chaotic Event - Roll D8 and D12 again for a twist."
   ],
     "D100": [
-    "Very short room",
-    "Short room",
-    "Modest room", 
-    "Medium room",
-    "Standard room",
-    "Large room",
-    "Extended room",
-    "Grand room",
-    "Great hall",
-    "Massive chamber"
+    "5ft length",
+    "10ft length",
+    "20ft length",
+    "30ft length",
+    "40ft length",
+    "50ft length",
+    "60ft length",
+    "70ft length",
+    "80ft length",
+    "90ft length"
 ]
 }
