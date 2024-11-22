@@ -151,7 +151,7 @@ const RoomVisualization = {
         // Draw components
         this.drawTitle(ctx, width, length, canvas.width, topPadding);
         this.drawGrid(ctx, width, length, gridX, gridY);
-        this.drawHallway(ctx, width, length, gridX, gridY); // Add hallway
+        this.drawHallway(ctx, width, length, gridX, gridY, diceResults); // Pass diceResults
         this.drawEntrance(ctx, width, length, gridX, gridY);
         this.drawExits(ctx, width, length, exits, gridX, gridY);
         this.drawLegend(ctx, canvas.width, canvas.height);
@@ -160,7 +160,7 @@ const RoomVisualization = {
 /**
  * Draw the hallway
  */
-drawHallway(ctx, width, length, gridX, gridY) {
+drawHallway(ctx, width, length, gridX, gridY, diceResults) {
     const { grid } = this.currentTheme;
     const hallwayLength = Math.ceil((diceResults?.D4 || 0) / 2); // D4 ÷ 2 for hallway length
     
