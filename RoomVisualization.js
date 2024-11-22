@@ -126,8 +126,8 @@ const RoomVisualization = {
         const theme = this.currentTheme;
         
         // Calculate dimensions
-        const width = (diceResults?.D10 || 1); // 1-10 squares
-        const length = (diceResults?.D100 || 1); // 1-10 squares, representing 5-90ft
+        const width = diceResults?.D10 || 5;
+        const length = diceResults?.D100 === 0 ? 10 : diceResults?.D100 / 10;
         
         // Calculate sizes
         const gridWidth = width * theme.grid.cellSize;
