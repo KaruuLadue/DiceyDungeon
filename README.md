@@ -82,4 +82,4 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 ## Acknowledgments
 - Inspired by classic dungeon-crawling adventures and the unpredictable fun of rolling physical dice.
-- Special thanks to ChatGPT 4o and Claude 3.5 for coding 95% of this project!
+- Special thanks to ChatGPT 4o and Claude 3.5 Sonnet for coding 95% of this project!
