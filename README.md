@@ -73,8 +73,6 @@ The room visualization system supports customizable themes including:
 - [x] Implement visuals to represent each rooms details.
 - [x] Add proper versioning and Changelog updates
 - [x] Add advanced room visualization with customizable themes
-- [ ] Implement batch room export functionality
-- [ ] Add additional visualization themes and presets
 
 ## Contributing
 Contributions are welcome! Feel free to submit a pull request or open an issue with ideas, improvements, or bug reports.
