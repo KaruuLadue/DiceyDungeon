@@ -82,5 +82,4 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 ## Acknowledgments
 - Inspired by classic dungeon-crawling adventures and the unpredictable fun of rolling physical dice.
-- Special thanks to all the tabletop role-playing enthusiasts who provided feedback and ideas for this project.
-- Version 1.2.0 introduces significant improvements to room visualization and customization options.
+- Special thanks to ChatGPT 4o and Claude 3.5 for coding 95% of this project!
