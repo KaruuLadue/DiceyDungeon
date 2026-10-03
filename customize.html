@@ -208,13 +208,15 @@
         };
 
         function createDiceSection(dieType, config) {
+            // Only dice with a generator in customize.js get randomize buttons
+            const canRandomize = Boolean(generators[dieType]);
             return `
                 <div class="dice-section" id="${dieType}-section">
                     <div class="dice-header">
                         <h4 class="dice-title">${dieType} - ${config.description}</h4>
                         <div class="dice-controls">
                             <button onclick="resetTable('${dieType}')">Reset</button>
-                            <button onclick="randomizeTable('${dieType}')">Randomize</button>
+                            ${canRandomize ? `<button onclick="randomizeTable('${dieType}')">Randomize</button>` : ''}
                             <button onclick="saveTable('${dieType}')">Save Table</button>
                         </div>
                     </div>
@@ -223,7 +225,7 @@
                             <div class="input-row">
                                 <label>${i + 1}:</label>
                                 <input type="text" id="${dieType}-${i}" placeholder="Enter result for ${i + 1}">
-                                <button class="randomize-entry" onclick="randomizeEntry('${dieType}', ${i})">🎲</button>
+                                ${canRandomize ? `<button class="randomize-entry" onclick="randomizeEntry('${dieType}', ${i})">🎲</button>` : ''}
                             </div>
                         `).join('')}
                     </div>

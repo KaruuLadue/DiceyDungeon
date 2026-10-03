@@ -63,7 +63,8 @@ const defaultTheme = {
  */
 const RoomVisualization = {
     // Current active theme, initialized to default
-    currentTheme: { ...defaultTheme },
+    // Deep copies so theme updates never mutate defaultTheme's nested objects
+    currentTheme: structuredClone(defaultTheme),
 
     /**
      * Theme management methods
@@ -77,14 +78,14 @@ const RoomVisualization = {
         // Set the entire theme
         set(newTheme) {
             RoomVisualization.currentTheme = {
-                ...defaultTheme,
-                ...newTheme
+                ...structuredClone(defaultTheme),
+                ...structuredClone(newTheme)
             };
         },
 
         // Reset theme to default
         reset() {
-            RoomVisualization.currentTheme = { ...defaultTheme };
+            RoomVisualization.currentTheme = structuredClone(defaultTheme);
         },
 
         // Update specific theme properties
@@ -129,46 +130,75 @@ const RoomVisualization = {
         const width = diceResults?.D10 || 5;
         const length = diceResults?.D100 || 1;
         const exits = Math.ceil((diceResults?.D6 || 0) / 2);
-        const hallwayLength = diceResults?.D4 || 1;
-        
+        const hallwayLength = this.getHallwayLength(diceResults);
+
         // Calculate sizes including hallway
         const gridWidth = width * theme.grid.cellSize;
         const gridHeight = (length + hallwayLength) * theme.grid.cellSize;
         const topPadding = theme.container.padding * 1.5;
-        
-        // Set canvas size - increase the height to account for hallway and legend
-        canvas.width = Math.max(theme.container.minWidth, gridWidth + (theme.container.padding * 2));
-        canvas.height = Math.max(theme.container.minHeight, 
+
+        // Logical size - increase the height to account for hallway and legend
+        const canvasWidth = Math.max(theme.container.minWidth, gridWidth + (theme.container.padding * 2));
+        const canvasHeight = Math.max(theme.container.minHeight,
             gridHeight + topPadding + (theme.container.padding * 2) + theme.container.legendPadding);
-        
+
+        // Scale the backing store for high-DPI screens so the drawing stays sharp
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = canvasWidth * dpr;
+        canvas.height = canvasHeight * dpr;
+        canvas.style.width = `${canvasWidth}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
         // Draw background
-        this.drawBackground(ctx, canvas.width, canvas.height);
-        
+        this.drawBackground(ctx, canvasWidth, canvasHeight);
+
         // Calculate grid position
-        const gridX = (canvas.width - gridWidth) / 2;
-        const gridY = topPadding + ((canvas.height - theme.container.legendPadding - gridHeight - topPadding) / 2);
-        
+        const gridX = (canvasWidth - gridWidth) / 2;
+        const gridY = topPadding + ((canvasHeight - theme.container.legendPadding - gridHeight - topPadding) / 2);
+
         // Draw components
-        this.drawTitle(ctx, width, length, canvas.width, topPadding);
+        this.drawTitle(ctx, width, length, canvasWidth, topPadding);
         this.drawGrid(ctx, width, length, gridX, gridY);
-        this.drawHallway(ctx, width, length, gridX, gridY, diceResults); // Pass diceResults
+        this.drawHallway(ctx, width, length, gridX, gridY, hallwayLength);
         this.drawEntrance(ctx, width, length, gridX, gridY);
         this.drawExits(ctx, width, length, exits, gridX, gridY);
-        this.drawLegend(ctx, canvas.width, canvas.height);
+        this.drawLegend(ctx, canvasWidth, canvasHeight);
+    },
+
+    /**
+     * Hallway length in grid squares. A D4 of 1 is an "Immediate doorway",
+     * so there is no hallway, only a door. With the D4 disabled, draw 1 square.
+     */
+    getHallwayLength(diceResults) {
+        const roll = diceResults?.D4;
+        if (!roll) return 1;
+        return roll === 1 ? 0 : roll;
     },
 
 /**
  * Draw the hallway
  */
-drawHallway(ctx, width, length, gridX, gridY, diceResults) {
+drawHallway(ctx, width, length, gridX, gridY, hallwayLength) {
     const { grid } = this.currentTheme;
     const { exits: exitTheme } = this.currentTheme.elements;
-    const hallwayLength = diceResults?.D4 || 1; // Direct D4 result for length
-    
+
     // Start from the entrance point
     const startX = gridX + (Math.floor(width/2) * grid.cellSize);
+
+    // Immediate doorway: just a door in the room's bottom wall
+    if (hallwayLength === 0) {
+        ctx.fillStyle = exitTheme.color;
+        ctx.fillRect(
+            startX + exitTheme.padding,
+            gridY + (length * grid.cellSize) - (exitTheme.width / 2),
+            grid.cellSize - (exitTheme.padding * 2),
+            exitTheme.width
+        );
+        return;
+    }
+
     const startY = gridY + (length * grid.cellSize) + (grid.lineWidth * 2);
-    
+
     // Draw hallway
     ctx.fillStyle = grid.backgroundColor;
     ctx.strokeStyle = grid.border.color;
@@ -300,16 +330,19 @@ drawHallway(ctx, width, length, gridX, gridY, diceResults) {
         const entranceX = gridX + (Math.floor(width/2) * cellSize);
         const entranceY = gridY + ((length - 1) * cellSize);
         
+        // Save/restore so the alignment below doesn't leak into the legend
+        ctx.save();
         ctx.fillStyle = entrance.color;
-        ctx.font = `${entrance.size}px Arial`;
+        ctx.font = `${Math.round(cellSize * entrance.sizeRatio)}px Arial`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';  // Change from 'middle' to 'bottom'
-        
+
         // Draw the triangle at bottom center of the cell
-        ctx.fillText('▲', 
+        ctx.fillText('▲',
             entranceX + (cellSize / 2),            // center horizontally
             entranceY + cellSize - 2               // align to bottom with small offset
         );
+        ctx.restore();
     },
 
     /**
@@ -371,14 +404,16 @@ drawHallway(ctx, width, length, gridX, gridY, diceResults) {
         const legendY = canvasHeight - (this.currentTheme.container.legendPadding/2);
         
         ctx.font = `${legend.font.weight} ${legend.font.size}px ${legend.font.family}`;
-        
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+
         // Calculate legend layout
-        const entranceSymbol = '▲ ';
-        const entranceLabel = ' Entrance'; 
+        const entranceSymbol = '▲';
+        const entranceLabel = 'Entrance';
         const exitSymbol = '▬';
         const exitLabel = 'Exit';
-        
-        const symbolSpacing = 30; // Add extra spacing between symbol and text
+
+        const symbolSpacing = 8; // Space between symbol and text
         const entranceFullWidth = ctx.measureText(entranceSymbol).width + symbolSpacing + ctx.measureText(entranceLabel).width;
         const exitFullWidth = ctx.measureText(exitSymbol).width + symbolSpacing + ctx.measureText(exitLabel).width;
         const totalWidth = entranceFullWidth + exitFullWidth + legend.spacing;

@@ -5,8 +5,15 @@ async function loadCurrentValues() {
     try {
         const response = await fetch('rollTables.json');
         defaultRollTables = await response.json();
-        const customTables = localStorage.getItem('customRollTables');
-        currentRollTables = customTables ? JSON.parse(customTables) : {...defaultRollTables};
+        const customTables = JSON.parse(localStorage.getItem('customRollTables') || '{}');
+        currentRollTables = {...defaultRollTables};
+        // Keep only custom tables that still match the default table's shape
+        Object.keys(defaultRollTables).forEach(dieType => {
+            const custom = customTables[dieType];
+            if (Array.isArray(custom) && custom.length === defaultRollTables[dieType].length) {
+                currentRollTables[dieType] = custom;
+            }
+        });
         populateAllFields();
     } catch (error) {
         console.error("Error loading roll tables:", error);
@@ -149,8 +156,19 @@ async function importTables(event) {
     event.target.value = ''; // Reset file input
 }
 
+// Random entries per die. D4, D6, D10 and D100 have no generator: their
+// roll value drives the room drawing, so random text would contradict it.
 const generators = {
-    room: [
+    D8: [
+        "No Encounter - The room is quiet.", "Wandering Patrol - A few guards on their rounds.",
+        "Lurking Predator - Something hunts from the shadows.", "Restless Dead - Spirits stir as you enter.",
+        "Swarm - Vermin pour from the cracks.", "Rival Party - Another group of adventurers.",
+        "Sleeping Beast - A large creature at rest.", "Captive - Someone pleads for rescue.",
+        "Ambush - Hidden entities ready to strike.", "Merchant - A strange trader offers wares.",
+        "Elite Threat - Dangerous entity, possibly guarding something.", "Construct - A mechanical guardian awakens."
+    ],
+
+    D12: [
         "Dusty Chamber", "Hidden Alcove", "Grand Hall", "Dark Corridor",
         "Ancient Library", "Torture Chamber", "Treasury Room", "Guard Post",
         "Dining Hall", "Armory", "Sleeping Quarters", "Throne Room",
@@ -158,7 +176,7 @@ const generators = {
         "War Room", "Council Chamber", "Training Area", "Secret Passage"
     ],
     
-    modifier: [
+    D20: [
         "Filled with cobwebs", "Eerily silent", "Dimly lit", "Partially flooded",
         "Covered in moss", "Magically enhanced", "Structurally unstable", "Trapped",
         "Recently occupied", "Ancient and worn", "Mysteriously clean", "Haunted",
@@ -169,14 +187,18 @@ const generators = {
 
 function randomizeEntry(dieType, index) {
     const input = document.getElementById(`${dieType}-${index}`);
-    if (input) {
-        const generator = generators.room;
+    const generator = generators[dieType];
+    if (input && generator) {
         const randomValue = generator[Math.floor(Math.random() * generator.length)];
         input.value = randomValue;
     }
 }
 
 function randomizeTable(dieType) {
+    if (!generators[dieType]) {
+        showError(`${dieType} drives the room drawing and can't be randomized`, dieType);
+        return;
+    }
     const numSides = diceConfig[dieType].sides;
     for (let i = 0; i < numSides; i++) {
         randomizeEntry(dieType, i);

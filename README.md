@@ -26,7 +26,7 @@ The resulting tool, Dicey Dungeon, is a web-based application that generates ran
 Clone this repository to your local machine:
 
 ```sh
-git clone https://github.com/YOUR_USERNAME/DiceyDungeon.git
+git clone https://github.com/KaruuLadue/DiceyDungeon.git
 ```
 
 Then, navigate into the project directory:
@@ -62,7 +62,7 @@ The room visualization system supports customizable themes including:
 
 ## Dependencies
 - This project uses vanilla JavaScript, HTML, and CSS.
-- Audio for the roll sound is located at `audio/rollsound.wav`.
+- Audio for the roll sound is located at `audio/rollsound.mp3`.
   
 ## Milestones
 - [x] Add a customization page for roll tables.

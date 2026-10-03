@@ -1,7 +1,7 @@
 // Global state
 let rollHistory = [];
 let rollTables = {};
-const rollSound = new Audio('audio/rollsound.wav');
+const rollSound = new Audio('audio/rollsound.mp3');
 
 // Default configuration
 const defaultConfig = {
@@ -31,13 +31,23 @@ window.updateDiceConfig = updateDiceConfig;
 
 async function loadRollTables() {
     try {
+        const response = await fetch('rollTables.json');
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        rollTables = await response.json();
+
+        // Overlay custom tables, but only where they still match the default
+        // table's shape (e.g. old saves where D100 had 100 entries are ignored)
         const cachedTables = localStorage.getItem('customRollTables');
         if (cachedTables) {
-            rollTables = JSON.parse(cachedTables);
-        } else {
-            const response = await fetch('rollTables.json');
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            rollTables = await response.json();
+            const customTables = JSON.parse(cachedTables);
+            Object.keys(rollTables).forEach(die => {
+                const custom = customTables[die];
+                if (Array.isArray(custom) && custom.length === rollTables[die].length) {
+                    rollTables[die] = custom;
+                } else if (custom) {
+                    console.warn(`Ignoring outdated custom table for ${die}`);
+                }
+            });
         }
         console.log("Roll tables loaded:", rollTables);
     } catch (error) {
@@ -166,15 +176,15 @@ function initializeRoomVisualization(result, recentRollContainer) {
   }
 }
 
-function updateResultsDisplay(result) {
+function updateResultsDisplay(result, rollNumber) {
     const resultsDiv = document.getElementById("results");
     const recentRollContainer = document.createElement("div");
     recentRollContainer.className = 'recent-roll-container';
-    recentRollContainer.setAttribute('data-roll-group', Date.now());
+    recentRollContainer.setAttribute('data-roll-group', result.id);
 
     const rollTitle = document.createElement("h2");
     rollTitle.className = 'roll-title';
-    rollTitle.textContent = `Roll ${rollHistory.length}:`;
+    rollTitle.textContent = `Roll ${rollNumber}:`;
     recentRollContainer.appendChild(rollTitle);
 
     function processRollData(data, parentKey = '') {
@@ -184,10 +194,16 @@ function updateResultsDisplay(result) {
                 lineElement.className = 'result-line';
                 lineElement.setAttribute('data-value', rollData.value);
 
-                lineElement.innerHTML = `
-                    <img src="icons/${rollData.die}.png" alt="${rollData.die} icon" class="dice-icon">
-                    <span>${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}</span>
-                `;
+                // Build with textContent so table text can't inject HTML
+                const icon = document.createElement("img");
+                icon.src = `icons/${rollData.die}.png`;
+                icon.alt = `${rollData.die} icon`;
+                icon.className = 'dice-icon';
+
+                const text = document.createElement("span");
+                text.textContent = `${rollData.die}: ${rollData.value} ${rollData.description ? `(${rollData.description})` : ''}`;
+
+                lineElement.append(icon, text);
 
                 recentRollContainer.appendChild(lineElement);
             } else if (typeof rollData === 'object' && rollData !== null) {
@@ -213,12 +229,14 @@ function updateResultsDisplay(result) {
 
 async function rollAllDice() {
     if (activeConfig.soundEnabled) {
-        await rollSound.play().catch(console.error);
+        // Rewind so rapid rolls replay the sound instead of being ignored
+        rollSound.currentTime = 0;
+        rollSound.play().catch(console.error);
     }
 
     const result = await processRoll();
     console.log("Roll result:", result);
-    updateResultsDisplay(result);
+    updateResultsDisplay(result, rollHistory.length);
 }
 
 function loadCachedRolls() {
@@ -226,7 +244,7 @@ function loadCachedRolls() {
         const cachedRolls = localStorage.getItem('diceyDungeonRolls');
         if (cachedRolls) {
             rollHistory = JSON.parse(cachedRolls);
-            rollHistory.forEach(result => updateResultsDisplay(result));
+            rollHistory.forEach((result, index) => updateResultsDisplay(result, index + 1));
         }
     } catch (error) {
         console.error("Error loading cached rolls:", error);
@@ -318,6 +336,23 @@ function updateConfig(setting, value) {
     }
 }
 
+function toggleRoomVisualization(enabled) {
+    document.querySelectorAll('.recent-roll-container').forEach(container => {
+        const existing = container.querySelector('.room-visualization');
+        if (enabled && !existing) {
+            const result = rollHistory.find(roll => roll.id === container.getAttribute('data-roll-group'));
+            if (result) {
+                initializeRoomVisualization(result, container);
+            }
+        } else if (!enabled && existing) {
+            if (existing.cleanup) {
+                existing.cleanup();
+            }
+            existing.remove();
+        }
+    });
+}
+
 function updateDiceConfig(die, enabled) {
     activeConfig.enabledDice[die] = enabled;
     saveConfig();
@@ -385,22 +420,6 @@ function loadConfig() {
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', async () => {
     console.log("DOMContentLoaded event fired.");
-
-    window.addEventListener('resize', () => {
-      if (activeConfig.generateImages) {
-          document.querySelectorAll('.room-visualization').forEach(div => {
-              const canvas = div.querySelector('canvas');
-              if (canvas) {
-                  const diceResults = rollHistory.find(roll => 
-                      roll.id === div.closest('.recent-roll-container')?.getAttribute('data-roll-group')
-                  )?.rolls;
-                  if (diceResults) {
-                      window.RoomVisualization.drawRoom(diceResults, canvas);
-                  }
-              }
-          });
-      }
-  });
 
     try {
         await loadRollTables();
